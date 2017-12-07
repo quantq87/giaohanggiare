@@ -10,6 +10,8 @@
 		A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
 		A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* PackageItem.swift */; };
+		A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */; };
+		A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */; };
 		A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D494CF1FD840F7008D62B9 /* SPNewPackageViewController.swift */; };
 		A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D494D11FD846F9008D62B9 /* SPCollectionView.swift */; };
 		A2E32F4D1F77E1D100E7546F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E32F4C1F77E1D100E7546F /* AppDelegate.swift */; };
@@ -36,6 +38,8 @@
 		A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPStringApp.swift; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
 		A266D8A01F8E62EB00AC6968 /* PackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageItem.swift; sourceTree = "<group>"; };
+		A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchors.swift"; sourceTree = "<group>"; };
+		A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
 		A2D494CF1FD840F7008D62B9 /* SPNewPackageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNewPackageViewController.swift; sourceTree = "<group>"; };
 		A2D494D11FD846F9008D62B9 /* SPCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPCollectionView.swift; sourceTree = "<group>"; };
 		A2E32F491F77E1D100E7546F /* giaohanggiare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = giaohanggiare.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,11 +99,21 @@
 			path = package;
 			sourceTree = "<group>";
 		};
-		A2D494CD1FD83702008D62B9 /* categories */ = {
+		A292EA681FD8FAB100679213 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A292EA691FD8FAC300679213 /* views */,
 			);
-			path = categories;
+			path = extensions;
+			sourceTree = "<group>";
+		};
+		A292EA691FD8FAC300679213 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */,
+				A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 		A2D494CE1FD840B1008D62B9 /* package */ = {
@@ -163,7 +177,7 @@
 		A2E32F6D1F77E27600E7546F /* sources */ = {
 			isa = PBXGroup;
 			children = (
-				A2D494CD1FD83702008D62B9 /* categories */,
+				A292EA681FD8FAB100679213 /* extensions */,
 				A266D89E1F8E628F00AC6968 /* models */,
 				A2E32F781F77E48300E7546F /* instances */,
 				A2E32F741F77E2F800E7546F /* views */,
@@ -334,8 +348,10 @@
 				A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */,
 				A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */,
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
+				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
 				A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */,
+				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
