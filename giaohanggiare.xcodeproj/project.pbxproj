@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A001FDFD9E300E6D150 /* UIColor+Mains.swift */; };
+		A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A021FDFE65F00E6D150 /* SPLoginViewController.swift */; };
+		A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */; };
 		A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
 		A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* PackageItem.swift */; };
@@ -35,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A2126A001FDFD9E300E6D150 /* UIColor+Mains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Mains.swift"; sourceTree = "<group>"; };
+		A2126A021FDFE65F00E6D150 /* SPLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPLoginViewController.swift; sourceTree = "<group>"; };
+		A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPRegisterViewController.swift; sourceTree = "<group>"; };
 		A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPStringApp.swift; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
 		A266D8A01F8E62EB00AC6968 /* PackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageItem.swift; sourceTree = "<group>"; };
@@ -74,6 +80,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A21269FC1FDFD83400E6D150 /* user */ = {
+			isa = PBXGroup;
+			children = (
+				A2126A021FDFE65F00E6D150 /* SPLoginViewController.swift */,
+				A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */,
+			);
+			path = user;
+			sourceTree = "<group>";
+		};
+		A21269FF1FDFD99900E6D150 /* colors */ = {
+			isa = PBXGroup;
+			children = (
+				A2126A001FDFD9E300E6D150 /* UIColor+Mains.swift */,
+			);
+			path = colors;
+			sourceTree = "<group>";
+		};
 		A266D89B1F8E4F1D00AC6968 /* tabtar */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +125,7 @@
 		A292EA681FD8FAB100679213 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A21269FF1FDFD99900E6D150 /* colors */,
 				A292EA691FD8FAC300679213 /* views */,
 			);
 			path = extensions;
@@ -167,6 +191,7 @@
 		A2E32F6C1F77E23C00E7546F /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A21269FC1FDFD83400E6D150 /* user */,
 				A2D494CE1FD840B1008D62B9 /* package */,
 				A2E32F711F77E2D200E7546F /* home */,
 				A2E32F6E1F77E2AB00E7546F /* base */,
@@ -343,14 +368,17 @@
 			files = (
 				A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */,
 				A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */,
+				A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */,
 				A2E32F771F77E34600E7546F /* SPTableView.swift in Sources */,
 				A2E32F4D1F77E1D100E7546F /* AppDelegate.swift in Sources */,
+				A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */,
 				A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */,
 				A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */,
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
 				A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */,
+				A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */,
 				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
