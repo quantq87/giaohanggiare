@@ -54,6 +54,7 @@ class SPLoginViewController: BaseViewController {
         button.backgroundColor = UIColor(red: 0.0, green: 0.50, blue: 1.0, alpha: 0.7)
         button.setTitle("Dang nhap", for: .normal)
         button.titleLabel?.textColor = .white
+        button.addTarget(self, action: #selector(signInButtonOnTouch), for: .touchUpInside)
         return button
     }()
     
@@ -62,6 +63,7 @@ class SPLoginViewController: BaseViewController {
         button.frame = .zero
         button.backgroundColor = UIColor(red: 0.0, green: 0.50, blue: 1.0, alpha: 0.7)
         button.setTitle("Tao tai khoan", for: .normal)
+        button.addTarget(self, action: #selector(registerButtonOnTouch), for: .touchUpInside)
         button.titleLabel?.textColor = .white
         return button
     }()
@@ -167,6 +169,14 @@ class SPLoginViewController: BaseViewController {
     }
     
     func quickRegisterButtonOnTouch(sender: UIButton) {
+        
+    }
+    
+    func signInButtonOnTouch() {
+        
+    }
+    
+    func registerButtonOnTouch() {
         performSegue(withIdentifier: "showRegisterIdentifier", sender: nil)
     }
 }
