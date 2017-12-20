@@ -20,6 +20,7 @@ protocol SPTableViewDataSource: class {
     func numberOfSections() -> Int
     func numberOfRowsInSection(section: Int) -> Int
     func cellForRowAt(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell
+    func heightForRowAt(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
 }
 
 protocol SPTableViewDataDelegate: class {
@@ -31,14 +32,11 @@ class SPTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     weak var customDataSource: SPTableViewDataSource?
     weak var customDataDelegate: SPTableViewDataDelegate?
-    var customTablevView:UITableView!
     
     let cellId = "cellID"
     
     func reloadDataTable() {
-        if let v = customTablevView {
-            v.reloadData()
-        }
+        self.reloadData()
     }
     
     convenience init(type: ItemTableViewType, frame: CGRect) {
@@ -48,13 +46,9 @@ class SPTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func setUpView() {
-        if customTablevView == nil {
-            customTablevView = UITableView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height), style: .plain)
-        }
-        customTablevView.backgroundColor = .clear
-        customTablevView.delegate = self
-        customTablevView.dataSource = self
-        self.addSubview(customTablevView)
+        self.backgroundColor = .clear
+        self.delegate = self
+        self.dataSource = self
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,6 +65,10 @@ class SPTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         customDataDelegate?.didSelectRowAt(indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return (customDataSource?.heightForRowAt(tableView, heightForRowAt:indexPath))!
     }
 }
 

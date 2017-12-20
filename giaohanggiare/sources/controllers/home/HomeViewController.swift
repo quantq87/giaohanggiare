@@ -15,6 +15,9 @@ class HomeViewController: BaseViewController {
     var packageTableView:SPTableView!
     var packageItems: NSMutableArray!
     
+    var currentPackages: NSMutableArray!
+    var currentSelectTagIndex: NSInteger! = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,7 +47,7 @@ class HomeViewController: BaseViewController {
             packageTableView = SPTableView(type: .home, frame:
                 CGRect(x: 0, y: 64 + 35, width: self.view.bounds.width, height: self.view.bounds.height - (64 + 35)))
         }
-        packageTableView.backgroundColor = .gray
+        packageTableView.backgroundColor = .clear
         packageTableView.currentItemType = .home
         packageTableView.customDataSource = self
         packageTableView.customDataDelegate = self
@@ -103,6 +106,7 @@ class HomeViewController: BaseViewController {
         item6.time = Date()
         packageItems.add(item6)
         
+        currentPackages = packageItems
         
         packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
         packageTableView.reloadDataTable()
@@ -119,6 +123,20 @@ class HomeViewController: BaseViewController {
 extension HomeViewController: SPTopTabBarDelegate {
     func OnPressTabBarButton(index: NSInteger) {
         print("Select item index\(index)")
+        
+        currentSelectTagIndex = index
+        currentPackages = getCurrentPackageArray(index: index)
+        packageTableView.reloadDataTable()
+    }
+    
+    func getCurrentPackageArray(index: NSInteger) -> NSMutableArray {
+        
+        switch index {
+        case 1:
+            return packageItems
+        default:
+            return NSMutableArray()
+        }
     }
 }
 
@@ -130,36 +148,151 @@ extension HomeViewController: SPTableViewDataSource, SPTableViewDataDelegate {
     }
     
     func numberOfRowsInSection(section: Int) -> Int {
-        if packageItems.count > 0 {
-            return packageItems.count
+        if currentPackages.count > 0 {
+            return currentPackages.count
         }
         return 0
     }
     
     func cellForRowAt(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
-        if cell == nil {
-            cell = SPHomePackageCell.init(style: .default, reuseIdentifier: cellId)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! SPHomePackageCell
+        //if cell == nil {
+        //    cell = SPHomePackageCell.init(style: .default, reuseIdentifier: cellId)
+        //}
+        if let item:PackageItem = currentPackages.object(at: indexPath.row) as? PackageItem {
+            cell.setupDataForCell(item: item)
         }
-        if let item:PackageItem = packageItems.object(at: indexPath.row) as? PackageItem {
-            cell?.textLabel?.text = item.titleString
-        }
-        return cell!
+        return cell
     }
     
     // Delegate
     func didSelectRowAt(indexPath: IndexPath) {
         
     }
+    
+    func heightForRowAt(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 135.0
+    }
 }
 
 class SPHomePackageCell: SPCustomTableCell {
+    
+    var namePackageLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = "#ACB15C2"
+        label.font = UIFont.boldSystemFont(ofSize: 15.0)
+        return label
+    }()
+    
+    var statusButton: UIButton = {
+        let button = UIButton(type: .custom, customType: .waiting)
+        button.setTitle("Cho duyet", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        return button
+    }()
+    
+    
+    var nameCustomerLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = "Chi Dung"
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        return label
+    }()
+    
+    var addressLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    var dateLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = "20/12/2017"
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    var totalPayLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = "300.000 VND"
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.numberOfLines = 2
+        return label
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViewCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupViewCell() {
+        
+        contentView.addSubview(namePackageLabel)
+        contentView.addSubview(statusButton)
+        contentView.addSubview(nameCustomerLabel)
+        contentView.addSubview(addressLabel)
+        
+        contentView.addSubview(dateLabel)
+        contentView.addSubview(totalPayLabel)
+        
+        namePackageLabel.anchor(contentView.topAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 5.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 150, heightConstant: 25.0)
+        
+        statusButton.anchor(contentView.topAnchor, left: nil, right: contentView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 0.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 100, heightConstant: 25.0)
+        
+        // Next row
+        nameCustomerLabel.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        
+        // Next row
+        addressLabel.anchor(nameCustomerLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 40.0)
+        
+        // Next row
+        dateLabel.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        // ** Next Columm
+        totalPayLabel.anchor(addressLabel.bottomAnchor, left: dateLabel.rightAnchor, right: nil, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+    }
+    
+    public func setupDataForCell(item: PackageItem) {
+        namePackageLabel.text = item.titleString
+        nameCustomerLabel.text = item.detailString
+        
+    }
+    
+}
+
+enum CustomButtonType {
+    case waiting
+    case failed
+    case success
+    case cancel
+}
+
+extension UIButton {
+    convenience init(type: UIButtonType, customType: CustomButtonType) {
+        self.init(type: type)
+        switch customType {
+        case .waiting:
+            drawWaitingCusom()
+            break
+        default:
+            drawWaitingCusom()
+        }
+    }
+    
+    func drawWaitingCusom() {
+        self.layer.cornerRadius = 5.0
+        self.layer.borderColor = UIColor.clear.cgColor
+        self.backgroundColor = .blue
+    }
 }

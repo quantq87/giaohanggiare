@@ -173,7 +173,7 @@ class SPLoginViewController: BaseViewController {
     }
     
     func signInButtonOnTouch() {
-        
+        performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
     }
     
     func registerButtonOnTouch() {
