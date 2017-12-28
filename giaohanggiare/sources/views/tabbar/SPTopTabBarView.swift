@@ -24,6 +24,21 @@ class SPTopTabBarView: UIView {
     var viewFrame: CGRect = .zero
     weak var delegate:SPTopTabBarDelegate?
     
+    var shapeLayer: CAShapeLayer = {
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0, y: 10))
+        path.addLine(to: CGPoint(x: 200, y: 30))
+        path.addLine(to: CGPoint(x: 25, y: 30))
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.fillColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        shapeLayer.strokeColor = UIColor.white.cgColor
+        shapeLayer.lineWidth = 5
+        shapeLayer.path = path.cgPath
+        shapeLayer.strokeStart = 0.8
+        return shapeLayer
+    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,6 +90,7 @@ class SPTopTabBarView: UIView {
         labeltitle1.font = UIFont.boldSystemFont(ofSize: 13.0)
         labeltitle1.textColor = .white
         labeltitle1.textAlignment = .center;
+        labeltitle1.tag = index;
         
         let button1:UIButton = UIButton(type: .custom)
         button1.backgroundColor = .clear
@@ -92,6 +108,7 @@ class SPTopTabBarView: UIView {
         labeltitle2.font = UIFont.boldSystemFont(ofSize: 13.0)
         labeltitle2.textColor = .white
         labeltitle2.textAlignment = .center;
+        labeltitle2.tag = index;
         
         let button2:UIButton = UIButton(type: .custom)
         button2.backgroundColor = .clear
@@ -110,6 +127,7 @@ class SPTopTabBarView: UIView {
         labeltitle3.font = UIFont.boldSystemFont(ofSize: 13.0)
         labeltitle3.textColor = .white
         labeltitle3.textAlignment = .center;
+        labeltitle3.tag = index;
         
         let button3:UIButton = UIButton(type: .custom)
         button3.backgroundColor = .clear
@@ -118,27 +136,61 @@ class SPTopTabBarView: UIView {
         button3.addTarget(self, action: #selector(topTabBarButtonOnPress(sender:)), for: .touchUpInside)
         self.addSubview(button3)
         self.addSubview(labeltitle3)
+        
+        self.layer.addSublayer(shapeLayer)
     }
     
     func selectedItemIndex(index: NSInteger) {
-        switch index {
-        case 0:
-            let v = getTabbarWithIndex(index: index)
-            if let v1 = v {
-                v1.backgroundColor = .gray
+        for v:UIView in self.subviews {
+            if v.isKind(of: UILabel.self) {
+                v.backgroundColor = .red
             }
-            break
+        }
+        switch index {
         case 1:
             let v = getTabbarWithIndex(index: index)
             if let v1 = v {
                 v1.backgroundColor = .gray
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: 0, y: 10))
+                path.addLine(to: CGPoint(x: 200, y: 30))
+                path.addLine(to: CGPoint(x: 25, y: 30))
+                shapeLayer.path = path.cgPath
+                let animation = CABasicAnimation(keyPath: "strokeEnd")
+                animation.fromValue = 0
+                animation.duration = 0.5
+                shapeLayer.add(animation, forKey: "MyAnimation")
             }
             break
-            
         case 2:
             let v = getTabbarWithIndex(index: index)
             if let v1 = v {
                 v1.backgroundColor = .gray
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: 0, y: 10))
+                path.addLine(to: CGPoint(x: 290, y: 30))
+                path.addLine(to: CGPoint(x: 145, y: 30))
+                shapeLayer.path = path.cgPath
+                let animation = CABasicAnimation(keyPath: "strokeEnd")
+                animation.fromValue = 0
+                animation.duration = 0.5
+                shapeLayer.add(animation, forKey: "MyAnimation")
+            }
+            break
+            
+        case 3:
+            let v = getTabbarWithIndex(index: index)
+            if let v1 = v {
+                v1.backgroundColor = .gray
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: 0, y: 10))
+                path.addLine(to: CGPoint(x: 380, y: 30))
+                path.addLine(to: CGPoint(x: 265, y: 30))
+                shapeLayer.path = path.cgPath
+                let animation = CABasicAnimation(keyPath: "strokeEnd")
+                animation.fromValue = 0
+                animation.duration = 0.5
+                shapeLayer.add(animation, forKey: "MyAnimation")
             }
             break
         default:
@@ -149,7 +201,7 @@ class SPTopTabBarView: UIView {
     
     func getTabbarWithIndex(index: NSInteger) -> UIView! {
         for v in self.subviews {
-            if v.tag == index {
+            if v.tag == index && v.isKind(of: UILabel.self) {
                 return v
             }
         }
@@ -161,6 +213,7 @@ class SPTopTabBarView: UIView {
         let button: UIButton = sender
         switch currentTabBarType {
         case .home:
+            selectedItemIndex(index: button.tag)
             self.delegate?.OnPressTabBarButton(index: button.tag)
             break
         default:

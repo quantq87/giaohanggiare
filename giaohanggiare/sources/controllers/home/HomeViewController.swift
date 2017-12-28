@@ -30,6 +30,8 @@ class HomeViewController: BaseViewController {
     }
     
     func initUI() {
+        
+        self.navigationItem.titleView = CustomNavigationBarView(frame: CGRect(x: 0, y: 0, width: 320, height: 40))
         self.navigationItem.title = StringAppTitle.home_title
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addPackage))
@@ -41,7 +43,7 @@ class HomeViewController: BaseViewController {
         topTabBarView.setUpTabBarWithType(type: .home)
         topTabBarView.delegate = self
         view.addSubview(topTabBarView)
-        topTabBarView.selectedItemIndex(index: 0)
+        topTabBarView.selectedItemIndex(index: 1)
         
         if packageTableView == nil {
             packageTableView = SPTableView(type: .home, frame:
@@ -132,7 +134,7 @@ extension HomeViewController: SPTopTabBarDelegate {
     func getCurrentPackageArray(index: NSInteger) -> NSMutableArray {
         
         switch index {
-        case 1:
+        case 1, 2:
             return packageItems
         default:
             return NSMutableArray()
@@ -156,12 +158,10 @@ extension HomeViewController: SPTableViewDataSource, SPTableViewDataDelegate {
     
     func cellForRowAt(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! SPHomePackageCell
-        //if cell == nil {
-        //    cell = SPHomePackageCell.init(style: .default, reuseIdentifier: cellId)
-        //}
         if let item:PackageItem = currentPackages.object(at: indexPath.row) as? PackageItem {
             cell.setupDataForCell(item: item)
         }
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -192,6 +192,12 @@ class SPHomePackageCell: SPCustomTableCell {
         return button
     }()
     
+    var iconNameCustomer: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "icon_customer")
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
     
     var nameCustomerLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -199,6 +205,13 @@ class SPHomePackageCell: SPCustomTableCell {
         label.text = "Chi Dung"
         label.font = UIFont.systemFont(ofSize: 13.0)
         return label
+    }()
+    
+    var iconAddress: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "icon_address")
+        imageView.backgroundColor = .clear
+        return imageView
     }()
     
     var addressLabel: UILabel = {
@@ -210,6 +223,13 @@ class SPHomePackageCell: SPCustomTableCell {
         return label
     }()
     
+    var iconDate: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "icon_date")
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
+    
     var dateLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.backgroundColor = .clear
@@ -219,6 +239,12 @@ class SPHomePackageCell: SPCustomTableCell {
         return label
     }()
     
+    var iconPay: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "icon_pay")
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
     var totalPayLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.backgroundColor = .clear
@@ -241,10 +267,17 @@ class SPHomePackageCell: SPCustomTableCell {
         
         contentView.addSubview(namePackageLabel)
         contentView.addSubview(statusButton)
+        
+        contentView.addSubview(iconNameCustomer)
         contentView.addSubview(nameCustomerLabel)
+        
+        contentView.addSubview(iconAddress)
         contentView.addSubview(addressLabel)
         
+        contentView.addSubview(iconDate)
         contentView.addSubview(dateLabel)
+        
+        contentView.addSubview(iconPay)
         contentView.addSubview(totalPayLabel)
         
         namePackageLabel.anchor(contentView.topAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 5.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 150, heightConstant: 25.0)
@@ -252,15 +285,21 @@ class SPHomePackageCell: SPCustomTableCell {
         statusButton.anchor(contentView.topAnchor, left: nil, right: contentView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 0.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 100, heightConstant: 25.0)
         
         // Next row
-        nameCustomerLabel.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        iconNameCustomer.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+        
+        nameCustomerLabel.anchor(namePackageLabel.bottomAnchor, left: iconNameCustomer.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
         
         // Next row
-        addressLabel.anchor(nameCustomerLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 40.0)
+        iconAddress.anchor(nameCustomerLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+        addressLabel.anchor(nameCustomerLabel.bottomAnchor, left: iconAddress.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 40.0)
         
         // Next row
-        dateLabel.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        iconDate.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+        dateLabel.anchor(addressLabel.bottomAnchor, left: iconDate.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        
         // ** Next Columm
-        totalPayLabel.anchor(addressLabel.bottomAnchor, left: dateLabel.rightAnchor, right: nil, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        iconPay.anchor(addressLabel.bottomAnchor, left: dateLabel.rightAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+        totalPayLabel.anchor(addressLabel.bottomAnchor, left: iconPay.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
     }
     
     public func setupDataForCell(item: PackageItem) {
@@ -294,5 +333,20 @@ extension UIButton {
         self.layer.cornerRadius = 5.0
         self.layer.borderColor = UIColor.clear.cgColor
         self.backgroundColor = .blue
+    }
+}
+
+class CustomNavigationBarView: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupView() {
+        self.backgroundColor = .red
     }
 }
