@@ -16,10 +16,9 @@ struct StringAppTitle {
 }
 
 class SPStringApp: NSObject {
-    let home_title = "Home"
     
     func getHomeTitle() -> String {
-        return home_title
+        return StringAppTitle.home_title
     }
     
 }

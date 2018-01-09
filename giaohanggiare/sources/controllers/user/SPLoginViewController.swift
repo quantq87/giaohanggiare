@@ -9,7 +9,10 @@
 import UIKit
 
 
+
 class SPLoginViewController: BaseViewController {
+    
+    var loadingView: SPLoadingView!
     
     var titleFormLoginLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -45,6 +48,7 @@ class SPLoginViewController: BaseViewController {
         tf.borderStyle = .roundedRect
         tf.placeholder = "Mat khau"
         tf.text = ""
+        tf.isSecureTextEntry = true
         return tf
     }()
     
@@ -99,8 +103,13 @@ class SPLoginViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setupView()
+        setupView()
+        initData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopLoadingView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -109,17 +118,15 @@ class SPLoginViewController: BaseViewController {
     }
     
     func setupView() {
-        
         self.navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .mainColor
-        
         
         view.addSubview(formLoginView)
         view.addSubview(versionLabel)
         view.addSubview(companyLabel)
         
         
-        let height:CGFloat = 350.0
+        let height:CGFloat = 300.0
         let top:CGFloat = (view.frame.size.height - height)/2
         let paddingLeftRight:CGFloat = 45.0
         formLoginView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil,
@@ -164,8 +171,67 @@ class SPLoginViewController: BaseViewController {
         quickRegisterButton.anchor(registerButton.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
                                    topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
                                    widthConstant: 0.0, heightConstant: 40.0)
+    }
+    
+    func initData()  {
+        checkAutoLogin()
+    }
+    
+    func checkAutoLogin() {
+        startLoadingView()
+        //SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
+        //SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
+        
+        let userName = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getUserNameKey())
+        let password = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getPasswordKey())
+        
+        if !((userName?.isEmpty)!) {
+            userNameTextField.text = userName
+        }
         
         
+        if !((password?.isEmpty)!) {
+            passwordTextField.text = password
+        }
+        
+        if !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
+            
+            //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in
+                self.stopLoadingView()
+                //if success {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+                    }
+                //}
+                
+           // })
+            
+            //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+            //DispatchQueue.main.asyncAfter(deadline: when) {
+            //    // Your code with delay
+            //    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+            //}
+        }
+    }
+    
+    func startLoadingView() {
+        if loadingView == nil {
+            loadingView = SPLoadingView(frame: .zero, type: 2)
+        }
+        view.addSubview(loadingView)
+        loadingView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor,
+                           topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0,
+                           widthConstant: 0.0, heightConstant: 0.0)
+        loadingView.startLoadingAnimation()
+    }
+    
+    func stopLoadingView() {
+        DispatchQueue.main.async {
+        if self.loadingView != nil {
+            self.loadingView.stopLoadingAnimation()
+        }
+        self.loadingView.removeFromSuperview()
+        }
     }
     
     func quickRegisterButtonOnTouch(sender: UIButton) {

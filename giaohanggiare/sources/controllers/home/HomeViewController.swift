@@ -256,7 +256,8 @@ class SPHomePackageCell: SPCustomTableCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViewCell()
+        // Update UI
+        self.setupViewCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -303,9 +304,10 @@ class SPHomePackageCell: SPCustomTableCell {
     }
     
     public func setupDataForCell(item: PackageItem) {
-        namePackageLabel.text = item.titleString
-        nameCustomerLabel.text = item.detailString
-        
+        DispatchQueue.main.async {
+        self.namePackageLabel.text = item.titleString
+        self.nameCustomerLabel.text = item.detailString
+        }
     }
     
 }
@@ -330,6 +332,7 @@ extension UIButton {
     }
     
     func drawWaitingCusom() {
+        // Update UI
         self.layer.cornerRadius = 5.0
         self.layer.borderColor = UIColor.clear.cgColor
         self.backgroundColor = .blue
