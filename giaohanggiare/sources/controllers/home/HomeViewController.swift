@@ -18,6 +18,17 @@ class HomeViewController: BaseViewController {
     var currentPackages: NSMutableArray!
     var currentSelectTagIndex: NSInteger! = 0
     
+    var addFloatingButton: SPFloatingButton = {
+        let button = SPFloatingButton(type: .custom)
+        button.backgroundColor = .mainColor
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 35.0)
+        button.setTitle("+", for: .normal)
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        button.addTarget(self, action: #selector(addNewPackageOnTouchInside), for: UIControlEvents.touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -112,6 +123,12 @@ class HomeViewController: BaseViewController {
         
         packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
         packageTableView.reloadDataTable()
+        
+        
+        view.addSubview(addFloatingButton)
+        addFloatingButton.layer.cornerRadius = 60/2
+        addFloatingButton.clipsToBounds = true
+        addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
     }
     
     
@@ -119,6 +136,10 @@ class HomeViewController: BaseViewController {
         print("addPackage onclick")
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
         self.navigationController?.pushViewController(secondViewController, animated: true)
+    }
+    
+    func addNewPackageOnTouchInside(sender: UIButton)  {
+        
     }
 }
 
