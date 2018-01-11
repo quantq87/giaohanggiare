@@ -13,7 +13,6 @@ class HomeViewController: BaseViewController {
 
     var topTabBarView: SPTopTabBarView!
     var packageTableView:SPTableView!
-    var packageItems: NSMutableArray!
     
     var currentPackages: NSMutableArray!
     var currentSelectTagIndex: NSInteger! = 0
@@ -24,7 +23,7 @@ class HomeViewController: BaseViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 35.0)
         button.setTitle("+", for: .normal)
-        button.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
         button.addTarget(self, action: #selector(addNewPackageOnTouchInside), for: UIControlEvents.touchUpInside)
         return button
     }()
@@ -41,10 +40,7 @@ class HomeViewController: BaseViewController {
     }
     
     func initUI() {
-        
-        self.navigationItem.titleView = CustomNavigationBarView(frame: CGRect(x: 0, y: 0, width: 320, height: 40))
         self.navigationItem.title = StringAppTitle.home_title
-        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addPackage))
         
         if topTabBarView == nil {
@@ -66,71 +62,24 @@ class HomeViewController: BaseViewController {
         packageTableView.customDataDelegate = self
         view.addSubview(packageTableView)
         
-        
-        // Create Data
-        packageItems = NSMutableArray()
-        let item1: PackageItem = PackageItem()
-        item1.titleString = "Item 1"
-        item1.detailString = "Item 1"
-        item1.iconString = "default_icon.png"
-        item1.money = 21.000
-        item1.time = Date()
-        packageItems.add(item1)
-        
-        let item2: PackageItem = PackageItem()
-        item2.titleString = "Item 2"
-        item2.detailString = "Item 2"
-        item2.iconString = "default_icon.png"
-        item2.money = 22.000
-        item2.time = Date()
-        packageItems.add(item2)
-        
-        
-        let item3: PackageItem = PackageItem()
-        item3.titleString = "Item 3"
-        item3.detailString = "Item 3"
-        item3.iconString = "default_icon.png"
-        item3.money = 23.000
-        item3.time = Date()
-        packageItems.add(item3)
-        
-        
-        let item4: PackageItem = PackageItem()
-        item4.titleString = "Item 4"
-        item4.detailString = "Item 4"
-        item4.iconString = "default_icon.png"
-        item4.money = 24.000
-        item4.time = Date()
-        packageItems.add(item4)
-        
-        let item5: PackageItem = PackageItem()
-        item5.titleString = "Item 5"
-        item5.detailString = "Item 5"
-        item5.iconString = "default_icon.png"
-        item5.money = 25.000
-        item5.time = Date()
-        packageItems.add(item5)
-        
-        let item6: PackageItem = PackageItem()
-        item6.titleString = "Item 6"
-        item6.detailString = "Item 6"
-        item6.iconString = "default_icon.png"
-        item6.money = 26.000
-        item6.time = Date()
-        packageItems.add(item6)
-        
-        currentPackages = packageItems
-        
+        currentPackages = SPListManager.shareInstance.getPackageItemList()
         packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
         packageTableView.reloadDataTable()
-        
         
         view.addSubview(addFloatingButton)
         addFloatingButton.layer.cornerRadius = 60/2
         addFloatingButton.clipsToBounds = true
         addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
     
     func addPackage(sender: UIBarButtonItem)  {
         print("addPackage onclick")
@@ -139,7 +88,8 @@ class HomeViewController: BaseViewController {
     }
     
     func addNewPackageOnTouchInside(sender: UIButton)  {
-        
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
+        self.navigationController?.pushViewController(secondViewController, animated: true)
     }
 }
 
@@ -156,7 +106,7 @@ extension HomeViewController: SPTopTabBarDelegate {
         
         switch index {
         case 1, 2:
-            return packageItems
+            return SPListManager.shareInstance.getPackageItemList()
         default:
             return NSMutableArray()
         }
@@ -364,6 +314,7 @@ class CustomNavigationBarView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {

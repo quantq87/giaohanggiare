@@ -14,6 +14,7 @@ class SPNewPackageViewController: BaseViewController {
     
     let cellId = "CollectionId"
     let personalCellId = "PersonalCollectionId"
+    let personalReceiverCellId = "personalReceiverCellId"
     let personalHeaderId = "PersonalHeaderId"
     let personalFooterId = "PersonalFooterId"
 
@@ -29,6 +30,16 @@ class SPNewPackageViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     func initView() {
         self.navigationItem.title = "Tao Don Hang"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .undo, target: self, action: #selector(backBarButtonOnTouch))
@@ -39,17 +50,21 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView = SPCollectionView(type:.create, frame:.zero, layout: flowLayout)
         packageTableView.register(SPCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalCellId)
+        packageTableView.register(SPPersonalReceiverInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
+        
+        packageTableView.bounces = false
+        packageTableView.alwaysBounceVertical = false
         
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: personalHeaderId)
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: personalFooterId)
         
-        packageTableView.backgroundColor = .red
+        packageTableView.backgroundColor = .clear
         packageTableView.setDelegateAndDataSource(self, dataSource: self)
         view.addSubview(packageTableView);
         
         
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+        view.addConstraintsWithFormat(format: "V:|-64-[v0]|", views: packageTableView)
     }
     
     
@@ -62,11 +77,14 @@ class SPNewPackageViewController: BaseViewController {
 extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate {
     
     func numberOfSections() -> Int {
-        return 2
+        return 3
     }
     
     func numberOfItemsInSection(_ collectionView: UICollectionView, section: Int) -> Int {
         if section == 0 {
+            return 1
+        }
+        else if section == 1 {
             return 1
         }
         return 4
@@ -75,6 +93,11 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     func cellForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath)
+            cell.backgroundColor = .white
+            return cell
+        }
+        else if indexPath.section == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath)
             cell.backgroundColor = .white
             return cell
         }
@@ -90,7 +113,7 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     }
     
     func sizeForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 5*2, height: 175)
+        return CGSize(width: collectionView.frame.width - 5*2, height: 160.0)
     }
     
     func viewForSupplementaryElementOfKind(_ collectionView: UICollectionView, kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -129,11 +152,11 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
         // Name Label
         var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString1 = NSAttributedString(string: "Ten Khach Hang: ", attributes: attributes)
         
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 12.0)
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
         attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString2 = NSAttributedString(string: "Tran Quoc Quan", attributes: attributes)
         
@@ -151,11 +174,11 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
         // Name Label
         var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString1 = NSAttributedString(string: "Ten Shop: ", attributes: attributes)
         
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 12.0)
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
         attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString2 = NSAttributedString(string: "U-Store", attributes: attributes)
         
@@ -174,11 +197,11 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
         // Name Label
         var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString1 = NSAttributedString(string: "Dia chi: ", attributes: attributes)
         
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 12.0)
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
         attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString2 = NSAttributedString(string: "473 Le Van Sy, phuong 13, Quan Phu Nhuan, TP Ho Chi Minh", attributes: attributes)
         
@@ -206,11 +229,11 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
         // Name Label
         var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString1 = NSAttributedString(string: "So dien thoai: ", attributes: attributes)
         
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 12.0)
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
         attributes[NSForegroundColorAttributeName] = UIColor.black
         let attString2 = NSAttributedString(string: "0982789809", attributes: attributes)
         
@@ -225,11 +248,10 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
         button.setTitle("Edit", for: .normal)
-        button.backgroundColor = .yellow
+        button.backgroundColor = .gray
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
         return button
     }()
-    
-    
     
     override func setupView() {
         addSubview(nameLabel)
@@ -239,12 +261,154 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         addSubview(editInfoButton)
         
         // Add Constraints
-        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
-        shopNameLabel.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
-        phoneNumberLabel.anchor(shopNameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        shopNameLabel.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        phoneNumberLabel.anchor(shopNameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
         addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
         
-        editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 35.0)
+        editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)
+    }
+    
+    func editInfoButtonOnTouch(sender: UIButton)  {
+        print("editInfoButtonOnTouch onTouchInSide")
+    }
+}
+
+class SPPersonalReceiverInfoCell: SPCollectionViewCell {
+    
+    var nameLabel: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14.0)
+        
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString1 = NSAttributedString(string: "Ten Khach Hang: ", attributes: attributes)
+        
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString2 = NSAttributedString(string: "Tran Quoc Quan", attributes: attributes)
+        
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        finalAttString.append(attString2)
+        
+        label.attributedText = finalAttString
+        return label
+    }()
+    
+    var shopNameLabel: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14.0)
+        
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString1 = NSAttributedString(string: "Ten Shop: ", attributes: attributes)
+        
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString2 = NSAttributedString(string: "U-Store", attributes: attributes)
+        
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        finalAttString.append(attString2)
+        
+        label.attributedText = finalAttString
+        return label
+    }()
+    
+    var addressLabel: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14.0)
+        label.numberOfLines = 2
+        
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString1 = NSAttributedString(string: "Dia chi: ", attributes: attributes)
+        
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString2 = NSAttributedString(string: "473 Le Van Sy, phuong 13, Quan Phu Nhuan, TP Ho Chi Minh", attributes: attributes)
+        
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        finalAttString.append(attString2)
+        
+        
+        // Set Text Center
+        //        let paragraph = NSMutableParagraphStyle()
+        //        paragraph.alignment = .center
+        //
+        //        let attributesAlign: [String : Any] = [NSParagraphStyleAttributeName: paragraph]
+        //        finalAttString.setAttributes(attributesAlign, range: NSRange(location: 0, length: finalAttString.string.characters.count))
+        
+        
+        label.attributedText = finalAttString
+        return label
+    }()
+    
+    var phoneNumberLabel: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14.0)
+        label.numberOfLines = 2
+        
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString1 = NSAttributedString(string: "So dien thoai: ", attributes: attributes)
+        
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString2 = NSAttributedString(string: "0982789809", attributes: attributes)
+        
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        finalAttString.append(attString2)
+        
+        label.attributedText = finalAttString
+        return label
+    }()
+    
+    var editInfoButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
+        button.setTitle("Edit", for: .normal)
+        button.backgroundColor = .gray
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
+        return button
+    }()
+    
+    
+    var nameReceiverTextField:UITextField = {
+        let textField = UITextField(frame: .zero)
+        
+        return textField
+    }()
+    
+    
+    override func setupView() {
+        
+        addSubview(nameReceiverTextField)
+        
+        /*addSubview(nameLabel)
+        addSubview(shopNameLabel)
+        addSubview(phoneNumberLabel)
+        addSubview(addressLabel)
+        addSubview(editInfoButton)
+        
+        // Add Constraints
+        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        shopNameLabel.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        phoneNumberLabel.anchor(shopNameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
+        
+        editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)*/
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {

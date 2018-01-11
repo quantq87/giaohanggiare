@@ -179,22 +179,21 @@ class SPLoginViewController: BaseViewController {
     
     func checkAutoLogin() {
         startLoadingView()
-        //SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
-        //SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
+        SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
+        SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
         
         let userName = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getUserNameKey())
         let password = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getPasswordKey())
         
-        if !((userName?.isEmpty)!) {
+        if userName != nil && !((userName?.isEmpty)!) {
             userNameTextField.text = userName
         }
         
-        
-        if !((password?.isEmpty)!) {
+        if password != nil && !((password?.isEmpty)!) {
             passwordTextField.text = password
         }
         
-        if !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
+        if (userName != nil && password != nil) && !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
             
             //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in
                 self.stopLoadingView()
@@ -203,15 +202,27 @@ class SPLoginViewController: BaseViewController {
                         self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
                     }
                 //}
-                
-           // })
+            //})
             
             //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
             //DispatchQueue.main.asyncAfter(deadline: when) {
             //    // Your code with delay
             //    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
             //}
+        } else {
+            self.stopLoadingView()
+            //if success {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+            }
+            //}
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     func startLoadingView() {

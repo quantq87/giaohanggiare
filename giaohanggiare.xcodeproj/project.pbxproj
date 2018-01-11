@@ -14,6 +14,7 @@
 		A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */; };
 		A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */; };
 		A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */; };
+		A25DDD662007917E00486954 /* SPListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25DDD652007917E00486954 /* SPListManager.swift */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
 		A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* PackageItem.swift */; };
 		A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863413200452A400F9AE83 /* SPDatabase.swift */; };
@@ -58,6 +59,7 @@
 		A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPRegisterViewController.swift; sourceTree = "<group>"; };
 		A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPStringApp.swift; sourceTree = "<group>"; };
 		A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPFloatingButton.swift; sourceTree = "<group>"; };
+		A25DDD652007917E00486954 /* SPListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPListManager.swift; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
 		A266D8A01F8E62EB00AC6968 /* PackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageItem.swift; sourceTree = "<group>"; };
 		A2863413200452A400F9AE83 /* SPDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPDatabase.swift; sourceTree = "<group>"; };
@@ -136,6 +138,14 @@
 			path = colors;
 			sourceTree = "<group>";
 		};
+		A25DDD642007915D00486954 /* list */ = {
+			isa = PBXGroup;
+			children = (
+				A25DDD652007917E00486954 /* SPListManager.swift */,
+			);
+			path = list;
+			sourceTree = "<group>";
+		};
 		A266D89B1F8E4F1D00AC6968 /* tabtar */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +174,7 @@
 		A28634112004522900F9AE83 /* shares */ = {
 			isa = PBXGroup;
 			children = (
+				A25DDD642007915D00486954 /* list */,
 				A286341A200480C200F9AE83 /* api */,
 				A28634122004525300F9AE83 /* database */,
 			);
@@ -593,6 +604,7 @@
 				A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */,
 				A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */,
 				A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */,
+				A25DDD662007917E00486954 /* SPListManager.swift in Sources */,
 				A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */,
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
