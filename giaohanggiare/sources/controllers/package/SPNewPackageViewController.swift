@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DropDown
 
 class SPNewPackageViewController: BaseViewController {
     
@@ -16,6 +17,7 @@ class SPNewPackageViewController: BaseViewController {
     let personalCellId = "PersonalCollectionId"
     let personalReceiverCellId = "personalReceiverCellId"
     let personalHeaderId = "PersonalHeaderId"
+    let packageInfoHeaderId = "packageInfoHeaderId"
     let personalFooterId = "PersonalFooterId"
 
     override func viewDidLoad() {
@@ -56,6 +58,9 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.alwaysBounceVertical = false
         
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: personalHeaderId)
+        packageTableView.register(SPPackageHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: packageInfoHeaderId)
+        
+        
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: personalFooterId)
         
         packageTableView.backgroundColor = .clear
@@ -87,7 +92,7 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
         else if section == 1 {
             return 1
         }
-        return 4
+        return 1
     }
     
     func cellForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
@@ -118,16 +123,23 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     
     func viewForSupplementaryElementOfKind(_ collectionView: UICollectionView, kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
-            header.backgroundColor = .green
+            
             if indexPath.section == 0 {
+                let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
+                header.backgroundColor = .green
                 header.setHeaderTitleWithString(string: "Thong tin khach hang")
+                return header;
             } else if (indexPath.section == 1) {
+                let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
+                header.backgroundColor = .green
                 header.setHeaderTitleWithString(string: "Thong tin don hang")
+                return header;
             } else {
-                header.setHeaderTitleWithString(string: "")
+                let header:SPPackageHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: packageInfoHeaderId, for: indexPath) as! SPPackageHeaderCell)
+                header.backgroundColor = .yellow
+                header.setHeaderTitleWithString(string: "Thong tin goi hang")
+                return header;
             }
-            return header
         } else {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalFooterId, for: indexPath)
             footer.backgroundColor = .green
@@ -386,33 +398,73 @@ class SPPersonalReceiverInfoCell: SPCollectionViewCell {
     
     
     var nameReceiverTextField:UITextField = {
-        let textField = UITextField(frame: .zero)
-        
-        return textField
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Ten nguoi nhan"
+        tf.setBottomBorder()
+        return tf
     }()
     
+    var phoneNumberReceiverTextField:UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "So dien thoai"
+        tf.setBottomBorder()
+        return tf
+    }()
     
+    var addressReceiverTextField:UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Dia chi"
+        tf.setBottomBorder()
+        return tf
+    }()
+    
+    var noteReceiverTextField:UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Ghi chu"
+        tf.setBottomBorder()
+        return tf
+    }()
     override func setupView() {
         
         addSubview(nameReceiverTextField)
-        
-        /*addSubview(nameLabel)
-        addSubview(shopNameLabel)
-        addSubview(phoneNumberLabel)
-        addSubview(addressLabel)
-        addSubview(editInfoButton)
+        addSubview(phoneNumberReceiverTextField)
+        addSubview(addressReceiverTextField)
+        addSubview(noteReceiverTextField)
         
         // Add Constraints
-        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        shopNameLabel.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        phoneNumberLabel.anchor(shopNameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
+        nameReceiverTextField.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        phoneNumberReceiverTextField.anchor(nameReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+        addressReceiverTextField.anchor(phoneNumberReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
         
-        editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)*/
+        addressReceiverTextField.setRightImageView(image: UIImage(named: "location-icon")!, size: CGSize(width: 15.0, height: 15.0))
+        
+        noteReceiverTextField.anchor(addressReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
+    }
+}
+
+extension UITextField {
+    func setBottomBorder() {
+        self.borderStyle = .none
+        self.layer.backgroundColor = UIColor.white.cgColor
+        
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.gray.cgColor
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        self.layer.shadowOpacity = 1.0
+        self.layer.shadowRadius = 0.0
+    }
+    func setRightImageView(image: UIImage, size:CGSize)  {
+        let imageView = UIImageView()
+        imageView.image = image
+        imageView.backgroundColor = .clear
+        imageView.frame = CGRect(x: 0, y: 0.0, width: size.width, height: size.height)
+        
+        self.rightView = imageView
+        self.rightViewMode = .always
     }
 }
 
@@ -451,5 +503,87 @@ class SPPersonalHeaderCell: UICollectionReusableView {
         nameLabel.attributedText = finalAttString
 
     }
+}
+
+class SPPackageHeaderCell: UICollectionReusableView {
     
+    var nameLabel: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.backgroundColor = .clear
+        label.text = ""
+        return label
+    }()
+    
+    var modePackageLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.text = "ABC 123"
+        return label
+    }()
+    
+    var modePackageButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(showDropDownOnTouchInside), for: UIControlEvents.touchUpInside)
+        return button
+    }()
+    
+    var isDropDownShow: Bool = false
+    
+    
+    var modePackageView: DropDown = {
+        let dropDown = DropDown()
+        
+        // The view to which the drop down will appear on
+        //dropDown.anchorView = view // UIView or UIBarButtonItem
+        
+        // The list of items to display. Can be changed dynamically
+        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        
+        return dropDown
+    }()
+    
+    func showDropDownOnTouchInside(sender: UIButton) {
+        if !isDropDownShow {
+            isDropDownShow = true
+            modePackageView.show()
+        } else {
+            isDropDownShow = false
+            modePackageView.hide()
+        }
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupView()  {
+        addSubview(nameLabel)
+        addSubview(modePackageLabel)
+        addSubview(modePackageButton)
+        
+        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 0.0, heightConstant: 0.0)
+        
+        modePackageLabel.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 200.0, heightConstant: 0.0)
+        modePackageButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 200.0, heightConstant: 0.0)
+        
+        modePackageView.anchorView = modePackageLabel
+        modePackageView.direction = .bottom
+        isDropDownShow = false
+    }
+    
+    public func setHeaderTitleWithString(string: String) {
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 15.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        let attString1 = NSAttributedString(string: string, attributes: attributes)
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        nameLabel.attributedText = finalAttString
+        
+    }
 }

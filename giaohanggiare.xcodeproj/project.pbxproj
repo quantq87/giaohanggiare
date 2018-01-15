@@ -336,6 +336,7 @@
 		A2E32F741F77E2F800E7546F /* views */ = {
 			isa = PBXGroup;
 			children = (
+				A2F7D448200C75C70022D910 /* external */,
 				A286341720047BC600F9AE83 /* loading */,
 				A266D89B1F8E4F1D00AC6968 /* tabtar */,
 				A2F58E6B1F8682FA0072AE61 /* login */,
@@ -368,6 +369,13 @@
 			children = (
 			);
 			path = login;
+			sourceTree = "<group>";
+		};
+		A2F7D448200C75C70022D910 /* external */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = external;
 			sourceTree = "<group>";
 		};
 		B00D54A575EBF69BCD921DD5 /* Frameworks */ = {
@@ -563,10 +571,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-giaohanggiare/Pods-giaohanggiare-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

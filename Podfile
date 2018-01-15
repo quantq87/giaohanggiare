@@ -6,6 +6,7 @@ target 'giaohanggiare' do
   use_frameworks!
 
   pod 'NVActivityIndicatorView'
+  pod 'DropDown'
 
   # Pods for giaohanggiare
 
