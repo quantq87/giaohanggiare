@@ -50,6 +50,27 @@
             </objects>
             <point key="canvasLocation" x="1441" y="-527"/>
         </scene>
+        <!--Edit Sender View Controller-->
+        <scene sceneID="KpM-Ln-var">
+            <objects>
+                <viewController storyboardIdentifier="SPEditSenderViewController" id="0mQ-wo-bTK" customClass="SPEditSenderViewController" customModule="giaohanggiare" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="urL-G8-mx6"/>
+                        <viewControllerLayoutGuide type="bottom" id="XCM-lM-hzg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g2m-Ed-gyk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <segue destination="rnO-XM-QgC" kind="presentation" identifier="showEditSenderIdentifier" id="kYr-CH-mdq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MbS-St-Exw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2802" y="-854"/>
+        </scene>
         <!--Home View Controller-->
         <scene sceneID="JfY-0r-cbf">
             <objects>

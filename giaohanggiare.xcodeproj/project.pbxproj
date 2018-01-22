@@ -23,6 +23,7 @@
 		A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341B200480FA00F9AE83 /* SPAPIServer.swift */; };
 		A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */; };
 		A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */; };
+		A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */; };
 		A2CE9C011FEE2D7400727E85 /* icon_customer.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C001FEE2D7400727E85 /* icon_customer.png */; };
 		A2CE9C051FEE2E4F00727E85 /* icon_address.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C021FEE2E4F00727E85 /* icon_address.png */; };
 		A2CE9C061FEE2E4F00727E85 /* icon_date.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C031FEE2E4F00727E85 /* icon_date.png */; };
@@ -68,6 +69,7 @@
 		A286341B200480FA00F9AE83 /* SPAPIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPAPIServer.swift; sourceTree = "<group>"; };
 		A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchors.swift"; sourceTree = "<group>"; };
 		A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
+		A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPEditSenderViewController.swift; sourceTree = "<group>"; };
 		A2CE9C001FEE2D7400727E85 /* icon_customer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_customer.png; sourceTree = "<group>"; };
 		A2CE9C021FEE2E4F00727E85 /* icon_address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_address.png; sourceTree = "<group>"; };
 		A2CE9C031FEE2E4F00727E85 /* icon_date.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_date.png; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				A2D494CF1FD840F7008D62B9 /* SPNewPackageViewController.swift */,
+				A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */,
 			);
 			path = package;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */,
 				A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */,
 				A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */,
 				A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */,
