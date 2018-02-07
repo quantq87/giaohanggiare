@@ -229,14 +229,12 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         finalAttString.append(attString2)
         
-        
         // Set Text Center
 //        let paragraph = NSMutableParagraphStyle()
 //        paragraph.alignment = .center
 //        
 //        let attributesAlign: [String : Any] = [NSParagraphStyleAttributeName: paragraph]
 //        finalAttString.setAttributes(attributesAlign, range: NSRange(location: 0, length: finalAttString.string.characters.count))
-        
         
         label.attributedText = finalAttString
         return label
@@ -267,7 +265,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
     
     var editInfoButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
+        
         button.setTitle("Edit", for: .normal)
         button.backgroundColor = .gray
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
@@ -288,10 +286,13 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
         
         editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)
+        
+        editInfoButton.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
+        
     }
 }
 

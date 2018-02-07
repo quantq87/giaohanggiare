@@ -1,5 +1,5 @@
 PODS:
-  - DropDown (2.0.2)
+  - DropDown (2.3.1)
   - NVActivityIndicatorView (4.1.1):
     - NVActivityIndicatorView/Presenter (= 4.1.1)
   - NVActivityIndicatorView/Presenter (4.1.1)
@@ -9,7 +9,7 @@ DEPENDENCIES:
   - NVActivityIndicatorView
 
 SPEC CHECKSUMS:
-  DropDown: 75562633a203f57a917021b4edb96c76f293b0ec
+  DropDown: 20499c7b2731b0d21609af924e47c7677a2be50d
   NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
 
 PODFILE CHECKSUM: 3ec857f02cce356b86ce781e554b3c979a475ec2
