@@ -9,6 +9,10 @@
 import UIKit
 import DropDown
 
+protocol SPPackageInfoDelegate {
+    func editButtonOnTouchInside(sender: UIButton)
+}
+
 class SPNewPackageViewController: BaseViewController {
     
     var packageTableView:SPCollectionView!
@@ -38,10 +42,13 @@ class SPNewPackageViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.isHidden = false
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = true
+        NotificationCenter.default.removeObserver(self)
     }
     
     func initView() {
@@ -52,38 +59,62 @@ class SPNewPackageViewController: BaseViewController {
         flowLayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
         packageTableView = SPCollectionView(type:.create, frame:.zero, layout: flowLayout)
+        
+        // Cells
         packageTableView.register(SPCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalCellId)
         packageTableView.register(SPPersonalReceiverInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
         packageTableView.register(SPPackageInfoViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
         
-        //packageTableView.bounces = false
-        //packageTableView.alwaysBounceVertical = false
+        // Show scrolls
         packageTableView.showsVerticalScrollIndicator = false
         packageTableView.showsHorizontalScrollIndicator = false
+        
+        // Headers
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: personalHeaderId)
         packageTableView.register(SPPackageHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: packageInfoHeaderId)
-        
-        
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: personalFooterId)
         
         packageTableView.backgroundColor = .clear
+        
+        // Delegate
         packageTableView.setDelegateAndDataSource(self, dataSource: self)
+        
+        // Add tableView and setConstraints
         view.addSubview(packageTableView);
-        
-        
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
         view.addConstraintsWithFormat(format: "V:|-64-[v0]|", views: packageTableView)
     }
-    
     
     func backBarButtonOnTouch(sender: UIBarButtonItem)  {
         print("backBarButtonOnTouch onclick")
         self.navigationController?.popViewController(animated: true)
     }
+    
+   @objc func keyboardWillAppear(_ notification: Notification) {
+        //Do something here
+        adjustTableViewWhenKeyboardShow(true, notification: notification)
+    }
+    
+    @objc func keyboardWillDisappear(_ notification: Notification) {
+        //Do something here
+        adjustTableViewWhenKeyboardShow(false, notification: notification)
+    }
+    
+    func adjustTableViewWhenKeyboardShow(_ open: Bool, notification: Notification) {
+        if open {
+            let userInfo = notification.userInfo ?? [:]
+            let keyboardFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+            let height = (keyboardFrame.height + 20) * (open ? 1 : -1)
+            packageTableView.contentInset.bottom += height
+            packageTableView.scrollIndicatorInsets.bottom += height
+        } else {
+            packageTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        }
+    }
 }
 
-extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate {
+extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate, SPPackageInfoDelegate {
     
     func numberOfSections() -> Int {
         return 3
@@ -101,8 +132,9 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     
     func cellForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath) as! SPPersonalInfoCell
             cell.backgroundColor = .white
+            cell.delegateInfo = self as! SPPackageInfoDelegate
             return cell
         }
         else if indexPath.section == 1 {
@@ -162,9 +194,20 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     func referenceSizeForFooterInSection(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  section: Int) -> CGSize{
         return CGSize(width: collectionView.frame.width - 5*2, height: 0.0)
     }
+    
+    func editButtonOnTouchInside(sender: UIButton) {
+        print("editInfoButtonOnTouch onTouchInSide AAAAA")
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPEditSenderViewController") as! SPEditSenderViewController
+        secondViewController.modalPresentationStyle = .formSheet
+        secondViewController.isModalInPopover = true
+        self.navigationController?.present(secondViewController, animated: true, completion: {
+            print("Present Edit Sender View Controller is completed!")
+        })
+    }
 }
 
 class SPPersonalInfoCell: SPCollectionViewCell {
+    var delegateInfo: SPPackageInfoDelegate!
     
     var nameLabel: UILabel = {
         var label = UILabel(frame: .zero)
@@ -286,18 +329,18 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
         
         editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)
-        
         editInfoButton.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
-        
+        if let delegate = self.delegateInfo {
+            delegate.editButtonOnTouchInside(sender: sender)
+        }
     }
 }
 
 class SPPersonalReceiverInfoCell: SPCollectionViewCell {
-    
     var nameLabel: UILabel = {
         var label = UILabel(frame: .zero)
         label.backgroundColor = .clear
@@ -652,7 +695,6 @@ class SPPersonalHeaderCell: UICollectionReusableView {
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString
-
     }
 }
 
@@ -716,12 +758,9 @@ class SPPackageHeaderCell: UICollectionReusableView {
         addSubview(nameLabel)
         addSubview(modePackageLabel)
         addSubview(modePackageButton)
-        
         nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 0.0, heightConstant: 0.0)
-        
         modePackageLabel.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 120.0, heightConstant: 0.0)
         modePackageButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 120.0, heightConstant: 0.0)
-        
         modePackageView.anchorView = modePackageLabel
         modePackageView.direction = .bottom
         isDropDownShow = false
