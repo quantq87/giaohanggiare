@@ -59,7 +59,7 @@ class SPCustomerInfo: NSObject {
     var shopName:String = ""
     var addressString:String = ""
     var phoneNumberString:String = ""
-    
+    var emailString:String = ""
     
     override init() {
         super.init()

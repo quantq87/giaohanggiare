@@ -10,10 +10,13 @@ import UIKit
 
 protocol SPEditSenderDelegate {
     func didCancelEditInfo()
-    func didDoneEditInfo(_ changeInfo: Bool)
+    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfo)
 }
 
 class SPEditSenderViewController: BaseViewController {
+    
+    var customerInfo: SPCustomerInfo!
+    
     var delegate:SPEditSenderDelegate!
     
     var matterView: UIView = {
@@ -112,6 +115,7 @@ class SPEditSenderViewController: BaseViewController {
         super.viewDidLoad()
 
         setupView()
+        setupData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -176,6 +180,15 @@ class SPEditSenderViewController: BaseViewController {
         nameTextField.delegate = self
     }
     
+    func setupData() {
+        if customerInfo != nil {
+            nameTextField.text = customerInfo.fullName
+            phoneNumberTextField.text = customerInfo.phoneNumberString
+            emailTextField.text = customerInfo.emailString
+            addressTextField.text = customerInfo.addressString
+        }
+    }
+    
     func addTapGestureRecognizer() {
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -210,7 +223,7 @@ class SPEditSenderViewController: BaseViewController {
     
     @objc func doneDidTouchUpInside() {
         if let hasDelegate = self.delegate {
-            hasDelegate.didDoneEditInfo(true)
+            hasDelegate.didDoneEditInfo(true, customerIsChange:self.customerInfo)
         }
     }
     

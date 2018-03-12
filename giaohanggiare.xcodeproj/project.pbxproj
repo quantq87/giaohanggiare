@@ -23,9 +23,9 @@
 		A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341B200480FA00F9AE83 /* SPAPIServer.swift */; };
 		A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */; };
 		A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */; };
-		A29F360420566A4F00BDFD9F /* SPPackageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F360320566A4F00BDFD9F /* SPPackageManager.swift */; };
-		A29F360720567F2A00BDFD9F /* SPUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F360620567F2A00BDFD9F /* SPUserManager.swift */; };
 		A29F361F2056900B00BDFD9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A29F36212056900B00BDFD9F /* Localizable.strings */; };
+		A29F36272056918B00BDFD9F /* SPPackageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F36262056918B00BDFD9F /* SPPackageManager.swift */; };
+		A29F36292056919E00BDFD9F /* SPUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F36282056919E00BDFD9F /* SPUserManager.swift */; };
 		A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */; };
 		A2CE9C011FEE2D7400727E85 /* icon_customer.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C001FEE2D7400727E85 /* icon_customer.png */; };
 		A2CE9C051FEE2E4F00727E85 /* icon_address.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C021FEE2E4F00727E85 /* icon_address.png */; };
@@ -72,13 +72,13 @@
 		A286341B200480FA00F9AE83 /* SPAPIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPAPIServer.swift; sourceTree = "<group>"; };
 		A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchors.swift"; sourceTree = "<group>"; };
 		A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
-		A29F360320566A4F00BDFD9F /* SPPackageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageManager.swift; sourceTree = "<group>"; };
-		A29F360620567F2A00BDFD9F /* SPUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPUserManager.swift; sourceTree = "<group>"; };
 		A29F36202056900B00BDFD9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A29F36222056900F00BDFD9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A29F36232056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Main.strings; sourceTree = "<group>"; };
 		A29F36242056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		A29F36252056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A29F36262056918B00BDFD9F /* SPPackageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageManager.swift; sourceTree = "<group>"; };
+		A29F36282056919E00BDFD9F /* SPUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPUserManager.swift; sourceTree = "<group>"; };
 		A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPEditSenderViewController.swift; sourceTree = "<group>"; };
 		A2CE9C001FEE2D7400727E85 /* icon_customer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_customer.png; sourceTree = "<group>"; };
 		A2CE9C021FEE2E4F00727E85 /* icon_address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_address.png; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		A29F3602205669FD00BDFD9F /* package */ = {
 			isa = PBXGroup;
 			children = (
-				A29F360320566A4F00BDFD9F /* SPPackageManager.swift */,
+				A29F36262056918B00BDFD9F /* SPPackageManager.swift */,
 			);
 			path = package;
 			sourceTree = "<group>";
@@ -247,7 +247,7 @@
 		A29F360520567F0C00BDFD9F /* user */ = {
 			isa = PBXGroup;
 			children = (
-				A29F360620567F2A00BDFD9F /* SPUserManager.swift */,
+				A29F36282056919E00BDFD9F /* SPUserManager.swift */,
 			);
 			path = user;
 			sourceTree = "<group>";
@@ -639,14 +639,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */,
-				A29F360420566A4F00BDFD9F /* SPPackageManager.swift in Sources */,
 				A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */,
-				A29F360720567F2A00BDFD9F /* SPUserManager.swift in Sources */,
 				A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */,
+				A29F36292056919E00BDFD9F /* SPUserManager.swift in Sources */,
 				A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */,
 				A2E32F771F77E34600E7546F /* SPTableView.swift in Sources */,
 				A2E32F4D1F77E1D100E7546F /* AppDelegate.swift in Sources */,
 				A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */,
+				A29F36272056918B00BDFD9F /* SPPackageManager.swift in Sources */,
 				A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */,
 				A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */,
 				A25DDD662007917E00486954 /* SPListManager.swift in Sources */,

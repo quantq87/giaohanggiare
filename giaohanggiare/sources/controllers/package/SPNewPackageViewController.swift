@@ -138,8 +138,9 @@ extension SPNewPackageViewController: SPEditSenderDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func didDoneEditInfo(_ changeInfo: Bool) {
-        dismiss(animated: true) { 
+    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfo) {
+        dismiss(animated: true) {
+            self.currentNewPackage.senderCustomer = customerIsChange
             self.packageTableView.reloadData()
         }
     }
@@ -170,8 +171,9 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath) as! SPPersonalReceiverInfoCell
             cell.backgroundColor = .white
+            cell.indexSection = indexPath.section
             return cell
         }
         else if (indexPath.section == 2) {
@@ -231,6 +233,7 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
         print("editInfoButtonOnTouch onTouchInSide AAAAA")
         
         let editViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPEditSenderViewController") as! SPEditSenderViewController
+        editViewController.customerInfo = currentNewPackage.senderCustomer
         editViewController.delegate = self
         
         let navigationController1 = UINavigationController(rootViewController: editViewController)
@@ -353,6 +356,8 @@ class SPPersonalInfoCell: SPCollectionViewCell {
 }
 
 class SPPersonalReceiverInfoCell: SPCollectionViewCell {
+    var indexSection: NSInteger = 0
+    
     var nameLabel: UILabel = {
         var label = UILabel(frame: .zero)
         label.backgroundColor = .clear
