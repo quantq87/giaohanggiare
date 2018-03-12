@@ -18,7 +18,7 @@ class SPListManager: NSObject {
             packageItemList = NSMutableArray()
         }
         // Create Data
-        let item1: PackageItem = PackageItem()
+        let item1: SPPackageItem = SPPackageItem()
         item1.titleString = "Item 1"
         item1.detailString = "Item 1"
         item1.iconString = "default_icon.png"
@@ -26,7 +26,7 @@ class SPListManager: NSObject {
         item1.time = Date()
         packageItemList.add(item1)
         
-        let item2: PackageItem = PackageItem()
+        let item2: SPPackageItem = SPPackageItem()
         item2.titleString = "Item 2"
         item2.detailString = "Item 2"
         item2.iconString = "default_icon.png"
@@ -35,7 +35,7 @@ class SPListManager: NSObject {
         packageItemList.add(item2)
         
         
-        let item3: PackageItem = PackageItem()
+        let item3: SPPackageItem = SPPackageItem()
         item3.titleString = "Item 3"
         item3.detailString = "Item 3"
         item3.iconString = "default_icon.png"
@@ -44,7 +44,7 @@ class SPListManager: NSObject {
         packageItemList.add(item3)
         
         
-        let item4: PackageItem = PackageItem()
+        let item4: SPPackageItem = SPPackageItem()
         item4.titleString = "Item 4"
         item4.detailString = "Item 4"
         item4.iconString = "default_icon.png"
@@ -52,7 +52,7 @@ class SPListManager: NSObject {
         item4.time = Date()
         packageItemList.add(item4)
         
-        let item5: PackageItem = PackageItem()
+        let item5: SPPackageItem = SPPackageItem()
         item5.titleString = "Item 5"
         item5.detailString = "Item 5"
         item5.iconString = "default_icon.png"
@@ -60,7 +60,7 @@ class SPListManager: NSObject {
         item5.time = Date()
         packageItemList.add(item5)
         
-        let item6: PackageItem = PackageItem()
+        let item6: SPPackageItem = SPPackageItem()
         item6.titleString = "Item 6"
         item6.detailString = "Item 6"
         item6.iconString = "default_icon.png"

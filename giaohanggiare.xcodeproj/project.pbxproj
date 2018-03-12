@@ -16,13 +16,16 @@
 		A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */; };
 		A25DDD662007917E00486954 /* SPListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25DDD652007917E00486954 /* SPListManager.swift */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
-		A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* PackageItem.swift */; };
+		A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */; };
 		A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863413200452A400F9AE83 /* SPDatabase.swift */; };
 		A2863416200456C000F9AE83 /* SPKeyDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863415200456C000F9AE83 /* SPKeyDatabase.swift */; };
 		A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341820047C0000F9AE83 /* SPLoadingView.swift */; };
 		A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341B200480FA00F9AE83 /* SPAPIServer.swift */; };
 		A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */; };
 		A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */; };
+		A29F360420566A4F00BDFD9F /* SPPackageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F360320566A4F00BDFD9F /* SPPackageManager.swift */; };
+		A29F360720567F2A00BDFD9F /* SPUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F360620567F2A00BDFD9F /* SPUserManager.swift */; };
+		A29F361F2056900B00BDFD9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A29F36212056900B00BDFD9F /* Localizable.strings */; };
 		A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */; };
 		A2CE9C011FEE2D7400727E85 /* icon_customer.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C001FEE2D7400727E85 /* icon_customer.png */; };
 		A2CE9C051FEE2E4F00727E85 /* icon_address.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CE9C021FEE2E4F00727E85 /* icon_address.png */; };
@@ -62,13 +65,20 @@
 		A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPFloatingButton.swift; sourceTree = "<group>"; };
 		A25DDD652007917E00486954 /* SPListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPListManager.swift; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
-		A266D8A01F8E62EB00AC6968 /* PackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageItem.swift; sourceTree = "<group>"; };
+		A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageItem.swift; sourceTree = "<group>"; };
 		A2863413200452A400F9AE83 /* SPDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPDatabase.swift; sourceTree = "<group>"; };
 		A2863415200456C000F9AE83 /* SPKeyDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPKeyDatabase.swift; sourceTree = "<group>"; };
 		A286341820047C0000F9AE83 /* SPLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPLoadingView.swift; sourceTree = "<group>"; };
 		A286341B200480FA00F9AE83 /* SPAPIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPAPIServer.swift; sourceTree = "<group>"; };
 		A292EA6A1FD8FAD000679213 /* UIView+Anchors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchors.swift"; sourceTree = "<group>"; };
 		A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
+		A29F360320566A4F00BDFD9F /* SPPackageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageManager.swift; sourceTree = "<group>"; };
+		A29F360620567F2A00BDFD9F /* SPUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPUserManager.swift; sourceTree = "<group>"; };
+		A29F36202056900B00BDFD9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A29F36222056900F00BDFD9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A29F36232056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Main.strings; sourceTree = "<group>"; };
+		A29F36242056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		A29F36252056901B00BDFD9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A2C1B09E2015F2E400F0689F /* SPEditSenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPEditSenderViewController.swift; sourceTree = "<group>"; };
 		A2CE9C001FEE2D7400727E85 /* icon_customer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_customer.png; sourceTree = "<group>"; };
 		A2CE9C021FEE2E4F00727E85 /* icon_address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_address.png; sourceTree = "<group>"; };
@@ -81,7 +91,6 @@
 		A2E32F511F77E1D100E7546F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A2E32F531F77E1D100E7546F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2E32F561F77E1D100E7546F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A2E32F581F77E1D100E7546F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2E32F5D1F77E1D200E7546F /* giaohanggiareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = giaohanggiareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E32F611F77E1D200E7546F /* giaohanggiareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = giaohanggiareTests.swift; sourceTree = "<group>"; };
 		A2E32F631F77E1D200E7546F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -168,7 +177,7 @@
 		A266D89F1F8E629D00AC6968 /* package */ = {
 			isa = PBXGroup;
 			children = (
-				A266D8A01F8E62EB00AC6968 /* PackageItem.swift */,
+				A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */,
 			);
 			path = package;
 			sourceTree = "<group>";
@@ -176,6 +185,8 @@
 		A28634112004522900F9AE83 /* shares */ = {
 			isa = PBXGroup;
 			children = (
+				A29F360520567F0C00BDFD9F /* user */,
+				A29F3602205669FD00BDFD9F /* package */,
 				A25DDD642007915D00486954 /* list */,
 				A286341A200480C200F9AE83 /* api */,
 				A28634122004525300F9AE83 /* database */,
@@ -223,6 +234,22 @@
 				A292EA6B1FD8FAD000679213 /* UIView+Constraint.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		A29F3602205669FD00BDFD9F /* package */ = {
+			isa = PBXGroup;
+			children = (
+				A29F360320566A4F00BDFD9F /* SPPackageManager.swift */,
+			);
+			path = package;
+			sourceTree = "<group>";
+		};
+		A29F360520567F0C00BDFD9F /* user */ = {
+			isa = PBXGroup;
+			children = (
+				A29F360620567F2A00BDFD9F /* SPUserManager.swift */,
+			);
+			path = user;
 			sourceTree = "<group>";
 		};
 		A2CE9BFE1FEE2CE300727E85 /* resources */ = {
@@ -282,7 +309,7 @@
 				A2E32F501F77E1D100E7546F /* Main.storyboard */,
 				A2E32F531F77E1D100E7546F /* Assets.xcassets */,
 				A2E32F551F77E1D100E7546F /* LaunchScreen.storyboard */,
-				A2E32F581F77E1D100E7546F /* Info.plist */,
+				A29F36212056900B00BDFD9F /* Localizable.strings */,
 			);
 			path = giaohanggiare;
 			sourceTree = "<group>";
@@ -464,6 +491,7 @@
 			knownRegions = (
 				en,
 				Base,
+				vi,
 			);
 			mainGroup = A2E32F401F77E1D100E7546F;
 			productRefGroup = A2E32F4A1F77E1D100E7546F /* Products */;
@@ -486,6 +514,7 @@
 				A2CE9C051FEE2E4F00727E85 /* icon_address.png in Resources */,
 				A2CE9C061FEE2E4F00727E85 /* icon_date.png in Resources */,
 				A2E32F541F77E1D100E7546F /* Assets.xcassets in Resources */,
+				A29F361F2056900B00BDFD9F /* Localizable.strings in Resources */,
 				A2CE9C011FEE2D7400727E85 /* icon_customer.png in Resources */,
 				A2E32F521F77E1D100E7546F /* Main.storyboard in Resources */,
 			);
@@ -610,7 +639,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */,
+				A29F360420566A4F00BDFD9F /* SPPackageManager.swift in Sources */,
 				A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */,
+				A29F360720567F2A00BDFD9F /* SPUserManager.swift in Sources */,
 				A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */,
 				A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */,
 				A2E32F771F77E34600E7546F /* SPTableView.swift in Sources */,
@@ -623,7 +654,7 @@
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
-				A266D8A11F8E62EB00AC6968 /* PackageItem.swift in Sources */,
+				A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */,
 				A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */,
 				A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */,
 				A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */,
@@ -652,10 +683,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A29F36212056900B00BDFD9F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A29F36202056900B00BDFD9F /* Base */,
+				A29F36222056900F00BDFD9F /* en */,
+				A29F36252056901B00BDFD9F /* vi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		A2E32F501F77E1D100E7546F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A2E32F511F77E1D100E7546F /* Base */,
+				A29F36232056901B00BDFD9F /* vi */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -664,6 +706,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				A2E32F561F77E1D100E7546F /* Base */,
+				A29F36242056901B00BDFD9F /* vi */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -675,6 +718,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -726,6 +770,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

@@ -82,8 +82,17 @@ class HomeViewController: BaseViewController {
     }
     
     func addPackage(sender: UIBarButtonItem)  {
-        print("addPackage onclick")
+        
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
+        
+        if SPPackageManager.shareInstance.currentEditPackage == nil {
+            SPPackageManager.shareInstance.currentEditPackage = SPPackageItem(userInfo: SPUserManager.shareInstance.currentUserInfo)
+            secondViewController.currentNewPackage = SPPackageManager.shareInstance.currentEditPackage
+        } else {
+            // TODO: Save current package
+            secondViewController.currentNewPackage = SPPackageManager.shareInstance.currentEditPackage
+        }
+        
         self.navigationController?.pushViewController(secondViewController, animated: true)
     }
     
@@ -129,7 +138,7 @@ extension HomeViewController: SPTableViewDataSource, SPTableViewDataDelegate {
     
     func cellForRowAt(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! SPHomePackageCell
-        if let item:PackageItem = currentPackages.object(at: indexPath.row) as? PackageItem {
+        if let item:SPPackageItem = currentPackages.object(at: indexPath.row) as? SPPackageItem {
             cell.setupDataForCell(item: item)
         }
         cell.selectionStyle = .none
@@ -274,7 +283,7 @@ class SPHomePackageCell: SPCustomTableCell {
         totalPayLabel.anchor(addressLabel.bottomAnchor, left: iconPay.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
     }
     
-    public func setupDataForCell(item: PackageItem) {
+    public func setupDataForCell(item: SPPackageItem) {
         DispatchQueue.main.async {
         self.namePackageLabel.text = item.titleString
         self.nameCustomerLabel.text = item.detailString

@@ -193,6 +193,16 @@ class SPLoginViewController: BaseViewController {
             passwordTextField.text = password
         }
         
+        // TODO: Temp
+        let currentUserInfo = SPUserInfo()
+        currentUserInfo.firtName = "Quan"
+        currentUserInfo.lastName = "Tran Quoc"
+        currentUserInfo.addressString = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
+        currentUserInfo.phoneNumberString = "0987654321"
+        currentUserInfo.shopName = "Ustore"
+        currentUserInfo.fullName = "QuanTQ"
+        SPUserManager.shareInstance.currentUserInfo = currentUserInfo
+        
         if (userName != nil && password != nil) && !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
             
             //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in

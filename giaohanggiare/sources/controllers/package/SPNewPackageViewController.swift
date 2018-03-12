@@ -15,6 +15,10 @@ protocol SPPackageInfoDelegate {
 
 class SPNewPackageViewController: BaseViewController {
     
+    //
+    var currentNewPackage:SPPackageItem!
+    
+    
     var packageTableView:SPCollectionView!
     
     let cellId = "CollectionId"
@@ -31,6 +35,13 @@ class SPNewPackageViewController: BaseViewController {
 
         // Do any additional setup after loading the view.
         initView()
+        setupData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,7 +94,15 @@ class SPNewPackageViewController: BaseViewController {
         // Add tableView and setConstraints
         view.addSubview(packageTableView);
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-        view.addConstraintsWithFormat(format: "V:|-64-[v0]|", views: packageTableView)
+        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+    }
+    
+    func setupData() {
+        if currentNewPackage == nil {
+            currentNewPackage = SPPackageItem(userInfo: SPUserManager.shareInstance.currentUserInfo)
+        } else {
+            
+        }
     }
     
     func backBarButtonOnTouch(sender: UIBarButtonItem)  {
@@ -114,6 +133,18 @@ class SPNewPackageViewController: BaseViewController {
     }
 }
 
+extension SPNewPackageViewController: SPEditSenderDelegate {
+    func didCancelEditInfo() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func didDoneEditInfo(_ changeInfo: Bool) {
+        dismiss(animated: true) { 
+            self.packageTableView.reloadData()
+        }
+    }
+}
+
 extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate, SPPackageInfoDelegate {
     
     func numberOfSections() -> Int {
@@ -134,7 +165,8 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath) as! SPPersonalInfoCell
             cell.backgroundColor = .white
-            cell.delegateInfo = self as! SPPackageInfoDelegate
+            cell.delegateInfo = self
+            cell.setDataForCell(currentNewPackage.senderCustomer)
             return cell
         }
         else if indexPath.section == 1 {
@@ -197,12 +229,21 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     
     func editButtonOnTouchInside(sender: UIButton) {
         print("editInfoButtonOnTouch onTouchInSide AAAAA")
-        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPEditSenderViewController") as! SPEditSenderViewController
-        secondViewController.modalPresentationStyle = .formSheet
-        secondViewController.isModalInPopover = true
-        self.navigationController?.present(secondViewController, animated: true, completion: {
+        
+        let editViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPEditSenderViewController") as! SPEditSenderViewController
+        editViewController.delegate = self
+        
+        let navigationController1 = UINavigationController(rootViewController: editViewController)
+        navigationController1.modalPresentationStyle = .overCurrentContext
+        navigationController1.modalTransitionStyle = .crossDissolve
+        navigationController1.providesPresentationContextTransitionStyle = true;
+        navigationController1.definesPresentationContext = true;
+        present(navigationController1, animated: true, completion: {
             print("Present Edit Sender View Controller is completed!")
         })
+        navigationController1.popoverPresentationController?.sourceView = view
+        let frameView:CGRect = view.frame;
+        navigationController1.popoverPresentationController?.sourceRect = frameView
     }
 }
 
@@ -213,21 +254,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         var label = UILabel(frame: .zero)
         label.backgroundColor = .clear
         label.font = UIFont.systemFont(ofSize: 14.0)
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Ten Khach Hang: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "Tran Quoc Quan", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
+        label.text = ""
         return label
     }()
     
@@ -235,21 +262,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         var label = UILabel(frame: .zero)
         label.backgroundColor = .clear
         label.font = UIFont.systemFont(ofSize: 14.0)
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Ten Shop: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "U-Store", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
+        label.text = ""
         return label
     }()
     
@@ -258,28 +271,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         label.backgroundColor = .clear
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.numberOfLines = 2
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Dia chi: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "473 Le Van Sy, phuong 13, Quan Phu Nhuan, TP Ho Chi Minh", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        // Set Text Center
-//        let paragraph = NSMutableParagraphStyle()
-//        paragraph.alignment = .center
-//        
-//        let attributesAlign: [String : Any] = [NSParagraphStyleAttributeName: paragraph]
-//        finalAttString.setAttributes(attributesAlign, range: NSRange(location: 0, length: finalAttString.string.characters.count))
-        
-        label.attributedText = finalAttString
+        label.text = ""
         return label
     }()
     
@@ -288,21 +280,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         label.backgroundColor = .clear
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.numberOfLines = 2
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "So dien thoai: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "0982789809", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
+        label.text = ""
         return label
     }()
     
@@ -330,6 +308,40 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
         editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)
         editInfoButton.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
+    }
+    
+    func setDataForCell(_ customerInfo: SPCustomerInfo) {
+        nameLabel.attributedText = formatCustomerName("Ten Khach Hang: ", firstName: customerInfo.firtName, lastName: customerInfo.lastName)
+        shopNameLabel.attributedText = formatTitleBoldAndValueNormal("Ten Shop: ", value: customerInfo.shopName)
+        
+        phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: customerInfo.phoneNumberString)
+        
+        addressLabel.attributedText = formatTitleBoldAndValueNormal("Dia chi: ", value: customerInfo.addressString)
+    }
+    
+    func formatCustomerName(_ refix: String, firstName: String, lastName: String) -> NSMutableAttributedString {
+        // Name Label
+        let fullName = lastName + " " + firstName
+        let finalAttString = formatTitleBoldAndValueNormal(refix, value: fullName)
+        return finalAttString
+    }
+    
+    func formatTitleBoldAndValueNormal(_ title: String, value: String) -> NSMutableAttributedString {
+        // Name Label
+        var attributes = [String: Any]()
+        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString1 = NSAttributedString(string: title, attributes: attributes)
+        
+        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSForegroundColorAttributeName] = UIColor.black
+        let attString2 = NSAttributedString(string: value, attributes: attributes)
+        
+        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
+        finalAttString.append(attString2)
+        
+        return finalAttString
+        
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {
@@ -403,16 +415,6 @@ class SPPersonalReceiverInfoCell: SPCollectionViewCell {
         
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         finalAttString.append(attString2)
-        
-        
-        // Set Text Center
-        //        let paragraph = NSMutableParagraphStyle()
-        //        paragraph.alignment = .center
-        //
-        //        let attributesAlign: [String : Any] = [NSParagraphStyleAttributeName: paragraph]
-        //        finalAttString.setAttributes(attributesAlign, range: NSRange(location: 0, length: finalAttString.string.characters.count))
-        
-        
         label.attributedText = finalAttString
         return label
     }()
