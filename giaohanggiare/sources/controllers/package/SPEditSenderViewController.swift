@@ -16,8 +16,11 @@ protocol SPEditSenderDelegate {
 class SPEditSenderViewController: BaseViewController {
     
     var customerInfo: SPCustomerInfo!
-    
     var delegate:SPEditSenderDelegate!
+    var name:String = ""
+    var phone:String = ""
+    var shopName:String = ""
+    var address:String = ""
     
     var matterView: UIView = {
         let viewM = UIView(frame: .zero)
@@ -83,9 +86,9 @@ class SPEditSenderViewController: BaseViewController {
         return tf
     }()
     
-    var emailTextField:UITextField = {
+    var shopNameTextField:UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.placeholder = "Email"
+        tf.placeholder = "Ten shop"
         tf.setBottomBorder()
         return tf
     }()
@@ -150,7 +153,7 @@ class SPEditSenderViewController: BaseViewController {
 
         matterView.addSubview(nameTextField)
         matterView.addSubview(phoneNumberTextField)
-        matterView.addSubview(emailTextField)
+        matterView.addSubview(shopNameTextField)
         matterView.addSubview(addressTextField)
         
         matterView.anchor(view.centerYAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.centerYAnchor, topConstant: -125.0, leftConstant: 10, rightConstant: -10, bottomConstant: 125.0, widthConstant: 0.0, heightConstant: 0.0)
@@ -169,7 +172,7 @@ class SPEditSenderViewController: BaseViewController {
 
         phoneNumberTextField.anchor(phoneIconImageView.topAnchor, left: phoneIconImageView.rightAnchor, right: matterView.rightAnchor, bottom: nil, topConstant: 2.5, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
 
-        emailTextField.anchor(emailIconImageView.topAnchor, left: emailIconImageView.rightAnchor, right: matterView.rightAnchor, bottom: nil, topConstant: 2.5, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        shopNameTextField.anchor(emailIconImageView.topAnchor, left: emailIconImageView.rightAnchor, right: matterView.rightAnchor, bottom: nil, topConstant: 2.5, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
 
         addressTextField.anchor(addressIconImageView.topAnchor, left: addressIconImageView.rightAnchor, right: matterView.rightAnchor, bottom: nil, topConstant: 2.5, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
         
@@ -184,7 +187,7 @@ class SPEditSenderViewController: BaseViewController {
         if customerInfo != nil {
             nameTextField.text = customerInfo.fullName
             phoneNumberTextField.text = customerInfo.phoneNumberString
-            emailTextField.text = customerInfo.emailString
+            shopNameTextField.text = customerInfo.emailString
             addressTextField.text = customerInfo.addressString
         }
     }
@@ -222,6 +225,8 @@ class SPEditSenderViewController: BaseViewController {
     }
     
     @objc func doneDidTouchUpInside() {
+        view.endEditing(true)
+        
         if let hasDelegate = self.delegate {
             hasDelegate.didDoneEditInfo(true, customerIsChange:self.customerInfo)
         }
@@ -236,7 +241,32 @@ class SPEditSenderViewController: BaseViewController {
 
 // UITextFieldDelegate
 extension SPEditSenderViewController: UITextFieldDelegate {
-    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case nameTextField:
+            if let string = textField.text {
+                name = string
+            }
+            break
+        case phoneNumberTextField:
+            if let string = textField.text {
+                phone = string
+            }
+            break
+        case addressTextField:
+            if let string = textField.text {
+                address = string
+            }
+            break
+        case shopNameTextField:
+            if let string = textField.text {
+                shopName = string
+            }
+            break
+        default:
+            break
+        }
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

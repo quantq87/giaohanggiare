@@ -17,6 +17,8 @@
 		A25DDD662007917E00486954 /* SPListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25DDD652007917E00486954 /* SPListManager.swift */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
 		A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */; };
+		A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */; };
+		A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */; };
 		A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863413200452A400F9AE83 /* SPDatabase.swift */; };
 		A2863416200456C000F9AE83 /* SPKeyDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863415200456C000F9AE83 /* SPKeyDatabase.swift */; };
 		A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341820047C0000F9AE83 /* SPLoadingView.swift */; };
@@ -66,6 +68,8 @@
 		A25DDD652007917E00486954 /* SPListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPListManager.swift; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
 		A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageItem.swift; sourceTree = "<group>"; };
+		A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPSenderInfoViewCell.swift; sourceTree = "<group>"; };
+		A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPReceiverInfoViewCell.swift; sourceTree = "<group>"; };
 		A2863413200452A400F9AE83 /* SPDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPDatabase.swift; sourceTree = "<group>"; };
 		A2863415200456C000F9AE83 /* SPKeyDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPKeyDatabase.swift; sourceTree = "<group>"; };
 		A286341820047C0000F9AE83 /* SPLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPLoadingView.swift; sourceTree = "<group>"; };
@@ -180,6 +184,15 @@
 				A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */,
 			);
 			path = package;
+			sourceTree = "<group>";
+		};
+		A27D382020576FCC00099EE9 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */,
+				A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */,
+			);
+			path = cell;
 			sourceTree = "<group>";
 		};
 		A28634112004522900F9AE83 /* shares */ = {
@@ -366,10 +379,10 @@
 		A2E32F741F77E2F800E7546F /* views */ = {
 			isa = PBXGroup;
 			children = (
+				A27D382020576FCC00099EE9 /* cell */,
 				A2F7D448200C75C70022D910 /* external */,
 				A286341720047BC600F9AE83 /* loading */,
 				A266D89B1F8E4F1D00AC6968 /* tabtar */,
-				A2F58E6B1F8682FA0072AE61 /* login */,
 				A2E32F751F77E30A00E7546F /* customs */,
 			);
 			path = views;
@@ -392,13 +405,6 @@
 				A2863415200456C000F9AE83 /* SPKeyDatabase.swift */,
 			);
 			path = instances;
-			sourceTree = "<group>";
-		};
-		A2F58E6B1F8682FA0072AE61 /* login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = login;
 			sourceTree = "<group>";
 		};
 		A2F7D448200C75C70022D910 /* external */ = {
@@ -603,12 +609,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-giaohanggiare/Pods-giaohanggiare-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -654,11 +658,13 @@
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
+				A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */,
 				A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */,
 				A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */,
 				A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */,
 				A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */,
 				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
+				A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */,
 				A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */,
 				A2863416200456C000F9AE83 /* SPKeyDatabase.swift in Sources */,
 			);

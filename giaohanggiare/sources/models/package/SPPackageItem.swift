@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum SPCustomerType {
+    case sender
+    case receiver
+}
+
 class SPPackageItem: NSObject {
     var senderCustomer: SPCustomerInfo!
     var receiverCustomer: SPCustomerInfo!
@@ -29,6 +34,7 @@ class SPPackageItem: NSObject {
     func setUpDefault() {
         // Sender
         self.senderCustomer = SPCustomerInfo("", "")
+        self.senderCustomer.customerType = .sender
         
         titleString = ""
         detailString = ""
@@ -43,6 +49,7 @@ class SPPackageItem: NSObject {
         super.init()
         setUpDefault()
         self.senderCustomer = SPCustomerInfo(userInfo.firtName, userInfo.lastName)
+        self.senderCustomer.customerType = .sender
         self.senderCustomer.fullName = userInfo.fullName
         self.senderCustomer.firtName = userInfo.firtName
         self.senderCustomer.lastName = userInfo.lastName
@@ -60,6 +67,7 @@ class SPCustomerInfo: NSObject {
     var addressString:String = ""
     var phoneNumberString:String = ""
     var emailString:String = ""
+    var customerType: SPCustomerType = .sender
     
     override init() {
         super.init()
@@ -70,5 +78,24 @@ class SPCustomerInfo: NSObject {
         self.lastName = lastName
         self.fullName = lastName + " " + firtName
         super.init()
+    }
+    
+    init(_ type: SPCustomerType) {
+        self.customerType = type
+        super.init()
+    }
+    
+    public func getRefixNameCustomerInfo() -> String {
+        var result: String = ""
+        
+        switch self.customerType {
+        case .sender:
+            result = "Ten khach hang"
+            break
+        default:
+            result = "Ten nguoi nhan"
+            break
+        }
+        return result
     }
 }

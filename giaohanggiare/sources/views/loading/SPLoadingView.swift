@@ -7,12 +7,11 @@
 //
 
 import UIKit
-import NVActivityIndicatorView
 
-class SPLoadingView: UIView, NVActivityIndicatorViewable {
+class SPLoadingView: UIView {
     
-    var typeIndicator: NVActivityIndicatorType = .ballSpinFadeLoader
-    var activityIndicatorView: NVActivityIndicatorView!
+//    var typeIndicator: NVActivityIndicatorType = .ballSpinFadeLoader
+//    var activityIndicatorView: NVActivityIndicatorView!
     var grayView:UIView!
     
     
@@ -27,7 +26,7 @@ class SPLoadingView: UIView, NVActivityIndicatorViewable {
     
     convenience init(frame: CGRect, type: Int) {
         self.init(frame: frame)
-        typeIndicator = NVActivityIndicatorType(rawValue: type)!
+//        typeIndicator = NVActivityIndicatorType(rawValue: type)!
         setupView()
     }
     
@@ -43,27 +42,27 @@ class SPLoadingView: UIView, NVActivityIndicatorViewable {
                             widthConstant: 0.0, heightConstant: 0.0)
         }
         
-        if (activityIndicatorView == nil) {
-            activityIndicatorView = NVActivityIndicatorView(frame: .zero, type: typeIndicator)
-            
-            activityIndicatorView.padding = 20
-            self.addSubview(activityIndicatorView)
-            activityIndicatorView.anchor(self.centerYAnchor, left: self.centerXAnchor, right: nil, bottom: nil,
-                                         topConstant: -50.0, leftConstant: -50.0, rightConstant: 0.0, bottomConstant: 0.0,
-                                         widthConstant: 100.0, heightConstant: 100.0)
-        }
+//        if (activityIndicatorView == nil) {
+//            activityIndicatorView = NVActivityIndicatorView(frame: .zero, type: typeIndicator)
+//
+//            activityIndicatorView.padding = 20
+//            self.addSubview(activityIndicatorView)
+//            activityIndicatorView.anchor(self.centerYAnchor, left: self.centerXAnchor, right: nil, bottom: nil,
+//                                         topConstant: -50.0, leftConstant: -50.0, rightConstant: 0.0, bottomConstant: 0.0,
+//                                         widthConstant: 100.0, heightConstant: 100.0)
+//        }
     }
     
     func startLoadingAnimation() {
-        if activityIndicatorView != nil {
-            activityIndicatorView.startAnimating()
-        }
+//        if activityIndicatorView != nil {
+//            activityIndicatorView.startAnimating()
+//        }
     }
     
     func stopLoadingAnimation() {
-        if activityIndicatorView != nil {
-            activityIndicatorView.stopAnimating()
-        }
+//        if activityIndicatorView != nil {
+//            activityIndicatorView.stopAnimating()
+//        }
     }
 
 }

@@ -7,11 +7,8 @@
 //
 
 import UIKit
-import DropDown
 
-protocol SPPackageInfoDelegate {
-    func editButtonOnTouchInside(sender: UIButton)
-}
+
 
 class SPNewPackageViewController: BaseViewController {
     
@@ -40,8 +37,6 @@ class SPNewPackageViewController: BaseViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,13 +48,10 @@ class SPNewPackageViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.isHidden = false
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = true
-        NotificationCenter.default.removeObserver(self)
     }
     
     func initView() {
@@ -74,7 +66,7 @@ class SPNewPackageViewController: BaseViewController {
         // Cells
         packageTableView.register(SPCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalCellId)
-        packageTableView.register(SPPersonalReceiverInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
+        packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
         packageTableView.register(SPPackageInfoViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
         
         // Show scrolls
@@ -103,50 +95,16 @@ class SPNewPackageViewController: BaseViewController {
         } else {
             
         }
+        currentNewPackage.receiverCustomer = SPCustomerInfo(.receiver)
     }
     
     func backBarButtonOnTouch(sender: UIBarButtonItem)  {
         print("backBarButtonOnTouch onclick")
         self.navigationController?.popViewController(animated: true)
     }
-    
-   @objc func keyboardWillAppear(_ notification: Notification) {
-        //Do something here
-        adjustTableViewWhenKeyboardShow(true, notification: notification)
-    }
-    
-    @objc func keyboardWillDisappear(_ notification: Notification) {
-        //Do something here
-        adjustTableViewWhenKeyboardShow(false, notification: notification)
-    }
-    
-    func adjustTableViewWhenKeyboardShow(_ open: Bool, notification: Notification) {
-        if open {
-            let userInfo = notification.userInfo ?? [:]
-            let keyboardFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-            let height = (keyboardFrame.height + 20) * (open ? 1 : -1)
-            packageTableView.contentInset.bottom += height
-            packageTableView.scrollIndicatorInsets.bottom += height
-        } else {
-            packageTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        }
-    }
 }
 
-extension SPNewPackageViewController: SPEditSenderDelegate {
-    func didCancelEditInfo() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfo) {
-        dismiss(animated: true) {
-            self.currentNewPackage.senderCustomer = customerIsChange
-            self.packageTableView.reloadData()
-        }
-    }
-}
-
-extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate, SPPackageInfoDelegate {
+extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate {
     
     func numberOfSections() -> Int {
         return 3
@@ -168,11 +126,14 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             cell.backgroundColor = .white
             cell.delegateInfo = self
             cell.setDataForCell(currentNewPackage.senderCustomer)
+            cell.indexSection = indexPath.section
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath) as! SPPersonalReceiverInfoCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath) as! SPPersonalInfoCell
             cell.backgroundColor = .white
+            cell.delegateInfo = self
+            cell.setDataForCell(currentNewPackage.receiverCustomer)
             cell.indexSection = indexPath.section
             return cell
         }
@@ -207,7 +168,7 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             } else if (indexPath.section == 1) {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
                 header.backgroundColor = .green
-                header.setHeaderTitleWithString(string: "Thong tin don hang")
+                header.setHeaderTitleWithString(string: "Thong tin nguoi nhan")
                 return header;
             } else {
                 let header:SPPackageHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: packageInfoHeaderId, for: indexPath) as! SPPackageHeaderCell)
@@ -228,12 +189,36 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     func referenceSizeForFooterInSection(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  section: Int) -> CGSize{
         return CGSize(width: collectionView.frame.width - 5*2, height: 0.0)
     }
+}
+
+extension SPNewPackageViewController: SPEditSenderDelegate {
+    func didCancelEditInfo() {
+        dismiss(animated: true, completion: nil)
+    }
     
-    func editButtonOnTouchInside(sender: UIButton) {
+    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfo) {
+        dismiss(animated: true) {
+            if customerIsChange.customerType == .sender {
+                self.currentNewPackage.senderCustomer = customerIsChange
+            } else {
+                self.currentNewPackage.receiverCustomer = customerIsChange
+            }
+            self.packageTableView.reloadData()
+        }
+    }
+}
+
+extension SPNewPackageViewController: SPPackageInfoDelegate {
+    func editButtonOnTouchInside(sender: UIButton, atSection: NSInteger) {
         print("editInfoButtonOnTouch onTouchInSide AAAAA")
         
         let editViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPEditSenderViewController") as! SPEditSenderViewController
-        editViewController.customerInfo = currentNewPackage.senderCustomer
+        if atSection == 0 {
+            editViewController.customerInfo = currentNewPackage.senderCustomer
+        } else {
+            editViewController.customerInfo = currentNewPackage.receiverCustomer
+        }
+        
         editViewController.delegate = self
         
         let navigationController1 = UINavigationController(rootViewController: editViewController)
@@ -250,264 +235,16 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     }
 }
 
-class SPPersonalInfoCell: SPCollectionViewCell {
-    var delegateInfo: SPPackageInfoDelegate!
-    
-    var nameLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = ""
-        return label
-    }()
-    
-    var shopNameLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = ""
-        return label
-    }()
-    
-    var addressLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.numberOfLines = 2
-        label.text = ""
-        return label
-    }()
-    
-    var phoneNumberLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.numberOfLines = 2
-        label.text = ""
-        return label
-    }()
-    
-    var editInfoButton: UIButton = {
-        let button = UIButton(type: .custom)
-        
-        button.setTitle("Edit", for: .normal)
-        button.backgroundColor = .gray
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
-        return button
-    }()
-    
-    override func setupView() {
-        addSubview(nameLabel)
-        addSubview(shopNameLabel)
-        addSubview(phoneNumberLabel)
-        addSubview(addressLabel)
-        addSubview(editInfoButton)
-        
-        // Add Constraints
-        nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        shopNameLabel.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        phoneNumberLabel.anchor(shopNameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        addressLabel.anchor(phoneNumberLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 60.0)
-        
-        editInfoButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 25.0)
-        editInfoButton.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
-    }
-    
-    func setDataForCell(_ customerInfo: SPCustomerInfo) {
-        nameLabel.attributedText = formatCustomerName("Ten Khach Hang: ", firstName: customerInfo.firtName, lastName: customerInfo.lastName)
-        shopNameLabel.attributedText = formatTitleBoldAndValueNormal("Ten Shop: ", value: customerInfo.shopName)
-        
-        phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: customerInfo.phoneNumberString)
-        
-        addressLabel.attributedText = formatTitleBoldAndValueNormal("Dia chi: ", value: customerInfo.addressString)
-    }
-    
-    func formatCustomerName(_ refix: String, firstName: String, lastName: String) -> NSMutableAttributedString {
-        // Name Label
-        let fullName = lastName + " " + firstName
-        let finalAttString = formatTitleBoldAndValueNormal(refix, value: fullName)
-        return finalAttString
-    }
-    
-    func formatTitleBoldAndValueNormal(_ title: String, value: String) -> NSMutableAttributedString {
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: title, attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: value, attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        return finalAttString
-        
-    }
-    
-    func editInfoButtonOnTouch(sender: UIButton)  {
-        print("editInfoButtonOnTouch onTouchInSide")
-        if let delegate = self.delegateInfo {
-            delegate.editButtonOnTouchInside(sender: sender)
-        }
-    }
-}
-
-class SPPersonalReceiverInfoCell: SPCollectionViewCell {
-    var indexSection: NSInteger = 0
-    
-    var nameLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Ten Khach Hang: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "Tran Quoc Quan", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
-        return label
-    }()
-    
-    var shopNameLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Ten Shop: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "U-Store", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
-        return label
-    }()
-    
-    var addressLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.numberOfLines = 2
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "Dia chi: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "473 Le Van Sy, phuong 13, Quan Phu Nhuan, TP Ho Chi Minh", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        label.attributedText = finalAttString
-        return label
-    }()
-    
-    var phoneNumberLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.numberOfLines = 2
-        
-        // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString1 = NSAttributedString(string: "So dien thoai: ", attributes: attributes)
-        
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
-        let attString2 = NSAttributedString(string: "0982789809", attributes: attributes)
-        
-        let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
-        finalAttString.append(attString2)
-        
-        label.attributedText = finalAttString
-        return label
-    }()
-    
-    var editInfoButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
-        button.setTitle("Edit", for: .normal)
-        button.backgroundColor = .gray
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
-        return button
-    }()
-    
-    
-    var nameReceiverTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Ten nguoi nhan"
-        tf.setBottomBorder()
-        return tf
-    }()
-    
-    var phoneNumberReceiverTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "So dien thoai"
-        tf.setBottomBorder()
-        return tf
-    }()
-    
-    var addressReceiverTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Dia chi"
-        tf.setBottomBorder()
-        return tf
-    }()
-    
-    var noteReceiverTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Ghi chu"
-        tf.setBottomBorder()
-        return tf
-    }()
-    override func setupView() {
-        
-        addSubview(nameReceiverTextField)
-        addSubview(phoneNumberReceiverTextField)
-        addSubview(addressReceiverTextField)
-        addSubview(noteReceiverTextField)
-        
-        // Add Constraints
-        nameReceiverTextField.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        phoneNumberReceiverTextField.anchor(nameReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        addressReceiverTextField.anchor(phoneNumberReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        
-        addressReceiverTextField.setRightImageView(image: UIImage(named: "location-icon")!, size: CGSize(width: 15.0, height: 15.0))
-        
-        noteReceiverTextField.anchor(addressReceiverTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: -2, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-    }
-    
-    func editInfoButtonOnTouch(sender: UIButton)  {
-        print("editInfoButtonOnTouch onTouchInSide")
-    }
-}
+//extension SPNewPackageViewController: SPReceiverInfoViewCellDelegate {
+//    func selectedAtIndexTextField(point: CGPoint, atSection: NSInteger) {
+//        if atSection >= 0 {
+//            let i = IndexPath(row: 0, section: 2)
+//            self.packageTableView.scrollToItem(at: i, at: .top, animated: true)
+//        }
+//    }
+//}
 
 class SPPackageInfoViewCell: SPCollectionViewCell {
-    
     
     var packageSizeTextField:UITextField = {
         let tf = UITextField(frame: .zero)
@@ -730,26 +467,26 @@ class SPPackageHeaderCell: UICollectionReusableView {
     var isDropDownShow: Bool = false
     
     
-    var modePackageView: DropDown = {
-        let dropDown = DropDown()
-        
-        // The view to which the drop down will appear on
-        //dropDown.anchorView = view // UIView or UIBarButtonItem
-        
-        // The list of items to display. Can be changed dynamically
-        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
-        
-        return dropDown
-    }()
+//    var modePackageView: DropDown = {
+//        let dropDown = DropDown()
+//
+//        // The view to which the drop down will appear on
+//        //dropDown.anchorView = view // UIView or UIBarButtonItem
+//
+//        // The list of items to display. Can be changed dynamically
+//        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+//
+//        return dropDown
+//    }()
     
     func showDropDownOnTouchInside(sender: UIButton) {
-        if !isDropDownShow {
-            isDropDownShow = true
-            modePackageView.show()
-        } else {
-            isDropDownShow = false
-            modePackageView.hide()
-        }
+//        if !isDropDownShow {
+//            isDropDownShow = true
+//            modePackageView.show()
+//        } else {
+//            isDropDownShow = false
+//            modePackageView.hide()
+//        }
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -768,8 +505,8 @@ class SPPackageHeaderCell: UICollectionReusableView {
         nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 0.0, heightConstant: 0.0)
         modePackageLabel.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 120.0, heightConstant: 0.0)
         modePackageButton.anchor(topAnchor, left: nil, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 120.0, heightConstant: 0.0)
-        modePackageView.anchorView = modePackageLabel
-        modePackageView.direction = .bottom
+//        modePackageView.anchorView = modePackageLabel
+//        modePackageView.direction = .bottom
         isDropDownShow = false
     }
     
