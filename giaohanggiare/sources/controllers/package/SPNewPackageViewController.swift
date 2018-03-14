@@ -33,10 +33,29 @@ class SPNewPackageViewController: BaseViewController {
         // Do any additional setup after loading the view.
         initView()
         setupData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            packageTableView.clearConstraints()
+            view.addConstraintsWithFormat(format: "H:|[v0]-\(keyboardSize.height)-|", views: packageTableView)
+            view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        packageTableView.clearConstraints()
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
+        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
     }
 
     override func didReceiveMemoryWarning() {

@@ -78,7 +78,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
     
     func setDataForCell(_ customerInfo: SPCustomerInfo!) {
         if let info = customerInfo {
-            nameLabel.attributedText = formatCustomerName(info.getRefixNameCustomerInfo(), firstName: info.firtName, lastName: info.lastName)
+            nameLabel.attributedText = formatTitleBoldAndValueNormal(info.getRefixNameCustomerInfo(), value: info.fullName)
             shopNameLabel.attributedText = formatTitleBoldAndValueNormal("Ten Shop: ", value: info.shopName)
         
             phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: info.phoneNumberString)

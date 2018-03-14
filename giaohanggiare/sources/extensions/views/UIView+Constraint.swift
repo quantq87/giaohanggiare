@@ -24,5 +24,15 @@ extension UIView {
 //        addConstraint(NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0)
         
     }
+    
+    func clearConstraints() {
+        let superView = self.superview
+        while superview != nil {
+            if let constraints: NSArray = superview?.constraints {
+                
+            }
+        }
+        self.removeConstraints(self.constraints)
+    }
 
 }

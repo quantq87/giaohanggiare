@@ -90,10 +90,10 @@ class SPCustomerInfo: NSObject {
         
         switch self.customerType {
         case .sender:
-            result = "Ten khach hang"
+            result = "Ten khach hang: "
             break
         default:
-            result = "Ten nguoi nhan"
+            result = "Ten nguoi nhan: "
             break
         }
         return result

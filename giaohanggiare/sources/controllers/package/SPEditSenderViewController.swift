@@ -17,10 +17,10 @@ class SPEditSenderViewController: BaseViewController {
     
     var customerInfo: SPCustomerInfo!
     var delegate:SPEditSenderDelegate!
-    var name:String = ""
-    var phone:String = ""
-    var shopName:String = ""
-    var address:String = ""
+    var name:String! = ""
+    var phone:String! = ""
+    var shopName:String! = ""
+    var address:String! = ""
     
     var matterView: UIView = {
         let viewM = UIView(frame: .zero)
@@ -181,6 +181,9 @@ class SPEditSenderViewController: BaseViewController {
         doneButton.anchor(nil, left: matterView.leftAnchor, right: matterView.rightAnchor, bottom: matterView.bottomAnchor, topConstant: 2.0, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 45.0)
         
         nameTextField.delegate = self
+        phoneNumberTextField.delegate = self
+        shopNameTextField.delegate = self
+        addressTextField.delegate = self
     }
     
     func setupData() {
@@ -225,8 +228,23 @@ class SPEditSenderViewController: BaseViewController {
     }
     
     @objc func doneDidTouchUpInside() {
-        view.endEditing(true)
+        nameTextField.resignFirstResponder()
+        shopNameTextField.resignFirstResponder()
+        addressTextField.resignFirstResponder()
+        phoneNumberTextField.resignFirstResponder()
         
+        if !name.isEmpty {
+            self.customerInfo.fullName = name
+        }
+        if !phone.isEmpty {
+            self.customerInfo.phoneNumberString = phone
+        }
+        if !shopName.isEmpty {
+            self.customerInfo.shopName = shopName
+        }
+        if !address.isEmpty {
+            self.customerInfo.addressString = address
+        }
         if let hasDelegate = self.delegate {
             hasDelegate.didDoneEditInfo(true, customerIsChange:self.customerInfo)
         }
