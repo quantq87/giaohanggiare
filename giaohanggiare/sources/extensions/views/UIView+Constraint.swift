@@ -27,9 +27,11 @@ extension UIView {
     
     func clearConstraints() {
         let superView = self.superview
-        while superview != nil {
-            if let constraints: NSArray = superview?.constraints {
-                
+        if superView != nil {
+            for c: NSLayoutConstraint in (superView?.constraints)! {
+                if c.firstItem as? UIView  == self || c.secondItem as? UIView  == self {
+                    superView?.removeConstraint(c)
+                }
             }
         }
         self.removeConstraints(self.constraints)

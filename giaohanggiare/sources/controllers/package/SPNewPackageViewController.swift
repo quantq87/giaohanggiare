@@ -8,9 +8,128 @@
 
 import UIKit
 
+protocol Person {
+    var firstName: String {get set}
+    var lastName: String {get set}
+    var birthDate: Date {get set}
+    var profession: String {get}
+    init(firstName: String, lastName: String, birthDate: Date)
+}
 
+//var programer:Person = SwiftProgramer(firstName: "Quan", lastName: "Tran Quoc", bithDate: Date())
+
+//if person is SwiftProgramer {
+//    print("print Something")
+//}
+//for person in where person is SwiftProgramer {
+//    print("print Something")
+//}
+
+//as! Runtime error is throw
+
+// if let _ = person as? SwiftProgramer {
+//    print("print Something")
+//}
+
+protocol TextValidation1 {
+    var regExMatchingString: String {get}
+    var regExFindMatchingString: String {get}
+    var validationMessage: String {get}
+    func validateString(str: String) -> Bool
+    func getMatchingString(str: String) -> String?
+}
+
+class AlphaValidation1: TextValidation1 {
+    static let shareInstance = AlphaValidation1()
+    private init(){}
+    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
+    let validationMessage = "Can only contain Alpha characters"
+    var regExMatchingString: String {
+        get {
+            return regExFindMatchingString + "$"
+        }
+    }
+    
+    func validateString(str: String) -> Bool {
+        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
+            return true
+        } else {
+            return false
+        }
+    }
+    func getMatchingString(str: String) -> String? {
+        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
+            return str.substring(with: newMatch)
+        } else {
+            return nil
+        }
+    }
+}
+
+protocol TextValidation {
+    var regExMatchingString: String {get}
+    var regExFindMatchingString: String {get}
+}
+
+extension TextValidation {
+    var regExMatchingString: String {
+        get {
+            return regExFindMatchingString + "$"
+        }
+    }
+    
+    func validateString(str: String) -> Bool {
+        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
+            return true
+        } else {
+            return false
+        }
+    }
+    func getMatchingString(str: String) -> String? {
+        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
+            return str.substring(with: newMatch)
+        } else {
+            return nil
+        }
+    }
+}
+
+class AlphaValidation: TextValidation {
+    static let shareInstance = AlphaValidation()
+    private init(){}
+    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
+    let validationMessage = "Can only contain Alpha characters"
+}
+
+class AlphaNumbericValidation: TextValidation {
+    static let shareInstance = AlphaNumbericValidation()
+    private init(){}
+    let regExFindMatchingString = "^[a-zA-Z0-9]{0,15}"
+    let validationMessage = "Can only contain Alpha characters"
+}
+
+class DisplayNameValidation: TextValidation {
+    static let shareInstance = DisplayNameValidation()
+    private init(){}
+    let regExFindMatchingString = "^[\\s?[a-zA-Z0-9\\-_\\s]]{0,15}"
+    let validationMessage = "Display Name can contain only contain Alphanumberic Characters"
+}
+
+
+//extension Int {
+//    func factorial() -> Int {
+//        var answer = 1
+//        for x in (1...self).reversed() {
+//            answer *= x
+//        }
+//        return answer
+//    }
+//}
+//print(10.factorial())
 
 class SPNewPackageViewController: BaseViewController {
+    
+    var bottomSpacingConstraint: NSLayoutConstraint!
     
     //
     var currentNewPackage:SPPackageItem!
@@ -44,11 +163,32 @@ class SPNewPackageViewController: BaseViewController {
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.packageTableView.collectionViewLayout.invalidateLayout()
+    }
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            packageTableView.clearConstraints()
-            view.addConstraintsWithFormat(format: "H:|[v0]-\(keyboardSize.height)-|", views: packageTableView)
-            view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+//            packageTableView.clearConstraints()
+//            view.addConstraintsWithFormat(format: "H:|[v0]-|", views: packageTableView)
+//            view.addConstraintsWithFormat(format: "V:|[v0]-\(keyboardSize.height)-|", views: packageTableView)
+            let isShowing = notification.name == Notification.Name.UIKeyboardWillShow
+            
+            if let userInfo = notification.userInfo {
+                let endFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+                let endFrameHeight = endFrame?.size.height ?? 0.0
+                let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
+                let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
+                let animationCurveRaw = animationCurveRawNSN.uintValue 
+                let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+                self.bottomSpacingConstraint?.constant = isShowing ? endFrameHeight : 0.0
+                UIView.animate(withDuration: duration,
+                                           delay: TimeInterval(0),
+                                           options: animationCurve,
+                                           animations: { self.view.layoutIfNeeded() },
+                                           completion: nil)
+            }
         }
     }
     
@@ -104,8 +244,14 @@ class SPNewPackageViewController: BaseViewController {
         
         // Add tableView and setConstraints
         view.addSubview(packageTableView);
+        
+        var spacingView:UIView = UIView(frame: .zero)
+        spacingView.backgroundColor = .white
+        spacingView.isHidden = true
+        view.addSubview(spacingView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: spacingView)
+        view.addConstraintsWithFormat(format: "V:|[v0]-[v1(0.0)]-|", views: packageTableView, spacingView)
     }
     
     func setupData() {
