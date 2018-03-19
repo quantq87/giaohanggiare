@@ -14,8 +14,8 @@ enum SPCustomerType {
 }
 
 class SPPackageItem: NSObject {
-    var senderCustomer: SPCustomerInfo!
-    var receiverCustomer: SPCustomerInfo!
+    var senderCustomer: SPCustomerInfoItem!
+    var receiverCustomer: SPCustomerInfoItem!
     
     var titleString: String!
     var detailString: String!
@@ -33,7 +33,7 @@ class SPPackageItem: NSObject {
     
     func setUpDefault() {
         // Sender
-        self.senderCustomer = SPCustomerInfo("", "")
+        self.senderCustomer = SPCustomerInfoItem(personInfo: SPSenderDefauldPersonInfo())
         self.senderCustomer.customerType = .sender
         
         titleString = ""
@@ -48,54 +48,14 @@ class SPPackageItem: NSObject {
     init(userInfo: SPUserInfo) {
         super.init()
         setUpDefault()
-        self.senderCustomer = SPCustomerInfo(userInfo.firtName, userInfo.lastName)
+        self.senderCustomer = SPCustomerInfoItem(personInfo: SPSenderDefauldPersonInfo())
         self.senderCustomer.customerType = .sender
-        self.senderCustomer.fullName = userInfo.fullName
-        self.senderCustomer.firtName = userInfo.firtName
-        self.senderCustomer.lastName = userInfo.lastName
-        self.senderCustomer.phoneNumberString = userInfo.phoneNumberString
-        self.senderCustomer.addressString = userInfo.addressString
-        self.senderCustomer.shopName = userInfo.shopName
+//        self.senderCustomer.fullName = userInfo.fullName
+//        self.senderCustomer.firtName = userInfo.firtName
+//        self.senderCustomer.lastName = userInfo.lastName
+//        self.senderCustomer.phoneNumberString = userInfo.phoneNumberString
+//        self.senderCustomer.addressString = userInfo.addressString
+//        self.senderCustomer.shopName = userInfo.shopName
     }
 }
 
-class SPCustomerInfo: NSObject {
-    var firtName:String = ""
-    var lastName:String = ""
-    var fullName:String = ""
-    var shopName:String = ""
-    var addressString:String = ""
-    var phoneNumberString:String = ""
-    var emailString:String = ""
-    var customerType: SPCustomerType = .sender
-    
-    override init() {
-        super.init()
-    }
-    
-    init(_ firtName: String, _ lastName: String) {
-        self.firtName = firtName
-        self.lastName = lastName
-        self.fullName = lastName + " " + firtName
-        super.init()
-    }
-    
-    init(_ type: SPCustomerType) {
-        self.customerType = type
-        super.init()
-    }
-    
-    public func getRefixNameCustomerInfo() -> String {
-        var result: String = ""
-        
-        switch self.customerType {
-        case .sender:
-            result = "Ten khach hang: "
-            break
-        default:
-            result = "Ten nguoi nhan: "
-            break
-        }
-        return result
-    }
-}

@@ -15,11 +15,19 @@ enum SPUserType {
 }
 
 protocol SPPersonInfo {
-    var type: SPUserType {get set}
-    var firstName: String {get set}
-    var lastName: String {get set}
-    var email: String {get set}
-    var phone: String {get set}
+    var type: SPUserType {get}
+    var firstName: String {get}
+    var lastName: String {get}
+    var email: String {get}
+    var phone: String {get}
+}
+
+struct SPSenderDefauldPersonInfo: SPPersonInfo {
+    let type: SPUserType  = .customer
+    let firstName: String = ""
+    let lastName: String = ""
+    let email: String = ""
+    let phone: String = ""
 }
 
 class SPUserInfoItem: NSObject {
@@ -44,7 +52,21 @@ class SPUserInfoItem: NSObject {
 }
 
 class SPCustomerInfoItem: SPUserInfoItem {
-    var cusomterType: SPCustomerType = .sender
+    var customerType: SPCustomerType = .sender
+    
+    public func getRefixNameCustomerInfo() -> String {
+        var result: String = ""
+        
+        switch self.customerType {
+        case .sender:
+            result = "Ten khach hang: "
+            break
+        default:
+            result = "Ten nguoi nhan: "
+            break
+        }
+        return result
+    }
 }
 
 class SPShipInfoItem: SPUserInfoItem {
