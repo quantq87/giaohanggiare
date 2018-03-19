@@ -43,6 +43,7 @@
 		A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E32F6F1F77E2CC00E7546F /* BaseViewController.swift */; };
 		A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E32F721F77E2F200E7546F /* HomeViewController.swift */; };
 		A2E32F771F77E34600E7546F /* SPTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E32F761F77E34600E7546F /* SPTableView.swift */; };
+		A2E4C51B205FB698006FE22C /* SPUserInfoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4C51A205FB698006FE22C /* SPUserInfoItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		A2E32F6F1F77E2CC00E7546F /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A2E32F721F77E2F200E7546F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A2E32F761F77E34600E7546F /* SPTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTableView.swift; sourceTree = "<group>"; };
+		A2E4C51A205FB698006FE22C /* SPUserInfoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPUserInfoItem.swift; sourceTree = "<group>"; };
 		E0BC1BD895A785A01AC6EA89 /* Pods-giaohanggiare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-giaohanggiare.release.xcconfig"; path = "Pods/Target Support Files/Pods-giaohanggiare/Pods-giaohanggiare.release.xcconfig"; sourceTree = "<group>"; };
 		EB8BEE33E328D1AECE55C7D5 /* Pods-giaohanggiareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-giaohanggiareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-giaohanggiareTests/Pods-giaohanggiareTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,6 +175,7 @@
 		A266D89E1F8E628F00AC6968 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				A2E4C519205FB64D006FE22C /* user */,
 				A266D89F1F8E629D00AC6968 /* package */,
 			);
 			path = models;
@@ -405,6 +408,14 @@
 				A2863415200456C000F9AE83 /* SPKeyDatabase.swift */,
 			);
 			path = instances;
+			sourceTree = "<group>";
+		};
+		A2E4C519205FB64D006FE22C /* user */ = {
+			isa = PBXGroup;
+			children = (
+				A2E4C51A205FB698006FE22C /* SPUserInfoItem.swift */,
+			);
+			path = user;
 			sourceTree = "<group>";
 		};
 		A2F7D448200C75C70022D910 /* external */ = {
@@ -648,6 +659,7 @@
 				A29F36292056919E00BDFD9F /* SPUserManager.swift in Sources */,
 				A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */,
 				A2E32F771F77E34600E7546F /* SPTableView.swift in Sources */,
+				A2E4C51B205FB698006FE22C /* SPUserInfoItem.swift in Sources */,
 				A2E32F4D1F77E1D100E7546F /* AppDelegate.swift in Sources */,
 				A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */,
 				A29F36272056918B00BDFD9F /* SPPackageManager.swift in Sources */,
