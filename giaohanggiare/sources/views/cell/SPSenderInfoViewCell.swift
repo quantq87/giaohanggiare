@@ -76,23 +76,14 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         editInfoButton.addTarget(self, action: #selector(editInfoButtonOnTouch), for: .touchUpInside)
     }
     
-    func setDataForCell(_ customerInfo: SPCustomerInfo!) {
+    func setDataForCell(_ customerInfo: SPCustomerInfoItem!) {
         if let info = customerInfo {
             nameLabel.attributedText = formatTitleBoldAndValueNormal(info.getRefixNameCustomerInfo(), value: info.fullName)
             shopNameLabel.attributedText = formatTitleBoldAndValueNormal("Ten Shop: ", value: info.shopName)
         
-            phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: info.phoneNumberString)
+            phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: info.phone)
         
-            addressLabel.attributedText = formatTitleBoldAndValueNormal("Dia chi: ", value: info.addressString)
-        } else {
-            let info = SPCustomerInfo()
-            info.customerType = .receiver
-            nameLabel.attributedText = formatCustomerName(info.getRefixNameCustomerInfo(), firstName:"", lastName:"")
-            shopNameLabel.attributedText = formatTitleBoldAndValueNormal("Ten Shop: ", value: "")
-            
-            phoneNumberLabel.attributedText = formatTitleBoldAndValueNormal("So dien thoai: ", value: "")
-            
-            addressLabel.attributedText = formatTitleBoldAndValueNormal("Dia chi: ", value: "")
+            addressLabel.attributedText = formatTitleBoldAndValueNormal("Dia chi: ", value: info.address)
         }
     }
     

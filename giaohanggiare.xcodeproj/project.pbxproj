@@ -12,6 +12,8 @@
 		A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A001FDFD9E300E6D150 /* UIColor+Mains.swift */; };
 		A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A021FDFE65F00E6D150 /* SPLoginViewController.swift */; };
 		A2126A051FDFE6B200E6D150 /* SPRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */; };
+		A21646C82060C9AB000FC2D4 /* Examples.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21646C72060C9AB000FC2D4 /* Examples.swift */; };
+		A21646CC2060ECB0000FC2D4 /* SPPackageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21646CB2060ECB0000FC2D4 /* SPPackageViewModel.swift */; };
 		A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */; };
 		A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */; };
 		A25DDD662007917E00486954 /* SPListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25DDD652007917E00486954 /* SPListManager.swift */; };
@@ -64,6 +66,8 @@
 		A2126A001FDFD9E300E6D150 /* UIColor+Mains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Mains.swift"; sourceTree = "<group>"; };
 		A2126A021FDFE65F00E6D150 /* SPLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPLoginViewController.swift; sourceTree = "<group>"; };
 		A2126A041FDFE6B200E6D150 /* SPRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPRegisterViewController.swift; sourceTree = "<group>"; };
+		A21646C72060C9AB000FC2D4 /* Examples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Examples.swift; sourceTree = "<group>"; };
+		A21646CB2060ECB0000FC2D4 /* SPPackageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPPackageViewModel.swift; sourceTree = "<group>"; };
 		A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPStringApp.swift; sourceTree = "<group>"; };
 		A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPFloatingButton.swift; sourceTree = "<group>"; };
 		A25DDD652007917E00486954 /* SPListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPListManager.swift; sourceTree = "<group>"; };
@@ -155,6 +159,22 @@
 			path = colors;
 			sourceTree = "<group>";
 		};
+		A21646C92060EC8F000FC2D4 /* viewmodels */ = {
+			isa = PBXGroup;
+			children = (
+				A21646CA2060EC97000FC2D4 /* package */,
+			);
+			path = viewmodels;
+			sourceTree = "<group>";
+		};
+		A21646CA2060EC97000FC2D4 /* package */ = {
+			isa = PBXGroup;
+			children = (
+				A21646CB2060ECB0000FC2D4 /* SPPackageViewModel.swift */,
+			);
+			path = package;
+			sourceTree = "<group>";
+		};
 		A25DDD642007915D00486954 /* list */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +197,7 @@
 			children = (
 				A2E4C519205FB64D006FE22C /* user */,
 				A266D89F1F8E629D00AC6968 /* package */,
+				A21646C72060C9AB000FC2D4 /* Examples.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -353,6 +374,7 @@
 		A2E32F6D1F77E27600E7546F /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				A21646C92060EC8F000FC2D4 /* viewmodels */,
 				A28634112004522900F9AE83 /* shares */,
 				A292EA681FD8FAB100679213 /* extensions */,
 				A266D89E1F8E628F00AC6968 /* models */,
@@ -485,7 +507,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Quan Tran";
 				TargetAttributes = {
 					A2E32F481F77E1D100E7546F = {
@@ -669,11 +691,13 @@
 				A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */,
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
+				A21646C82060C9AB000FC2D4 /* Examples.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
 				A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */,
 				A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */,
 				A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */,
 				A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */,
+				A21646CC2060ECB0000FC2D4 /* SPPackageViewModel.swift in Sources */,
 				A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */,
 				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
 				A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */,
@@ -743,7 +767,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -751,7 +777,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -795,7 +825,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -803,7 +835,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

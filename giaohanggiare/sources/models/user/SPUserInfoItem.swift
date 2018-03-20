@@ -20,6 +20,7 @@ protocol SPPersonInfo {
     var lastName: String {get}
     var email: String {get}
     var phone: String {get}
+    var address: String {get}
 }
 
 struct SPSenderDefauldPersonInfo: SPPersonInfo {
@@ -28,6 +29,7 @@ struct SPSenderDefauldPersonInfo: SPPersonInfo {
     let lastName: String = ""
     let email: String = ""
     let phone: String = ""
+    let address: String = ""
 }
 
 class SPUserInfoItem: NSObject {
@@ -36,6 +38,7 @@ class SPUserInfoItem: NSObject {
     var lastName: String = ""
     var email: String = ""
     var phone: String = ""
+    var address: String = ""
     
     override init() {
         super.init()
@@ -47,12 +50,27 @@ class SPUserInfoItem: NSObject {
         self.email = personInfo.email
         self.phone = personInfo.phone
         self.type = personInfo.type
+        self.address = personInfo.address
         super.init()
     }
 }
 
 class SPCustomerInfoItem: SPUserInfoItem {
     var customerType: SPCustomerType = .sender
+    var shopName: String = ""
+    var fullName: String {
+        get {
+            return self.firstName + " " + self.lastName
+        }
+    }
+    override init(personInfo: SPPersonInfo) {
+        super.init(personInfo: personInfo)
+    }
+    
+    init(_ customerType: SPCustomerType) {
+        self.customerType = customerType
+        super.init()
+    }
     
     public func getRefixNameCustomerInfo() -> String {
         var result: String = ""

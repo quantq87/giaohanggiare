@@ -62,7 +62,7 @@ class HomeViewController: BaseViewController {
         packageTableView.customDataDelegate = self
         view.addSubview(packageTableView)
         
-        currentPackages = SPListManager.shareInstance.getPackageItemList()
+        currentPackages = SPPackageViewModel.shareInstance.getPackageList()
         packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
         packageTableView.reloadDataTable()
         

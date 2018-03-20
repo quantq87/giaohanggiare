@@ -10,12 +10,12 @@ import UIKit
 
 protocol SPEditSenderDelegate {
     func didCancelEditInfo()
-    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfo)
+    func didDoneEditInfo(_ changeInfo: Bool, customerIsChange: SPCustomerInfoItem)
 }
 
 class SPEditSenderViewController: BaseViewController {
     
-    var customerInfo: SPCustomerInfo!
+    var customerInfo: SPCustomerInfoItem!
     var delegate:SPEditSenderDelegate!
     var name:String! = ""
     var phone:String! = ""
@@ -189,9 +189,9 @@ class SPEditSenderViewController: BaseViewController {
     func setupData() {
         if customerInfo != nil {
             nameTextField.text = customerInfo.fullName
-            phoneNumberTextField.text = customerInfo.phoneNumberString
-            shopNameTextField.text = customerInfo.emailString
-            addressTextField.text = customerInfo.addressString
+            phoneNumberTextField.text = customerInfo.phone
+            shopNameTextField.text = customerInfo.email
+            addressTextField.text = customerInfo.address
         }
     }
     
@@ -234,16 +234,16 @@ class SPEditSenderViewController: BaseViewController {
         phoneNumberTextField.resignFirstResponder()
         
         if !name.isEmpty {
-            self.customerInfo.fullName = name
+            self.customerInfo.firstName = name
         }
         if !phone.isEmpty {
-            self.customerInfo.phoneNumberString = phone
+            self.customerInfo.phone = phone
         }
         if !shopName.isEmpty {
             self.customerInfo.shopName = shopName
         }
         if !address.isEmpty {
-            self.customerInfo.addressString = address
+            self.customerInfo.address = address
         }
         if let hasDelegate = self.delegate {
             hasDelegate.didDoneEditInfo(true, customerIsChange:self.customerInfo)

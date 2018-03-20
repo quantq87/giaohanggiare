@@ -17,6 +17,7 @@ class SPPackageItem: NSObject {
     var senderCustomer: SPCustomerInfoItem!
     var receiverCustomer: SPCustomerInfoItem!
     
+    var idPackage: String!
     var titleString: String!
     var detailString: String!
     var iconString: String!
@@ -50,12 +51,6 @@ class SPPackageItem: NSObject {
         setUpDefault()
         self.senderCustomer = SPCustomerInfoItem(personInfo: SPSenderDefauldPersonInfo())
         self.senderCustomer.customerType = .sender
-//        self.senderCustomer.fullName = userInfo.fullName
-//        self.senderCustomer.firtName = userInfo.firtName
-//        self.senderCustomer.lastName = userInfo.lastName
-//        self.senderCustomer.phoneNumberString = userInfo.phoneNumberString
-//        self.senderCustomer.addressString = userInfo.addressString
-//        self.senderCustomer.shopName = userInfo.shopName
     }
 }
 
