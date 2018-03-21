@@ -38,39 +38,121 @@ class HomeViewController: BaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    let shapeLayer = CAShapeLayer()
     func initUI() {
-        self.navigationItem.title = StringAppTitle.home_title
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addPackage))
-        
-        if topTabBarView == nil {
-            topTabBarView = SPTopTabBarView(frame: CGRect(x: 0, y: 64, width: self.view.bounds.width, height: 35))
-        }
-        topTabBarView.removeFromSuperview()
-        topTabBarView.setUpTabBarWithType(type: .home)
-        topTabBarView.delegate = self
-        view.addSubview(topTabBarView)
-        topTabBarView.selectedItemIndex(index: 1)
-        
-        if packageTableView == nil {
-            packageTableView = SPTableView(type: .home, frame:
-                CGRect(x: 0, y: 64 + 35, width: self.view.bounds.width, height: self.view.bounds.height - (64 + 35)))
-        }
-        packageTableView.backgroundColor = .clear
-        packageTableView.currentItemType = .home
-        packageTableView.customDataSource = self
-        packageTableView.customDataDelegate = self
-        view.addSubview(packageTableView)
-        
-        currentPackages = SPPackageViewModel.shareInstance.getPackageList()
-        packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
-        packageTableView.reloadDataTable()
-        
-        view.addSubview(addFloatingButton)
-        addFloatingButton.layer.cornerRadius = 60/2
-        addFloatingButton.clipsToBounds = true
-        addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
+//        self.navigationItem.title = StringAppTitle.home_title
+//        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addPackage))
+//
+//        if topTabBarView == nil {
+//            topTabBarView = SPTopTabBarView(frame: CGRect(x: 0, y: 64, width: self.view.bounds.width, height: 35))
+//        }
+//        topTabBarView.removeFromSuperview()
+//        topTabBarView.setUpTabBarWithType(type: .home)
+//        topTabBarView.delegate = self
+//        view.addSubview(topTabBarView)
+//        topTabBarView.selectedItemIndex(index: 1)
+//
+//        if packageTableView == nil {
+//            packageTableView = SPTableView(type: .home, frame:
+//                CGRect(x: 0, y: 64 + 35, width: self.view.bounds.width, height: self.view.bounds.height - (64 + 35)))
+//        }
+//        packageTableView.backgroundColor = .clear
+//        packageTableView.currentItemType = .home
+//        packageTableView.customDataSource = self
+//        packageTableView.customDataDelegate = self
+//        view.addSubview(packageTableView)
+//
+//        currentPackages = SPPackageViewModel.shareInstance.getPackageList()
+//        packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
+//        packageTableView.reloadDataTable()
+//
+//        view.addSubview(addFloatingButton)
+//        addFloatingButton.layer.cornerRadius = 60/2
+//        addFloatingButton.clipsToBounds = true
+//        addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
+        createAnimatedCircleProgessBar()
     }
+    
+    var pulsatingLayer: CAShapeLayer!
+    
+    let pecentageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Start"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.textColor = .white
+        return label
+    }()
+    func createAnimatedCircleProgessBar() {
+        
+        view.backgroundColor = UIColor.backgroundColor
+        let center = view.center
+        
+         let circularpath  = UIBezierPath(arcCenter: .zero, radius: 100.0, startAngle: -(CGFloat.pi/2), endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        pulsatingLayer = CAShapeLayer()
+        pulsatingLayer.path = circularpath.cgPath
+        pulsatingLayer.strokeColor = UIColor.clear.cgColor
+        pulsatingLayer.fillColor = UIColor.pulsingFillColor.cgColor
+        pulsatingLayer.lineWidth = 10
+        pulsatingLayer.strokeEnd = 0
+        pulsatingLayer.lineCap = kCALineCapRound
+        pulsatingLayer.position = center
+        view.layer.addSublayer(pulsatingLayer)
+        
+        // create my track layer
+        let trackLayer = CAShapeLayer()
+        trackLayer.path = circularpath.cgPath
+        trackLayer.strokeColor = UIColor.trackStrokeColor.cgColor
+        trackLayer.fillColor = UIColor.backgroundColor.cgColor
+        trackLayer.lineWidth = 10
+        trackLayer.strokeEnd = 0
+        trackLayer.lineCap = kCALineCapRound
+        trackLayer.position = center
+        view.layer.addSublayer(trackLayer)
+        
+        animatePulsatingLayer()
+        
+        shapeLayer.path = circularpath.cgPath
+        shapeLayer.strokeColor = UIColor.outlineStrokeColor.cgColor
+        shapeLayer.lineWidth = 10
+        shapeLayer.lineCap = kCALineCapRound
+        shapeLayer.position = center
+        shapeLayer.transform = CATransform3DMakeRotation(-(CGFloat.pi/2.0), 0, 0, 1)
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeEnd = 0
+        view.layer.addSublayer(shapeLayer)
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        
+        view.addSubview(pecentageLabel)
+        pecentageLabel.frame = CGRect(x: 0, y: 0, width: 100.0, height: 100.0)
+        pecentageLabel.center = center
+    }
+    
+    private func animatePulsatingLayer() {
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        animation.toValue = 1.5
+        animation.duration = 0.8
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        animation.autoreverses = true
+        animation.repeatCount = Float.infinity
+        pulsatingLayer.add(animation, forKey: "pulsing")
+        
+    }
+    
+    @objc private func handleTap() {
+        print("Attempting to animate stroke")
+        
+        let baseAnimation  = CABasicAnimation(keyPath: "strokeEnd")
+        baseAnimation.toValue = 1
+        baseAnimation.duration = 2
+        
+        baseAnimation.fillMode = kCAFillModeForwards
+        baseAnimation.isRemovedOnCompletion = false
+        shapeLayer.add(baseAnimation, forKey: "urSoBaic")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
@@ -333,4 +415,14 @@ class CustomNavigationBarView: UIView {
     func setupView() {
         self.backgroundColor = .red
     }
+}
+
+extension UIColor {
+    static func rgb(r: CGFloat , g: CGFloat, b: CGFloat) -> UIColor {
+        return UIColor(red: r/255.0, green: g/255.0, blue: b/255.0, alpha: 1)
+    }
+    static let backgroundColor = UIColor.rgb(r: 21, g: 22, b: 33)
+    static let outlineStrokeColor = UIColor.rgb(r: 234, g: 46, b: 111)
+    static let trackStrokeColor = UIColor.rgb(r: 56, g: 25, b: 49)
+    static let pulsingFillColor = UIColor.rgb(r: 86, g: 30, b: 63)
 }
