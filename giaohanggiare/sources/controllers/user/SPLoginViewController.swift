@@ -236,23 +236,23 @@ class SPLoginViewController: BaseViewController {
     }
     
     func startLoadingView() {
-        if loadingView == nil {
-            loadingView = SPLoadingView(frame: .zero, type: 2)
-        }
-        view.addSubview(loadingView)
-        loadingView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor,
-                           topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0,
-                           widthConstant: 0.0, heightConstant: 0.0)
-        loadingView.startLoadingAnimation()
+//        if loadingView == nil {
+//            loadingView = SPLoadingView(frame: .zero, type: 2)
+//        }
+//        view.addSubview(loadingView)
+//        loadingView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor,
+//                           topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0,
+//                           widthConstant: 0.0, heightConstant: 0.0)
+//        loadingView.startLoadingAnimation()
     }
     
     func stopLoadingView() {
-        DispatchQueue.main.async {
-        if self.loadingView != nil {
-            self.loadingView.stopLoadingAnimation()
-        }
-        self.loadingView.removeFromSuperview()
-        }
+//        DispatchQueue.main.async {
+//        if self.loadingView != nil {
+//            self.loadingView.stopLoadingAnimation()
+//        }
+//        self.loadingView.removeFromSuperview()
+//        }
     }
     
     func quickRegisterButtonOnTouch(sender: UIButton) {

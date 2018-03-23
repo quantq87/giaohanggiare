@@ -12,7 +12,6 @@ extension UIView {
     public func anchor(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil,
                        topConstant: CGFloat = 0.0, leftConstant: CGFloat = 0.0, rightConstant: CGFloat = 0.0, bottomConstant: CGFloat = 0.0,
                        widthConstant: CGFloat = 0.0, heightConstant: CGFloat = 0.0)  {
-        translatesAutoresizingMaskIntoConstraints = false
         _ = anchorWithReturnAnchors(top, left: left, right: right, bottom: bottom, topConstant: topConstant, leftConstant: leftConstant, rightConstant: rightConstant, bottomConstant:bottomConstant,  widthConstant: widthConstant, heightConstant:heightConstant)
         
     }
