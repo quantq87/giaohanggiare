@@ -58,9 +58,16 @@ class SPUserInfoItem: NSObject {
 class SPCustomerInfoItem: SPUserInfoItem {
     var customerType: SPCustomerType = .sender
     var shopName: String = ""
+    var username: String = ""
+    var city: String = ""
+    var password: String = ""
     var fullName: String {
         get {
-            return self.firstName + " " + self.lastName
+            var string = self.firstName
+            if !self.lastName.isEmpty {
+                string = string + " " + self.lastName
+            }
+            return string
         }
     }
     override init(personInfo: SPPersonInfo) {

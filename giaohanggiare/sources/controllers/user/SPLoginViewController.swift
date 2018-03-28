@@ -14,6 +14,45 @@ class SPLoginViewController: BaseViewController {
     
     var loadingView: SPLoadingView!
     
+    var logoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "logo"))
+        
+        return imageView
+    }()
+    
+    var containerTextFieldStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
+    
+    var containerButtonStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
+    
+    var containerButton2StackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
+    
+    var bottomStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
+    
+    
     var titleFormLoginLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.boldSystemFont(ofSize: 17.0)
@@ -35,7 +74,7 @@ class SPLoginViewController: BaseViewController {
     
     var userNameTextField: UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.7)
+        tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.placeholder = "Ten tai khoan"
         tf.text = ""
@@ -44,7 +83,7 @@ class SPLoginViewController: BaseViewController {
     
     var passwordTextField: UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.7)
+        tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.placeholder = "Mat khau"
         tf.text = ""
@@ -52,10 +91,10 @@ class SPLoginViewController: BaseViewController {
         return tf
     }()
     
-    var signButton: UIButton = {
+    var signInButton: UIButton = {
         let button = UIButton(type: .custom)
         button.frame = .zero
-        button.backgroundColor = UIColor(red: 0.0, green: 0.50, blue: 1.0, alpha: 0.7)
+        button.backgroundColor = UIColor.activeButtonBackgroundColor
         button.setTitle("Dang nhap", for: .normal)
         button.titleLabel?.textColor = .white
         button.addTarget(self, action: #selector(signInButtonOnTouch), for: .touchUpInside)
@@ -65,10 +104,12 @@ class SPLoginViewController: BaseViewController {
     var registerButton: UIButton = {
         let button = UIButton(type: .custom)
         button.frame = .zero
-        button.backgroundColor = UIColor(red: 0.0, green: 0.50, blue: 1.0, alpha: 0.7)
+        button.backgroundColor = .clear
         button.setTitle("Tao tai khoan", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
         button.addTarget(self, action: #selector(registerButtonOnTouch), for: .touchUpInside)
         button.titleLabel?.textColor = .white
+        button.contentHorizontalAlignment = .right
         return button
     }()
     
@@ -78,6 +119,20 @@ class SPLoginViewController: BaseViewController {
         button.backgroundColor = UIColor(red: 0.0, green: 0.50, blue: 1.0, alpha: 0.7)
         button.setTitle("Dang ky nhanh", for: .normal)
         button.titleLabel?.textColor = .white
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
+        button.contentHorizontalAlignment = .right
+        button.addTarget(self, action: #selector(quickRegisterButtonOnTouch), for: .touchUpInside)
+        return button
+    }()
+    
+    var forgetPasswordButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.frame = .zero
+        button.backgroundColor = .clear
+        button.setTitle("Quen mat khau", for: .normal)
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
+        button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(quickRegisterButtonOnTouch), for: .touchUpInside)
         return button
     }()
@@ -121,112 +176,145 @@ class SPLoginViewController: BaseViewController {
         self.navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .mainColor
         
-        view.addSubview(formLoginView)
-        view.addSubview(versionLabel)
-        view.addSubview(companyLabel)
+        view.addSubview(logoImageView)
+        view.addSubview(containerTextFieldStackView)
+        view.addSubview(bottomStackView)
+        view.addSubview(containerButtonStackView)
         
+        if #available(iOS 11.0, *) {
+            logoImageView.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: 10.0, leftConstant: -(230.0/2), rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 230.0, heightConstant: 74.0)
+            
+            bottomStackView.anchor(nil, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: -5.0, widthConstant: 0.0, heightConstant: 55.0)
+            containerTextFieldStackView.anchor(logoImageView.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: nil, topConstant: 25.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 75.0)
+            
+        } else {
+            // Fallback on earlier versions
+            let paddingTop:CGFloat = 64
+            logoImageView.anchor(view.topAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: paddingTop, leftConstant: -(230.0/2), rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 230.0, heightConstant: 74.0)
+            bottomStackView.anchor(nil, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: -5.0, widthConstant: 0.0, heightConstant: 55.0)
+            containerTextFieldStackView.anchor(logoImageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topConstant: 25.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 75.0)
+        }
         
-        let height:CGFloat = 300.0
-        let top:CGFloat = (view.frame.size.height - height)/2
-        let paddingLeftRight:CGFloat = 45.0
-        formLoginView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil,
-                             topConstant: top, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: 0.0,
-                             widthConstant: 0.0, heightConstant: height)
-        versionLabel.anchor(nil, left: view.leftAnchor, right: view.rightAnchor, bottom: companyLabel.topAnchor,
-                            topConstant: 0.0, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: -3.0,
-                            widthConstant: 0.0, heightConstant: 35.0)
-        companyLabel.anchor(nil, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor,
-                            topConstant: 0.0, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: -45.0,
-                            widthConstant: 0.0, heightConstant: 35.0)
+        containerTextFieldStackView.addArrangedSubview(userNameTextField)
+        containerTextFieldStackView.addArrangedSubview(passwordTextField)
         
+        containerButtonStackView.anchor(containerTextFieldStackView.bottomAnchor, left: containerTextFieldStackView.leftAnchor, right: containerTextFieldStackView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 75.0)
         
-        formLoginView.addSubview(titleFormLoginLabel)
-        formLoginView.addSubview(userNameTextField)
-        formLoginView.addSubview(passwordTextField)
-        formLoginView.addSubview(signButton)
-        formLoginView.addSubview(registerButton)
-        formLoginView.addSubview(quickRegisterButton)
+        containerButtonStackView.addArrangedSubview(signInButton)
+        containerButtonStackView.addArrangedSubview(containerButton2StackView)
         
+        containerButton2StackView.addArrangedSubview(forgetPasswordButton)
+        containerButton2StackView.addArrangedSubview(registerButton)
         
-        titleFormLoginLabel.anchor(formLoginView.topAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                                   topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                                   widthConstant: 0.0, heightConstant: 35.0)
+        bottomStackView.addArrangedSubview(versionLabel)
+        bottomStackView.addArrangedSubview(companyLabel)
         
-        userNameTextField.anchor(titleFormLoginLabel.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                             topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                             widthConstant: 0.0, heightConstant: 35.0)
-        
-        passwordTextField.anchor(userNameTextField.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                                 topConstant: 5.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                                 widthConstant: 0.0, heightConstant: 35.0)
-        
-        signButton.anchor(passwordTextField.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                                           topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                                           widthConstant: 0.0, heightConstant: 40.0)
-        
-        registerButton.anchor(signButton.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                          topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                          widthConstant: 0.0, heightConstant: 40.0)
-        
-        quickRegisterButton.anchor(registerButton.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
-                                   topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
-                                   widthConstant: 0.0, heightConstant: 40.0)
+//        view.addSubview(formLoginView)
+//        view.addSubview(versionLabel)
+//        view.addSubview(companyLabel)
+//
+//
+//        let height:CGFloat = 300.0
+//        let top:CGFloat = (view.frame.size.height - height)/2
+//        let paddingLeftRight:CGFloat = 45.0
+//        formLoginView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil,
+//                             topConstant: top, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: 0.0,
+//                             widthConstant: 0.0, heightConstant: height)
+//        versionLabel.anchor(nil, left: view.leftAnchor, right: view.rightAnchor, bottom: companyLabel.topAnchor,
+//                            topConstant: 0.0, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: -3.0,
+//                            widthConstant: 0.0, heightConstant: 35.0)
+//        companyLabel.anchor(nil, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor,
+//                            topConstant: 0.0, leftConstant: paddingLeftRight, rightConstant: -paddingLeftRight, bottomConstant: -45.0,
+//                            widthConstant: 0.0, heightConstant: 35.0)
+//
+//
+//        formLoginView.addSubview(titleFormLoginLabel)
+//        formLoginView.addSubview(userNameTextField)
+//        formLoginView.addSubview(passwordTextField)
+//        formLoginView.addSubview(signInButton)
+//        formLoginView.addSubview(registerButton)
+//        formLoginView.addSubview(quickRegisterButton)
+//
+//
+//        titleFormLoginLabel.anchor(formLoginView.topAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                                   topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                                   widthConstant: 0.0, heightConstant: 35.0)
+//
+//        userNameTextField.anchor(titleFormLoginLabel.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                             topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                             widthConstant: 0.0, heightConstant: 35.0)
+//
+//        passwordTextField.anchor(userNameTextField.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                                 topConstant: 5.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                                 widthConstant: 0.0, heightConstant: 35.0)
+//
+//        signInButton.anchor(passwordTextField.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                                           topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                                           widthConstant: 0.0, heightConstant: 40.0)
+//
+//        registerButton.anchor(signInButton.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                          topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                          widthConstant: 0.0, heightConstant: 40.0)
+//
+//        quickRegisterButton.anchor(registerButton.bottomAnchor, left: formLoginView.leftAnchor, right: formLoginView.rightAnchor, bottom: nil,
+//                                   topConstant: 10.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0,
+//                                   widthConstant: 0.0, heightConstant: 40.0)
     }
     
     func initData()  {
-        checkAutoLogin()
+        autoCheckAutoLogin()
     }
     
-    func checkAutoLogin() {
+    func autoCheckAutoLogin() {
         startLoadingView()
-        SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
-        SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
-        
-        let userName = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getUserNameKey())
-        let password = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getPasswordKey())
-        
-        if userName != nil && !((userName?.isEmpty)!) {
-            userNameTextField.text = userName
-        }
-        
-        if password != nil && !((password?.isEmpty)!) {
-            passwordTextField.text = password
-        }
-        
-        // TODO: Temp
-        let currentUserInfo = SPUserInfo()
-        currentUserInfo.firtName = "Quan"
-        currentUserInfo.lastName = "Tran Quoc"
-        currentUserInfo.addressString = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
-        currentUserInfo.phoneNumberString = "0987654321"
-        currentUserInfo.shopName = "Ustore"
-        currentUserInfo.fullName = "QuanTQ"
-        SPUserManager.shareInstance.currentUserInfo = currentUserInfo
-        
-        if (userName != nil && password != nil) && !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
-            
-            //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in
-                self.stopLoadingView()
-                //if success {
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-                    }
-                //}
-            //})
-            
-            //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
-            //DispatchQueue.main.asyncAfter(deadline: when) {
-            //    // Your code with delay
-            //    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-            //}
-        } else {
-            self.stopLoadingView()
-            //if success {
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-            }
-            //}
-        }
+//        SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
+//        SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
+//
+//        let userName = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getUserNameKey())
+//        let password = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getPasswordKey())
+//
+//        if userName != nil && !((userName?.isEmpty)!) {
+//            userNameTextField.text = userName
+//        }
+//
+//        if password != nil && !((password?.isEmpty)!) {
+//            passwordTextField.text = password
+//        }
+//
+//        // TODO: Temp
+//        let currentUserInfo = SPUserInfo()
+//        currentUserInfo.firtName = "Quan"
+//        currentUserInfo.lastName = "Tran Quoc"
+//        currentUserInfo.addressString = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
+//        currentUserInfo.phoneNumberString = "0987654321"
+//        currentUserInfo.shopName = "Ustore"
+//        currentUserInfo.fullName = "QuanTQ"
+//        SPUserManager.shareInstance.currentUserInfo = currentUserInfo
+//
+//        if (userName != nil && password != nil) && !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
+//
+//            //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in
+//                self.stopLoadingView()
+//                //if success {
+//                    DispatchQueue.main.async {
+//                        self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+//                    }
+//                //}
+//            //})
+//
+//            //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+//            //DispatchQueue.main.asyncAfter(deadline: when) {
+//            //    // Your code with delay
+//            //    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+//            //}
+//        } else {
+//            self.stopLoadingView()
+//            //if success {
+//            DispatchQueue.main.async {
+//                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+//            }
+//            //}
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

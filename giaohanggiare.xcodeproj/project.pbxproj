@@ -17,6 +17,8 @@
 		A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */; };
 		A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */; };
 		A25DDD662007917E00486954 /* SPListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25DDD652007917E00486954 /* SPListManager.swift */; };
+		A2632FFB206B6F3F0050551A /* SPUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2632FFA206B6F3F0050551A /* SPUserViewModel.swift */; };
+		A2632FFD206BAD5D0050551A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2632FFC206BAD5D0050551A /* Security.framework */; };
 		A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */; };
 		A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */; };
 		A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */; };
@@ -71,6 +73,9 @@
 		A2193F7C1F7FB428001DE6A3 /* SPStringApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPStringApp.swift; sourceTree = "<group>"; };
 		A2402D8B2005F3100049A8B8 /* SPFloatingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPFloatingButton.swift; sourceTree = "<group>"; };
 		A25DDD652007917E00486954 /* SPListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPListManager.swift; sourceTree = "<group>"; };
+		A2632FFA206B6F3F0050551A /* SPUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPUserViewModel.swift; sourceTree = "<group>"; };
+		A2632FFC206BAD5D0050551A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		A2632FFE206BAE8F0050551A /* Giaohanggiare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Giaohanggiare-Bridging-Header.h"; sourceTree = "<group>"; };
 		A266D89C1F8E4F6800AC6968 /* SPTopTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTopTabBarView.swift; sourceTree = "<group>"; };
 		A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageItem.swift; sourceTree = "<group>"; };
 		A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPSenderInfoViewCell.swift; sourceTree = "<group>"; };
@@ -116,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2632FFD206BAD5D0050551A /* Security.framework in Frameworks */,
 				0F95BFF4B2A012B014D69A57 /* Pods_giaohanggiare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +168,7 @@
 		A21646C92060EC8F000FC2D4 /* viewmodels */ = {
 			isa = PBXGroup;
 			children = (
+				A2632FF9206B6F290050551A /* user */,
 				A21646CA2060EC97000FC2D4 /* package */,
 			);
 			path = viewmodels;
@@ -181,6 +188,14 @@
 				A25DDD652007917E00486954 /* SPListManager.swift */,
 			);
 			path = list;
+			sourceTree = "<group>";
+		};
+		A2632FF9206B6F290050551A /* user */ = {
+			isa = PBXGroup;
+			children = (
+				A2632FFA206B6F3F0050551A /* SPUserViewModel.swift */,
+			);
+			path = user;
 			sourceTree = "<group>";
 		};
 		A266D89B1F8E4F1D00AC6968 /* tabtar */ = {
@@ -347,6 +362,7 @@
 				A2E32F531F77E1D100E7546F /* Assets.xcassets */,
 				A2E32F551F77E1D100E7546F /* LaunchScreen.storyboard */,
 				A29F36212056900B00BDFD9F /* Localizable.strings */,
+				A2632FFE206BAE8F0050551A /* Giaohanggiare-Bridging-Header.h */,
 			);
 			path = giaohanggiare;
 			sourceTree = "<group>";
@@ -450,6 +466,7 @@
 		B00D54A575EBF69BCD921DD5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A2632FFC206BAD5D0050551A /* Security.framework */,
 				443DDA152D2A67242D7C2937 /* Pods_giaohanggiare.framework */,
 				9B9CAFE43102CF8C738279BE /* Pods_giaohanggiareTests.framework */,
 			);
@@ -701,6 +718,7 @@
 				A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */,
 				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
 				A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */,
+				A2632FFB206B6F3F0050551A /* SPUserViewModel.swift in Sources */,
 				A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */,
 				A2863416200456C000F9AE83 /* SPKeyDatabase.swift in Sources */,
 			);
@@ -872,9 +890,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = V5C8AC5L6S;
 				INFOPLIST_FILE = giaohanggiare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.quan.giaohanggiare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tran.quoc.quan/Documents/Workspace/Owsner/giaohanggiare/Giaohanggiare-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -886,9 +906,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = V5C8AC5L6S;
 				INFOPLIST_FILE = giaohanggiare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.quan.giaohanggiare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tran.quoc.quan/Documents/Workspace/Owsner/giaohanggiare/Giaohanggiare-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

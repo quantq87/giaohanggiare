@@ -11,7 +11,8 @@ import Foundation
 class SPUserManager: NSObject {
     static let shareInstance = SPUserManager()
     var currentUserInfo: SPUserInfo!
-    
+    var currentUserId: String = ""
+    var currentAccessToken: String = ""
 }
 
 class SPUserInfo: NSObject {
