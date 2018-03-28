@@ -267,6 +267,15 @@ class SPLoginViewController: BaseViewController {
     
     func autoCheckAutoLogin() {
         startLoadingView()
+        SPLoadingView.shareInstance.startLoadingAnimation(self.view)
+        SPUserViewModel.shareInstance.signInWithInfo("quantq", password: "1234") { (success, message) in
+            print("LOGIN: \(message)")
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+            }
+            SPLoadingView.shareInstance.stopLoadingAnimation()
+        }
+        
 //        SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
 //        SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
 //

@@ -8,15 +8,29 @@
 
 import UIKit
 
+let RESPONSECODE_SUCCESS = 1
+
 class SPAPIServer: NSObject {
-    static let linkApiServer:String = "http://103.18.4.14:9001/api"
+    static let linkApiServer:String = "http://128.199.126.246:9001/api"
     static let shareInstance = SPAPIServer()
     
-    public func doLoginToServer(user: String, pass: String, completedHandle:@escaping (_ success: Bool, _ errorString: String) -> ()) {
-        let paramater:NSDictionary = NSMutableDictionary()
-        paramater.setValue(user, forKey: "user_name")
-        paramater.setValue(pass, forKey: "password")
-        doRequestToApiServer(method: "/login", paramater: paramater, completedHandle:completedHandle)
+    public func doLoginToServer(user: String, pass: String, completedHandle:@escaping (_ success: Bool, _ responseData: NSDictionary?, _ errorString: String) -> ()) {
+//        let paramater:NSDictionary = NSMutableDictionary()
+//        paramater.setValue(user, forKey: "user_name")
+//        paramater.setValue(pass, forKey: "password")
+//        doRequestToApiServer(method: "/login", paramater: paramater, completedHandle:completedHandle)
+        let string: String = "{\"code\":\"1\",\"message\":\"success\",\"data\":{\"userId\":\"4493d670-3297-11e8-a1df-5d046656e0b9\",\"accessToken\":\"NzE3T296MWV0ZEpaS0o5c0lMQXVoUXpXa01SbUFKMXp2QU95cXRLWno1TUFLelJXYUxnT1doL1lTNEU2NUlkVDA3WGN6OW9QZzlsTU9wdVU1cGJjYlFKTitUR1FMN2ladXlnejY3YTdNZXZWMHAvVlV1OFVWaWZqRDN6KzgxYnRmZ0wvdVY0QkgvK1N2RzNNNkJOdGlFNkJDR0xlQ09UL21CV0QxcWZ6U3hsR2pZem0wNU5OSGdOL2VzbkhReE1Ib1VOekJ3c0RFMy9nbXluZTZuOWVQUGNCWHZVeVlNRnZTRy8xT0JsUDFhTDF5RHpEWlNoTUNoUStLVkVGK3o4eG5hZkdCSVozekkvUmhPdDkrbmxSckZmcFZEZzhVcUJOK2VZWXlXc0RmaHNsWE8wUjVUUG0zd01DVmVlcmlET0xmSUtLNFJTRkYwM294Z1hSY1Rxa2pTVEEyTk5SUzBUVC9WaGtNNWdVbVNGblJtWG0=\",\"userInfo\":{\"__v\":0,\"password\":\"gdyb21LQTcIANtvYMT7QVQ==\",\"phone\":\"0987654321\",\"email\":\"Quan@gmail.com\",\"name\":\"Quan\",\"id\":\"4493d670-3297-11e8-a1df-5d046656e0b9\",\"_id\":\"5abbab8e0c043324422c741a\"}}}"
+        let dictionary = string.JSONStringToNSDictionary()
+        if let dict = dictionary {
+            print("JSON: \n \(dict)")
+            let responeData: SPResponseData = self.parserResponeData(dict)
+            if responeData.codeRes == RESPONSECODE_SUCCESS {
+                completedHandle(true, responeData.dataRes, "")
+            } else {
+                completedHandle(false, nil, responeData.messageRes)
+            }
+        }
+        
     }
     
     public func doSignUpToServer(userInfo: SPCustomerInfoItem, completedHandle:@escaping (_ success: Bool, _ errorString: String) -> ()) {
@@ -82,6 +96,15 @@ class SPAPIServer: NSObject {
 //        task.resume()
     }
     
+    private func parserResponeData(_ resData: NSDictionary) -> SPResponseData {
+        var result: SPResponseData = SPResponseData()
+        let code: String = resData.object(forKey: "code") as! String
+        result.codeRes = Int(code)!
+        result.dataRes = resData.object(forKey: "data") as! NSDictionary
+        result.messageRes = resData.object(forKey: "message") as! String
+        return result
+    }
+    
     private func getDeviceId () -> String {
         return UIDevice.current.identifierForVendor!.uuidString
     }
@@ -129,6 +152,19 @@ extension NSDictionary {
             print(error.localizedDescription)
         }
         return ""
+    }
+}
+
+extension String {
+    func JSONStringToNSDictionary() -> NSDictionary! {
+        if let data = self.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
 }
 
@@ -183,3 +219,12 @@ class RequestCustom: NSObject {
         }
     }
 }
+
+struct SPResponseData {
+    var codeRes: NSInteger = -1
+    var dataRes:NSDictionary = NSDictionary()
+    var messageRes: String = ""
+}
+
+//{"code":"1","message":"success","data":{"userId":"4493d670-3297-11e8-a1df-5d046656e0b9","accessToken":"NzE3T296MWV0ZEpaS0o5c0lMQXVoUXpXa01SbUFKMXp2QU95cXRLWno1TUFLelJXYUxnT1doL1lTNEU2NUlkVDA3WGN6OW9QZzlsTU9wdVU1cGJjYlFKTitUR1FMN2ladXlnejY3YTdNZXZWMHAvVlV1OFVWaWZqRDN6KzgxYnRmZ0wvdVY0QkgvK1N2RzNNNkJOdGlFNkJDR0xlQ09UL21CV0QxcWZ6U3hsR2pZem0wNU5OSGdOL2VzbkhReE1Ib1VOekJ3c0RFMy9nbXluZTZuOWVQUGNCWHZVeVlNRnZTRy8xT0JsUDFhTDF5RHpEWlNoTUNoUStLVkVGK3o4eG5hZkdCSVozekkvUmhPdDkrbmxSckZmcFZEZzhVcUJOK2VZWXlXc0RmaHNsWE8wUjVUUG0zd01DVmVlcmlET0xmSUtLNFJTRkYwM294Z1hSY1Rxa2pTVEEyTk5SUzBUVC9WaGtNNWdVbVNGblJtWG0=","userInfo":{"__v":0,"password":"gdyb21LQTcIANtvYMT7QVQ==","phone":"0987654321","email":"Quan@gmail.com","name":"Quan","id":"4493d670-3297-11e8-a1df-5d046656e0b9","_id":"5abbab8e0c043324422c741a"}}}
+
