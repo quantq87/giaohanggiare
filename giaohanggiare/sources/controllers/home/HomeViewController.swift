@@ -87,7 +87,7 @@ class HomeViewController: BaseViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    func addPackage(sender: UIBarButtonItem)  {
+    @objc func addPackage(sender: UIBarButtonItem)  {
         
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
         
@@ -102,7 +102,7 @@ class HomeViewController: BaseViewController {
         self.navigationController?.pushViewController(secondViewController, animated: true)
     }
     
-    func addNewPackageOnTouchInside(sender: UIButton)  {
+    @objc func addNewPackageOnTouchInside(sender: UIButton)  {
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
         self.navigationController?.pushViewController(secondViewController, animated: true)
     }

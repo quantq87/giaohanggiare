@@ -59,7 +59,7 @@ class SPNewPackageViewController: BaseViewController {
         self.packageTableView.collectionViewLayout.invalidateLayout()
     }
     
-    func completedAddPackage(sender: UIBarButtonItem) {
+    @objc func completedAddPackage(sender: UIBarButtonItem) {
         let package = SPPackageItem()
         
         let rerult = SPPackageViewModel.shareInstance.addPackage(package)
@@ -68,7 +68,7 @@ class SPNewPackageViewController: BaseViewController {
         }
     }
     
-    func canceldAddPackage(sender: UIBarButtonItem) {
+    @objc func canceldAddPackage(sender: UIBarButtonItem) {
         
     }
     
@@ -167,7 +167,7 @@ class SPNewPackageViewController: BaseViewController {
         currentNewPackage.receiverCustomer = SPCustomerInfoItem(.receiver)
     }
     
-    func backBarButtonOnTouch(sender: UIBarButtonItem)  {
+    @objc func backBarButtonOnTouch(sender: UIBarButtonItem)  {
         print("backBarButtonOnTouch onclick")
         self.navigationController?.popViewController(animated: true)
     }
@@ -502,9 +502,9 @@ class SPPersonalHeaderCell: UICollectionReusableView {
     
     public func setHeaderTitleWithString(string: String) {
         // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 15.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        var attributes = [NSAttributedStringKey: Any]()
+        attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 15.0)
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.blue
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString
@@ -548,7 +548,7 @@ class SPPackageHeaderCell: UICollectionReusableView {
 //        return dropDown
 //    }()
     
-    func showDropDownOnTouchInside(sender: UIButton) {
+    @objc func showDropDownOnTouchInside(sender: UIButton) {
 //        if !isDropDownShow {
 //            isDropDownShow = true
 //            modePackageView.show()
@@ -581,9 +581,9 @@ class SPPackageHeaderCell: UICollectionReusableView {
     
     public func setHeaderTitleWithString(string: String) {
         // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 15.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.blue
+        var attributes = [NSAttributedStringKey: Any]()
+        attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 15.0)
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.blue
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString

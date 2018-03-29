@@ -337,14 +337,14 @@ class SPRegisterViewController: BaseViewController, UITextFieldDelegate {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnView)))
     }
     
-    func tapOnView() {
+    @objc func tapOnView() {
         if keyboardOnShow {
             keyboardOnShow = true
             view.endEditing(true)
         }
     }
     
-    func registerButtonOnTouch(sender: UIButton) {
+    @objc func registerButtonOnTouch(sender: UIButton) {
         switch currentStepRegister {
         case .one:
             if isValidateStepOne() {
@@ -373,7 +373,7 @@ class SPRegisterViewController: BaseViewController, UITextFieldDelegate {
         }
     }
     
-    func backAndCancelButtonOnTouch(sender: UIButton) {
+    @objc func backAndCancelButtonOnTouch(sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     

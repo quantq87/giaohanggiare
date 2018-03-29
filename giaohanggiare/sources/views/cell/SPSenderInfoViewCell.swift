@@ -96,13 +96,13 @@ class SPPersonalInfoCell: SPCollectionViewCell {
     
     func formatTitleBoldAndValueNormal(_ title: String, value: String) -> NSMutableAttributedString {
         // Name Label
-        var attributes = [String: Any]()
-        attributes[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 14.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
+        var attributes = [NSAttributedStringKey: Any]()
+        attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 14.0)
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.black
         let attString1 = NSAttributedString(string: title, attributes: attributes)
         
-        attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: 13.0)
-        attributes[NSForegroundColorAttributeName] = UIColor.black
+        attributes[NSAttributedStringKey.font] = UIFont.systemFont(ofSize: 13.0)
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.black
         let attString2 = NSAttributedString(string: value, attributes: attributes)
         
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
@@ -112,7 +112,7 @@ class SPPersonalInfoCell: SPCollectionViewCell {
         
     }
     
-    func editInfoButtonOnTouch(sender: UIButton)  {
+    @objc func editInfoButtonOnTouch(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
         if let delegate = self.delegateInfo {
             delegate.editButtonOnTouchInside(sender: sender, atSection: self.indexSection)

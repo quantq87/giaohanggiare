@@ -21,7 +21,7 @@ class SPUserViewModel: SPBaseViewModel {
             return
         }
         SPAPIServer.shareInstance.doLoginToServer(user: username, pass: password) { (success, response, message) in
-            if response != nil {
+            if success && response != nil {
                 let userInfo = self.parserUserInfoWithDataResponse(response?.object(forKey: "userInfo") as! NSDictionary)
                 guard !userInfo.email.isEmpty else {
                     completedHandle(false, "Login is failed!!!")
@@ -31,6 +31,8 @@ class SPUserViewModel: SPBaseViewModel {
                 SPUserManager.shareInstance.currentAccessToken = response?.object(forKey: "accessToken") as! String
                 SPUserManager.shareInstance.currentUserInfo = SPUserInfo()
                 completedHandle(true, "Login is completed!!!")
+            } else {
+                completedHandle(false, "Login is failed!!!")
             }
         }
     }

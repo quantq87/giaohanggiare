@@ -9,114 +9,114 @@
 import UIKit
 import Foundation
 
-protocol Person {
-    var firstName: String {get set}
-    var lastName: String {get set}
-    var birthDate: Date {get set}
-    var profession: String {get}
-    init(firstName: String, lastName: String, birthDate: Date)
-}
-
-//var programer:Person = SwiftProgramer(firstName: "Quan", lastName: "Tran Quoc", bithDate: Date())
-
-//if person is SwiftProgramer {
-//    print("print Something")
+//protocol Person {
+//    var firstName: String {get set}
+//    var lastName: String {get set}
+//    var birthDate: Date {get set}
+//    var profession: String {get}
+//    init(firstName: String, lastName: String, birthDate: Date)
 //}
-//for person in where person is SwiftProgramer {
-//    print("print Something")
+//
+////var programer:Person = SwiftProgramer(firstName: "Quan", lastName: "Tran Quoc", bithDate: Date())
+//
+////if person is SwiftProgramer {
+////    print("print Something")
+////}
+////for person in where person is SwiftProgramer {
+////    print("print Something")
+////}
+//
+////as! Runtime error is throw
+//
+//// if let _ = person as? SwiftProgramer {
+////    print("print Something")
+////}
+//
+//protocol TextValidation1 {
+//    var regExMatchingString: String {get}
+//    var regExFindMatchingString: String {get}
+//    var validationMessage: String {get}
+//    func validateString(str: String) -> Bool
+//    func getMatchingString(str: String) -> String?
 //}
-
-//as! Runtime error is throw
-
-// if let _ = person as? SwiftProgramer {
-//    print("print Something")
+//
+//class AlphaValidation1: TextValidation1 {
+//    static let shareInstance = AlphaValidation1()
+//    private init(){}
+//    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
+//    let validationMessage = "Can only contain Alpha characters"
+//    var regExMatchingString: String {
+//        get {
+//            return regExFindMatchingString + "$"
+//        }
+//    }
+//
+//    func validateString(str: String) -> Bool {
+//        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
+//    func getMatchingString(str: String) -> String? {
+//        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
+//            return str.substring(with: newMatch)
+//        } else {
+//            return nil
+//        }
+//    }
 //}
-
-protocol TextValidation1 {
-    var regExMatchingString: String {get}
-    var regExFindMatchingString: String {get}
-    var validationMessage: String {get}
-    func validateString(str: String) -> Bool
-    func getMatchingString(str: String) -> String?
-}
-
-class AlphaValidation1: TextValidation1 {
-    static let shareInstance = AlphaValidation1()
-    private init(){}
-    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
-    let validationMessage = "Can only contain Alpha characters"
-    var regExMatchingString: String {
-        get {
-            return regExFindMatchingString + "$"
-        }
-    }
-    
-    func validateString(str: String) -> Bool {
-        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
-            return true
-        } else {
-            return false
-        }
-    }
-    func getMatchingString(str: String) -> String? {
-        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
-            return str.substring(with: newMatch)
-        } else {
-            return nil
-        }
-    }
-}
-
-protocol TextValidation {
-    var regExMatchingString: String {get}
-    var regExFindMatchingString: String {get}
-}
-
-extension TextValidation {
-    var regExMatchingString: String {
-        get {
-            return regExFindMatchingString + "$"
-        }
-    }
-    
-    func validateString(str: String) -> Bool {
-        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
-            return true
-        } else {
-            return false
-        }
-    }
-    func getMatchingString(str: String) -> String? {
-        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
-            return str.substring(with: newMatch)
-        } else {
-            return nil
-        }
-    }
-}
-
-class AlphaValidation: TextValidation {
-    static let shareInstance = AlphaValidation()
-    private init(){}
-    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
-    let validationMessage = "Can only contain Alpha characters"
-}
-
-class AlphaNumbericValidation: TextValidation {
-    static let shareInstance = AlphaNumbericValidation()
-    private init(){}
-    let regExFindMatchingString = "^[a-zA-Z0-9]{0,15}"
-    let validationMessage = "Can only contain Alpha characters"
-}
-
-class DisplayNameValidation: TextValidation {
-    static let shareInstance = DisplayNameValidation()
-    private init(){}
-    let regExFindMatchingString = "^[\\s?[a-zA-Z0-9\\-_\\s]]{0,15}"
-    let validationMessage = "Display Name can contain only contain Alphanumberic Characters"
-}
-
-
+//
+//protocol TextValidation {
+//    var regExMatchingString: String {get}
+//    var regExFindMatchingString: String {get}
+//}
+//
+//extension TextValidation {
+//    var regExMatchingString: String {
+//        get {
+//            return regExFindMatchingString + "$"
+//        }
+//    }
+//
+//    func validateString(str: String) -> Bool {
+//        if let _ = str.range(of: regExMatchingString, options: .regularExpression) {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
+//    func getMatchingString(str: String) -> String? {
+//        if let newMatch = str.range(of: regExFindMatchingString, options: .regularExpression) {
+//            return str.substring(with: newMatch)
+//        } else {
+//            return nil
+//        }
+//    }
+//}
+//
+//class AlphaValidation: TextValidation {
+//    static let shareInstance = AlphaValidation()
+//    private init(){}
+//    let regExFindMatchingString = "^[a-zA-Z]{0,10}"
+//    let validationMessage = "Can only contain Alpha characters"
+//}
+//
+//class AlphaNumbericValidation: TextValidation {
+//    static let shareInstance = AlphaNumbericValidation()
+//    private init(){}
+//    let regExFindMatchingString = "^[a-zA-Z0-9]{0,15}"
+//    let validationMessage = "Can only contain Alpha characters"
+//}
+//
+//class DisplayNameValidation: TextValidation {
+//    static let shareInstance = DisplayNameValidation()
+//    private init(){}
+//    let regExFindMatchingString = "^[\\s?[a-zA-Z0-9\\-_\\s]]{0,15}"
+//    let validationMessage = "Display Name can contain only contain Alphanumberic Characters"
+//}
+//
+//
 //extension Int {
 //    func factorial() -> Int {
 //        var answer = 1

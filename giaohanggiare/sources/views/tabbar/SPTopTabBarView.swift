@@ -209,7 +209,7 @@ class SPTopTabBarView: UIView {
         return nil
     }
     
-    func topTabBarButtonOnPress(sender: UIButton) {
+    @objc func topTabBarButtonOnPress(sender: UIButton) {
         let button: UIButton = sender
         switch currentTabBarType {
         case .home:

@@ -268,62 +268,16 @@ class SPLoginViewController: BaseViewController {
     func autoCheckAutoLogin() {
         startLoadingView()
         SPLoadingView.shareInstance.startLoadingAnimation(self.view)
-        SPUserViewModel.shareInstance.signInWithInfo("quantq", password: "1234") { (success, message) in
+        var emailString = "Quantq@gmail.com"
+        emailString = emailString.lowercased()
+        
+        SPUserViewModel.shareInstance.signInWithInfo(emailString, password: "1234") { (success, message) in
             print("LOGIN: \(message)")
             DispatchQueue.main.async {
                 self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+                SPLoadingView.shareInstance.stopLoadingAnimation()
             }
-            SPLoadingView.shareInstance.stopLoadingAnimation()
         }
-        
-//        SPDatabase.shareInstance.saveStringBase64ToDB(string: "quantq", key: SPKeyDatabase.getString.getUserNameKey())
-//        SPDatabase.shareInstance.saveStringBase64ToDB(string: "12345", key: SPKeyDatabase.getString.getPasswordKey())
-//
-//        let userName = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getUserNameKey())
-//        let password = SPDatabase.shareInstance.getStringValueFromDB(key: SPKeyDatabase.getString.getPasswordKey())
-//
-//        if userName != nil && !((userName?.isEmpty)!) {
-//            userNameTextField.text = userName
-//        }
-//
-//        if password != nil && !((password?.isEmpty)!) {
-//            passwordTextField.text = password
-//        }
-//
-//        // TODO: Temp
-//        let currentUserInfo = SPUserInfo()
-//        currentUserInfo.firtName = "Quan"
-//        currentUserInfo.lastName = "Tran Quoc"
-//        currentUserInfo.addressString = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
-//        currentUserInfo.phoneNumberString = "0987654321"
-//        currentUserInfo.shopName = "Ustore"
-//        currentUserInfo.fullName = "QuanTQ"
-//        SPUserManager.shareInstance.currentUserInfo = currentUserInfo
-//
-//        if (userName != nil && password != nil) && !((userName?.isEmpty)!) && !((password?.isEmpty)!) {
-//
-//            //SPAPIServer.shareInstance.doLoginToServer(user: "quantq", pass: "12345", completedHandle: { (success, errorString) in
-//                self.stopLoadingView()
-//                //if success {
-//                    DispatchQueue.main.async {
-//                        self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-//                    }
-//                //}
-//            //})
-//
-//            //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
-//            //DispatchQueue.main.asyncAfter(deadline: when) {
-//            //    // Your code with delay
-//            //    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-//            //}
-//        } else {
-//            self.stopLoadingView()
-//            //if success {
-//            DispatchQueue.main.async {
-//                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-//            }
-//            //}
-//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -352,15 +306,15 @@ class SPLoginViewController: BaseViewController {
 //        }
     }
     
-    func quickRegisterButtonOnTouch(sender: UIButton) {
+    @objc func quickRegisterButtonOnTouch(sender: UIButton) {
         
     }
     
-    func signInButtonOnTouch() {
+    @objc func signInButtonOnTouch() {
         performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
     }
     
-    func registerButtonOnTouch() {
+    @objc func registerButtonOnTouch() {
         performSegue(withIdentifier: "showRegisterIdentifier", sender: nil)
     }
 }
