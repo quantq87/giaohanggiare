@@ -38,8 +38,20 @@ class SPUserViewModel: SPBaseViewModel {
     }
     
     public func signUpWithInfo(_ info: SPCustomerInfoItem, completedHandle:@escaping (_ success: Bool, _ errorString: String) -> ()) {
-        SPAPIServer.shareInstance.doSignUpToServer(userInfo: info) { (success, error) in
-            
+        SPAPIServer.shareInstance.doSignUpToServer(userInfo: info) { (success,  response,  error) in
+            if success && response != nil {
+                let userInfo = self.parserUserInfoWithDataResponse(response?.object(forKey: "userInfo") as! NSDictionary)
+                guard !userInfo.email.isEmpty else {
+                    completedHandle(false, "Login is failed!!!")
+                    return
+                }
+                SPUserManager.shareInstance.currentUserId = response?.object(forKey: "userId") as! String
+                SPUserManager.shareInstance.currentAccessToken = response?.object(forKey: "accessToken") as! String
+                SPUserManager.shareInstance.currentUserInfo = SPUserInfo()
+                completedHandle(true, "Login is completed!!!")
+            } else {
+                completedHandle(false, "Login is failed!!!")
+            }
         }
     }
     
@@ -58,7 +70,7 @@ class SPUserViewModel: SPBaseViewModel {
         let result = SPCustomerInfoItem(.sender)
         
         result.email = response.object(forKey: "email") as! String
-        result.password = response.object(forKey: "password") as! String
+//        result.password = response.object(forKey: "password") as! String
         result.phone = response.object(forKey: "phone") as! String
 //        userInfo =         {
 //            "__v" = 0;

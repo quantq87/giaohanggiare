@@ -38,14 +38,18 @@ class SPAPIServer: NSObject {
         }
     }
     
-    public func doSignUpToServer(userInfo: SPCustomerInfoItem, completedHandle:@escaping (_ success: Bool, _ errorString: String) -> ()) {
+    public func doSignUpToServer(userInfo: SPCustomerInfoItem, completedHandle:@escaping (_ success: Bool,  _ responseData: NSDictionary?, _ errorString: String) -> ()) {
         let paramater:NSDictionary = NSMutableDictionary()
         paramater.setValue(userInfo.username, forKey: "name")
         paramater.setValue(userInfo.email, forKey: "email")
         paramater.setValue(userInfo.phone, forKey: "phone")
         paramater.setValue(userInfo.password.base64String(), forKey: "password")
-        doRequestToApiServer(method: "/auth/register", paramater: paramater) { (success, reponse, message) in
-            
+        doRequestToApiServer(method: "/auth/register", paramater: paramater) { (success, response, message) in
+            if success {
+                completedHandle(true, response, "")
+            } else {
+                completedHandle(false, nil, message)
+            }
         }
     }
     

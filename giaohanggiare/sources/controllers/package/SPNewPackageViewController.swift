@@ -15,6 +15,10 @@ class SPNewPackageViewController: BaseViewController {
     //
     var currentNewPackage:SPPackageItem!
     
+    var mainContainerView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     var packageTableView:SPCollectionView!
     
@@ -34,12 +38,6 @@ class SPNewPackageViewController: BaseViewController {
         // Do any additional setup after loading the view.
         initView()
         setupData()
-        
-        MyLogger.addLogProfileToAllLevels(defaultLoggerProfile: LoggerConsole())
-        MyLogger.writeLog(logLevel: LogLevels.Debug, message: "Debug message 1")
-        
-        MyLogger.addLogProfileToAllLevels(defaultLoggerProfile: LoggerConsole())
-        MyLogger.writeLog(logLevel: LogLevels.Info, message: "Info message 2")
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .save, target: self, action: #selector(completedAddPackage))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(canceldAddPackage))
@@ -69,37 +67,40 @@ class SPNewPackageViewController: BaseViewController {
     }
     
     @objc func canceldAddPackage(sender: UIBarButtonItem) {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            packageTableView.clearConstraints()
-//            view.addConstraintsWithFormat(format: "H:|[v0]-|", views: packageTableView)
-//            view.addConstraintsWithFormat(format: "V:|[v0]-\(keyboardSize.height)-|", views: packageTableView)
-            let isShowing = notification.name == Notification.Name.UIKeyboardWillShow
-            
-            if let userInfo = notification.userInfo {
-                let endFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
-                let endFrameHeight = endFrame?.size.height ?? 0.0
-                let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
-                let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
-                let animationCurveRaw = animationCurveRawNSN.uintValue 
-                let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-                self.bottomSpacingConstraint?.constant = isShowing ? endFrameHeight : 0.0
-                UIView.animate(withDuration: duration,
-                                           delay: TimeInterval(0),
-                                           options: animationCurve,
-                                           animations: { self.view.layoutIfNeeded() },
-                                           completion: nil)
-            }
+//        let isShowing = notification.name == Notification.Name.UIKeyboardWillShow
+        
+//        if let userInfo = notification.userInfo {
+            let endFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+            let endFrameHeight = endFrame?.size.height ?? 0.0
+//            let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
+//            let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
+//            let animationCurveRaw = animationCurveRawNSN.uintValue
+//            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+//            self.bottomSpacingConstraint?.constant = isShowing ? endFrameHeight : 0.0
+//            UIView.animate(withDuration: duration,
+//                           delay: TimeInterval(0),
+//                           options: animationCurve,
+//                           animations: { self.view.layoutIfNeeded() },
+//                           completion: nil)
+        if #available(iOS 11.0, *) {
+            mainContainerView.moveUpViewToHeight(height: endFrameHeight)
+        } else {
+            // Fallback on earlier versions
+            mainContainerView.moveUpViewToHeight(height: endFrameHeight)
+        }
+        
+        packageTableView.isScrollEnabled = true
 //        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         packageTableView.clearConstraints()
-        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
+//        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -121,6 +122,8 @@ class SPNewPackageViewController: BaseViewController {
         self.navigationItem.title = "Tao Don Hang"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .undo, target: self, action: #selector(backBarButtonOnTouch))
         
+        
+        
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
@@ -133,8 +136,9 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.register(SPPackageInfoViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
         
         // Show scrolls
-        packageTableView.showsVerticalScrollIndicator = false
-        packageTableView.showsHorizontalScrollIndicator = false
+        packageTableView.showsVerticalScrollIndicator = true
+        packageTableView.showsHorizontalScrollIndicator = true
+        packageTableView.isScrollEnabled = true
         
         // Headers
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: personalHeaderId)
@@ -147,15 +151,30 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.setDelegateAndDataSource(self, dataSource: self)
         
         // Add tableView and setConstraints
-        view.addSubview(packageTableView);
         
-        let spacingView:UIView = UIView(frame: .zero)
-        spacingView.backgroundColor = .white
-        spacingView.isHidden = true
-        view.addSubview(spacingView)
-        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-        view.addConstraintsWithFormat(format: "H:|[v0]|", views: spacingView)
-        view.addConstraintsWithFormat(format: "V:|[v0]-[v1(0.0)]-|", views: packageTableView, spacingView)
+        view.addSubview(mainContainerView)
+        
+        mainContainerView.addSubview(packageTableView)
+        
+        if #available(iOS 11.0, *) {
+            mainContainerView.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        } else {
+            // Fallback on earlier versions
+            mainContainerView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        }
+        packageTableView.anchor(mainContainerView.topAnchor, left: mainContainerView.leftAnchor, right: mainContainerView.rightAnchor, bottom: mainContainerView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        
+        packageTableView.contentSize = CGSize(width: view.frame.width, height: 600)
+        
+//        view.addSubview(packageTableView);
+//
+//        let spacingView:UIView = UIView(frame: .zero)
+//        spacingView.backgroundColor = .white
+//        spacingView.isHidden = true
+//        view.addSubview(spacingView)
+//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
+//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: spacingView)
+//        view.addConstraintsWithFormat(format: "V:|[v0]-[v1(0.0)]-|", views: packageTableView, spacingView)
     }
     
     func setupData() {

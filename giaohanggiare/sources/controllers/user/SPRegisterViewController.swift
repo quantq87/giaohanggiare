@@ -102,6 +102,7 @@ class SPRegisterViewController: BaseViewController, UITextFieldDelegate {
         tf.text = ""
         tf.spellCheckingType = .no
         tf.autocorrectionType = .no
+        tf.keyboardType = UIKeyboardType.emailAddress
         return tf
     }()
     
@@ -368,7 +369,11 @@ class SPRegisterViewController: BaseViewController, UITextFieldDelegate {
         
         if currentStepRegister == .done {
             SPUserViewModel.shareInstance.signUpWithInfo(currentUserInfo) { (success, error) in
-                
+                if success {
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             }
         }
     }

@@ -273,10 +273,12 @@ class SPLoginViewController: BaseViewController {
         
         SPUserViewModel.shareInstance.signInWithInfo(emailString, password: "1234") { (success, message) in
             print("LOGIN: \(message)")
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
-                SPLoadingView.shareInstance.stopLoadingAnimation()
+            if success {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+                }
             }
+            SPLoadingView.shareInstance.stopLoadingAnimation()
         }
     }
     

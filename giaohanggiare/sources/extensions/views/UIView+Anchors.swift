@@ -9,6 +9,15 @@
 import UIKit
 
 extension UIView {
+    
+    public func topIdentifier() -> String {
+        return "topIdentifier"
+    }
+    
+    public func bottomIdentifier() -> String {
+        return "bottomIdentifier"
+    }
+    
     public func anchor(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil,
                        topConstant: CGFloat = 0.0, leftConstant: CGFloat = 0.0, rightConstant: CGFloat = 0.0, bottomConstant: CGFloat = 0.0,
                        widthConstant: CGFloat = 0.0, heightConstant: CGFloat = 0.0)  {
@@ -24,7 +33,9 @@ extension UIView {
         var anchors = [NSLayoutConstraint]()
         
         if let top = top {
-            anchors.append(topAnchor.constraint(equalTo: top, constant: topConstant))
+            let topAnchor: NSLayoutConstraint = self.topAnchor.constraint(equalTo: top, constant: topConstant)
+            topAnchor.identifier = self.topIdentifier()
+            anchors.append(topAnchor)
         }
         
         if let left = left {
@@ -36,7 +47,9 @@ extension UIView {
         }
         
         if let bottom = bottom {
-            anchors.append(bottomAnchor.constraint(equalTo: bottom, constant: bottomConstant))
+            let bottomAnchor: NSLayoutConstraint = self.bottomAnchor.constraint(equalTo: bottom, constant: bottomConstant)
+            bottomAnchor.identifier = self.bottomIdentifier()
+            anchors.append(bottomAnchor)
         }
         
         if widthConstant > 0 {
@@ -51,6 +64,28 @@ extension UIView {
         
         return anchors
         
+    }
+    
+    public func moveUpViewToY(y: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.topIdentifier() {
+                anchor.constant = -y
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
+    }
+    
+    public func moveUpViewToHeight(height: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.bottomIdentifier() {
+                anchor.constant = -height
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
     }
     
     public func anchorCenterXToSuperview(constant: CGFloat = 0) {

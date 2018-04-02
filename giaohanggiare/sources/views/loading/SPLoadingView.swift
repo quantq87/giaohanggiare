@@ -182,7 +182,9 @@ class SPLoadingView: UIView {
     }
     
     func stopLoadingAnimation() {
-        self.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.removeFromSuperview()
+        }
     }
 
 }
