@@ -75,6 +75,39 @@ class HomeViewController: BaseViewController {
         addFloatingButton.layer.cornerRadius = 60/2
         addFloatingButton.clipsToBounds = true
         addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
+        
+        view.addSubview(checkButton)
+        checkButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
+        
+        view.addSubview(dropDownButton)
+        dropDownButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: -100.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
+    }
+    
+    var checkButton: SPCheckBoxButton = {
+        let checkButton = SPCheckBoxButton(frame: .zero)
+        checkButton.heightForCheckBox = 35.0
+        checkButton.addTarget(self, action: #selector(testCheckBoxButton), for: .touchUpInside)
+        checkButton.setTitleForCheckBox("Check box 1")
+        return checkButton
+    } ()
+    
+    var dropDownButton: SPDropDownButton = {
+        let dropDown = SPDropDownButton(frame: .zero)
+        dropDown.setSelectedValueForCheckBox("ABC Selected")
+        dropDown.setListItemsWithArray(NSArray(arrayLiteral: "Test abc 1", "Test abc 2", "Test abc 3", "Test abc 4", "Test abc 5", "Test abc 6"))
+        dropDown.defaultIndexSelected = 5;
+        dropDown.addTarget(self, action: #selector(testdropDownButton), for: .touchUpInside)
+        return dropDown
+    } ()
+    
+    @objc func testdropDownButton(sender: UIButton)  {
+        print("Update Check Box State")
+        dropDownButton.showDropDownItemsView()
+    }
+    
+     @objc func testCheckBoxButton(sender: UIButton)  {
+        print("Update Check Box State")
+        checkButton.updateCheckStateButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {

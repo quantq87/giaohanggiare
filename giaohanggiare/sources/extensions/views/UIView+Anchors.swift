@@ -18,6 +18,14 @@ extension UIView {
         return "bottomIdentifier"
     }
     
+    public func widthIdentifier() -> String {
+        return "widthIdentifier"
+    }
+    
+    public func heightIdentifier() -> String {
+        return "heightIdentifier"
+    }
+    
     public func anchor(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil,
                        topConstant: CGFloat = 0.0, leftConstant: CGFloat = 0.0, rightConstant: CGFloat = 0.0, bottomConstant: CGFloat = 0.0,
                        widthConstant: CGFloat = 0.0, heightConstant: CGFloat = 0.0)  {
@@ -53,11 +61,15 @@ extension UIView {
         }
         
         if widthConstant > 0 {
-            anchors.append(widthAnchor.constraint(equalToConstant: widthConstant))
+            let widthAnchor: NSLayoutConstraint = self.widthAnchor.constraint(equalToConstant: widthConstant)
+            widthAnchor.identifier = self.widthIdentifier()
+            anchors.append(widthAnchor)
         }
         
         if heightConstant > 0 {
-            anchors.append(heightAnchor.constraint(equalToConstant: heightConstant))
+            let heightAnchor: NSLayoutConstraint = self.heightAnchor.constraint(equalToConstant: heightConstant)
+            heightAnchor.identifier = self.heightIdentifier()
+            anchors.append(heightAnchor)
         }
         
         anchors.forEach({$0.isActive = true})
@@ -81,6 +93,50 @@ extension UIView {
         for anchor: NSLayoutConstraint in self.constraints {
             if anchor.identifier == self.bottomIdentifier() {
                 anchor.constant = -height
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
+    }
+    
+    public func moveDownViewToHeight(height: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.bottomIdentifier() {
+                anchor.constant = height
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
+    }
+    
+    public func updateBottomAnchorWithConstant(_ constant: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.bottomIdentifier() {
+                anchor.constant = constant
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
+    }
+    
+    public func updateWidthAnchorWithConstant(_ constant: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.widthIdentifier() {
+                anchor.constant = constant
+                if !anchor.isActive {
+                    anchor.isActive = true
+                }
+            }
+        }
+    }
+    
+    public func updateHeightAnchorWithConstant(_ constant: CGFloat = 0) {
+        for anchor: NSLayoutConstraint in self.constraints {
+            if anchor.identifier == self.heightIdentifier() {
+                anchor.constant = constant
                 if !anchor.isActive {
                     anchor.isActive = true
                 }

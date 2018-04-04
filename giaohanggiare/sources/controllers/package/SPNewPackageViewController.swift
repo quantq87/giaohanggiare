@@ -8,6 +8,15 @@
 
 import UIKit
 
+protocol SPCustomCollectionCellDelegate {
+    func onTextFieldDidBeginEdit(_ textField: UITextField, at: IndexPath)
+    func onTextFieldDidEndEdit(_ textField: UITextField, at: IndexPath)
+}
+
+protocol SPPackageInfoCellDelegate: SPCustomCollectionCellDelegate {
+    
+}
+
 class SPNewPackageViewController: BaseViewController {
     
     var bottomSpacingConstraint: NSLayoutConstraint!
@@ -22,6 +31,7 @@ class SPNewPackageViewController: BaseViewController {
     
     var packageTableView:SPCollectionView!
     
+    var keyboardOnShow:Bool = false
     
     let cellId = "CollectionId"
     let personalCellId = "PersonalCollectionId"
@@ -44,6 +54,8 @@ class SPNewPackageViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        addGestureForViewEdit()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -55,6 +67,17 @@ class SPNewPackageViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.packageTableView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func addGestureForViewEdit() {
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnView)))
+    }
+    
+    @objc func tapOnView() {
+        if keyboardOnShow {
+            keyboardOnShow = true
+            view.endEditing(true)
+        }
     }
     
     @objc func completedAddPackage(sender: UIBarButtonItem) {
@@ -71,36 +94,40 @@ class SPNewPackageViewController: BaseViewController {
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-//        let isShowing = notification.name == Notification.Name.UIKeyboardWillShow
-        
-//        if let userInfo = notification.userInfo {
-            let endFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
-            let endFrameHeight = endFrame?.size.height ?? 0.0
-//            let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
-//            let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
-//            let animationCurveRaw = animationCurveRawNSN.uintValue
-//            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-//            self.bottomSpacingConstraint?.constant = isShowing ? endFrameHeight : 0.0
-//            UIView.animate(withDuration: duration,
-//                           delay: TimeInterval(0),
-//                           options: animationCurve,
-//                           animations: { self.view.layoutIfNeeded() },
-//                           completion: nil)
-        if #available(iOS 11.0, *) {
-            mainContainerView.moveUpViewToHeight(height: endFrameHeight)
-        } else {
-            // Fallback on earlier versions
-            mainContainerView.moveUpViewToHeight(height: endFrameHeight)
+        let endFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+        let endFrameHeight = endFrame?.size.height ?? 0.0
+        if let userInfo = notification.userInfo {
+            let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
+            let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
+            let animationCurveRaw = animationCurveRawNSN.uintValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: {
+                            self.mainContainerView.moveUpViewToHeight(height: endFrameHeight)
+                            self.packageTableView.isScrollEnabled = true
+                            
+            },
+                           completion: nil)
         }
-        
-        packageTableView.isScrollEnabled = true
-//        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        packageTableView.clearConstraints()
-//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-//        view.addConstraintsWithFormat(format: "V:|[v0]|", views: packageTableView)
+        if let userInfo = notification.userInfo {
+            let duration:TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.0
+            let animationCurveRawNSN:NSNumber = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)!
+            let animationCurveRaw = animationCurveRawNSN.uintValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: {
+                            self.mainContainerView.moveUpViewToHeight(height: 0.0)
+                            self.packageTableView.isScrollEnabled = true
+            },
+                           completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -165,16 +192,6 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.anchor(mainContainerView.topAnchor, left: mainContainerView.leftAnchor, right: mainContainerView.rightAnchor, bottom: mainContainerView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
         
         packageTableView.contentSize = CGSize(width: view.frame.width, height: 600)
-        
-//        view.addSubview(packageTableView);
-//
-//        let spacingView:UIView = UIView(frame: .zero)
-//        spacingView.backgroundColor = .white
-//        spacingView.isHidden = true
-//        view.addSubview(spacingView)
-//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: packageTableView)
-//        view.addConstraintsWithFormat(format: "H:|[v0]|", views: spacingView)
-//        view.addConstraintsWithFormat(format: "V:|[v0]-[v1(0.0)]-|", views: packageTableView, spacingView)
     }
     
     func setupData() {
@@ -192,7 +209,27 @@ class SPNewPackageViewController: BaseViewController {
     }
 }
 
-extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate {
+extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionViewDelegate, SPPackageInfoCellDelegate {
+    
+    // MARK: SPPackageInfoCellDelegate
+    func onTextFieldDidBeginEdit(_ textField: UITextField, at: IndexPath) {
+        
+        guard let sectionHeaderAttributes: UICollectionViewLayoutAttributes = self.packageTableView.layoutAttributesForItem(at: at as IndexPath)  else {
+            return
+        }
+        guard let itemAttributes: UICollectionViewLayoutAttributes = self.packageTableView.layoutAttributesForSupplementaryElement(ofKind: UICollectionElementKindSectionHeader, at: at as IndexPath)  else {
+            return
+        }
+
+       let combinedFrame: CGRect = CGRect(x: sectionHeaderAttributes.frame.origin.x, y: sectionHeaderAttributes.frame.origin.y + 50.0, width: sectionHeaderAttributes.frame.width, height: sectionHeaderAttributes.frame.height + itemAttributes.frame.height)
+
+        self.packageTableView.scrollRectToVisible(combinedFrame, animated: false);
+    }
+    
+    func onTextFieldDidEndEdit(_ textField: UITextField, at: IndexPath) {
+        
+    }
+    
     
     func numberOfSections() -> Int {
         return 3
@@ -226,7 +263,8 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             return cell
         }
         else if (indexPath.section == 2) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: packageInfoCellId, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: packageInfoCellId, for: indexPath) as! SPPackageInfoViewCell
+            cell.cellDelegate = self
             cell.backgroundColor = .white
             return cell
         }
@@ -251,17 +289,17 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             if indexPath.section == 0 {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
                 header.backgroundColor = .green
-                header.setHeaderTitleWithString(string: "Thong tin khach hang")
+                header.setHeaderTitleWithString(string: "Thông tin khách hàng")
                 return header;
             } else if (indexPath.section == 1) {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
                 header.backgroundColor = .green
-                header.setHeaderTitleWithString(string: "Thong tin nguoi nhan")
+                header.setHeaderTitleWithString(string: "Thông tin người nhận")
                 return header;
             } else {
                 let header:SPPackageHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: packageInfoHeaderId, for: indexPath) as! SPPackageHeaderCell)
                 header.backgroundColor = .yellow
-                header.setHeaderTitleWithString(string: "Thong tin goi hang")
+                header.setHeaderTitleWithString(string: "Thông tin đơn hàng")
                 return header;
             }
         } else {
@@ -332,12 +370,15 @@ extension SPNewPackageViewController: SPPackageInfoDelegate {
 //    }
 //}
 
-class SPPackageInfoViewCell: SPCollectionViewCell {
+class SPPackageInfoViewCell: SPCollectionViewCell, UITextFieldDelegate {
+    
+    var cellDelegate: SPPackageInfoCellDelegate!
     
     var packageSizeTextField:UITextField = {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Kich thuoc"
         tf.setBottomBorder()
+        tf.returnKeyType = UIReturnKeyType.done
         return tf
     }()
     
@@ -353,6 +394,7 @@ class SPPackageInfoViewCell: SPCollectionViewCell {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Khoi luong"
         tf.setBottomBorder()
+        tf.returnKeyType = UIReturnKeyType.done
         return tf
     }()
     
@@ -368,6 +410,7 @@ class SPPackageInfoViewCell: SPCollectionViewCell {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Ghi chu"
         tf.setBottomBorder()
+        tf.returnKeyType = UIReturnKeyType.done
         return tf
     }()
     
@@ -389,6 +432,7 @@ class SPPackageInfoViewCell: SPCollectionViewCell {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Thu ho"
         tf.setBottomBorder()
+        tf.returnKeyType = UIReturnKeyType.done
         return tf
     }()
     
@@ -465,10 +509,45 @@ class SPPackageInfoViewCell: SPCollectionViewCell {
         packageReceiverPayLabel.anchor(packageCODButton.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 30.0)
         
         packageReceiverPayButton.anchor(packageCODButton.bottomAnchor, left: nil, right: packageReceiverPayLabel.leftAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
+        
+        packageSizeTextField.delegate = self
+        
+        packageWeightTextField.delegate = self
+        
+        packageCODTextField.delegate = self
     }
     
     func editInfoButtonOnTouch(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == packageNoteTextField {
+            print("This is a Note TextField!")
+            return
+        }
+        guard let delegate = self.cellDelegate else {
+            return
+        }
+        delegate.onTextFieldDidBeginEdit(textField, at: IndexPath(row: 1, section: 2))
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let delegate = self.cellDelegate else {
+            return
+        }
+        delegate.onTextFieldDidEndEdit(textField, at: IndexPath(row: 1, section: 2))
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            return true;
+        }
+        return false
     }
 }
 
@@ -608,4 +687,261 @@ class SPPackageHeaderCell: UICollectionReusableView {
         nameLabel.attributedText = finalAttString
         
     }
+}
+
+class SPCheckBoxButton: UIButton {
+    var customTitle: UILabel = {
+        var label = UILabel(frame: .zero)
+        label.text = ""
+        return label
+    }()
+    
+    var heightForCheckBox: CGFloat = 35.0 {
+        didSet{
+            checkImageView.updateHeightAnchorWithConstant(heightForCheckBox)
+            checkImageView.updateWidthAnchorWithConstant(heightForCheckBox)
+            checkImageView.layer.cornerRadius = heightForCheckBox/2.0
+        }
+    }
+    
+    var checkImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "button_checked"))
+        imageView.backgroundColor = UIColor.rgb(r: 109, g: 192, b: 94)
+        return imageView
+    }()
+    
+    var checkState: Bool = false
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupLayout() {
+        self.backgroundColor = .yellow
+        self.addSubview(checkImageView)
+        self.addSubview(customTitle)
+        
+        checkImageView.anchor(self.centerYAnchor, left: self.leftAnchor, right: nil, bottom: nil, topConstant: -(heightForCheckBox/2.0), leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: heightForCheckBox, heightConstant: heightForCheckBox)
+        
+        checkImageView.layer.cornerRadius = heightForCheckBox/2.0
+        
+        customTitle.anchor(self.topAnchor, left: checkImageView.rightAnchor, right: self.rightAnchor, bottom: self.bottomAnchor, topConstant: 0.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant:0.0)
+    }
+    
+    public func setFontForLabel(_ font: UIFont) {
+        customTitle.font = font
+    }
+    
+    public func updateCheckStateButton() {
+        if checkState == false {
+            checkState = true
+            let imageChecked = UIImage(named: "button_checked.png")
+            self.checkImageView.image = imageChecked
+            self.checkImageView.backgroundColor = .white
+        } else {
+            checkState = false
+            self.checkImageView.image = nil
+            self.checkImageView.backgroundColor = UIColor.rgb(r: 109, g: 192, b: 94)
+        }
+    }
+    
+    public func setTitleForCheckBox(_ title: String) {
+        self.customTitle.text = title
+    }
+}
+
+class SPDropDownButton: UIButton, UITextFieldDelegate {
+    
+    let dropDownItemCellId: String = "dropDownItemCellId"
+    
+    var valueTextField: UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.backgroundColor = .clear
+        tf.text = ""
+        return tf
+    }()
+    
+    var dropdownImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "button_dropdown"))
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
+    
+    var mainContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    var itemsCollectionView: UICollectionView = {
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+        layout.minimumLineSpacing = 0.5
+//        layout.itemSize = CGSize(width: 90, height: 120)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
+    
+    var listItems: NSArray = NSArray()
+    var defaultIndexSelected:Int = 0 {
+        didSet {
+            if defaultIndexSelected < self.listItems.count {
+                guard let string: String = self.listItems.object(at: defaultIndexSelected) as? String else {
+                    return
+                }
+                self.valueTextField.text = string
+            }
+        }
+    }
+    
+    
+    var heightForCheckBox: CGFloat = 35.0 {
+        didSet{
+            
+        }
+    }
+    
+    var checkState: Bool = false
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupLayout() {
+        self.backgroundColor = UIColor.rgb(r: 245.0, g: 245.0, b: 245.0)
+        self.addSubview(valueTextField)
+        self.addSubview(dropdownImageView)
+        self.addSubview(mainContainerView)
+        
+        mainContainerView.addSubview(itemsCollectionView)
+        
+        valueTextField.anchor(self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 3.0, rightConstant: -35.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+        
+        dropdownImageView.anchor(self.topAnchor, left: nil, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 35.0)
+        
+        
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderWidth = 0.5
+        self.layer.cornerRadius = 5.0
+        
+        itemsCollectionView.anchor(mainContainerView.topAnchor, left: mainContainerView.leftAnchor, right: mainContainerView.rightAnchor, bottom: mainContainerView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        
+        
+        valueTextField.delegate = self
+        
+        itemsCollectionView.dataSource = self
+        itemsCollectionView.delegate = self
+        itemsCollectionView.register(SPDropDownItemCollectionCell.self, forCellWithReuseIdentifier: dropDownItemCellId)
+        
+        self.mainContainerView.isHidden = true
+    }
+    
+    public func setSelectedValueForCheckBox(_ value: String) {
+        self.valueTextField.text = value
+    }
+    
+    public func showDropDownItemsView() {
+        self.mainContainerView.isHidden = false
+        self.itemsCollectionView.reloadData()
+        self.mainContainerView.frame = CGRect(x: 0, y: 35.0, width: self.frame.width, height: 0.0)
+        UIView.animate(withDuration: 0.4,
+                       delay: TimeInterval(0),
+                       options: .curveLinear,
+                       animations: {
+                        self.mainContainerView.frame = CGRect(x: 0, y: 35.0, width: self.frame.width, height: 3*(35.0))
+                        self.updateHeightAnchorWithConstant(4*(35.0))
+        },
+                       completion: nil)
+    }
+    
+    public func hideDropDownItemsView() {
+        self.itemsCollectionView.reloadData()
+        self.mainContainerView.frame = CGRect(x: 0, y: 35.0, width: self.frame.width, height: 0.0)
+        UIView.animate(withDuration: 0.4,
+                       delay: TimeInterval(0),
+                       options: .curveLinear,
+                       animations: {
+                        self.mainContainerView.frame = CGRect(x: 0, y: 35.0, width: self.frame.width, height: 0)
+                        self.mainContainerView.isHidden = true
+                        self.updateHeightAnchorWithConstant(35.0)
+        },
+                       completion: nil)
+        
+    }
+    
+    public func setListItemsWithArray(_ array: NSArray) {
+        self.listItems = array
+        self.itemsCollectionView .reloadData()
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        self.showDropDownItemsView()
+        return false
+    }
+}
+
+extension SPDropDownButton: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return listItems.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: dropDownItemCellId, for: indexPath) as! SPDropDownItemCollectionCell
+        guard let string: String = listItems.object(at: indexPath.row) as? String else {
+            return cell
+        }
+        cell.titleLabel.text = string
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        defaultIndexSelected = indexPath.row
+        self.hideDropDownItemsView()
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width-5.0, height: 30.0)
+    }
+}
+
+class SPDropDownItemCollectionCell: UICollectionViewCell {
+    var titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .white
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupLayout() {
+        self.contentView.backgroundColor = .black
+        self.addSubview(titleLabel)
+        titleLabel.anchor(self.contentView.topAnchor, left: self.contentView.leftAnchor, right: self.contentView.rightAnchor, bottom: self.contentView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+    }
+    
 }
