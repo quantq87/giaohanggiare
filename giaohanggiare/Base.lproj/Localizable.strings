@@ -5,3 +5,11 @@
   Created by tran.quoc.quan on 3/12/18.
   Copyright © 2018 Quan Tran. All rights reserved.
 */
+
+"info_sender" = "Thông tin người gửi";
+"info_package_title_bar"="Nhập thông tin đơn hàng";
+"info_get_and_send_package" = "Thông tin lấy và giao hàng";
+
+"name_customer" = "Tên khách hàng";
+"name_customer_title" = "Tên khách hàng";
+"name_customer_subtitle" = "Tên khách hàng:";

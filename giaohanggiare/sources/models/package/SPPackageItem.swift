@@ -46,9 +46,10 @@ class SPPackageItem: NSObject {
         time = Date()
     }
     
-    init(userInfo: SPUserInfo) {
+    init(userInfo: SPUserInfo?) {
         super.init()
         setUpDefault()
+        
         self.senderCustomer = SPCustomerInfoItem(personInfo: SPSenderDefauldPersonInfo())
         self.senderCustomer.customerType = .sender
     }

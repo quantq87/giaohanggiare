@@ -125,8 +125,8 @@ class HomeViewController: BaseViewController {
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SPNewPackageViewController") as! SPNewPackageViewController
         
         if SPPackageManager.shareInstance.currentEditPackage == nil {
-            SPPackageManager.shareInstance.currentEditPackage = SPPackageItem(userInfo: SPUserManager.shareInstance.currentUserInfo)
-            secondViewController.currentNewPackage = SPPackageManager.shareInstance.currentEditPackage
+//            SPPackageManager.shareInstance.currentEditPackage = SPPackageItem(userInfo: SPUserManager.shareInstance.currentUserInfo)
+//            secondViewController.currentNewPackage = SPPackageManager.shareInstance.currentEditPackage
         } else {
             // TODO: Save current package
             secondViewController.currentNewPackage = SPPackageManager.shareInstance.currentEditPackage

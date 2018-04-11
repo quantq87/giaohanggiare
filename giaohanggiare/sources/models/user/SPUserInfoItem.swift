@@ -84,10 +84,10 @@ class SPCustomerInfoItem: SPUserInfoItem {
         
         switch self.customerType {
         case .sender:
-            result = "Ten khach hang: "
+            result = "name_customer_subtitle".localized(withComment: "with !!!")
             break
         default:
-            result = "Ten nguoi nhan: "
+            result = "name_customer_subtitle".localized(withComment: "with !!!")
             break
         }
         return result

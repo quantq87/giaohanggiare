@@ -146,10 +146,10 @@ class SPNewPackageViewController: BaseViewController {
     }
     
     func initView() {
-        self.navigationItem.title = "Tao Don Hang"
+        self.navigationItem.title = "info_package_title_bar".localized(withComment: "with!!!")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .undo, target: self, action: #selector(backBarButtonOnTouch))
         
-        
+        view.backgroundColor = .gray
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -172,7 +172,7 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.register(SPPackageHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: packageInfoHeaderId)
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: personalFooterId)
         
-        packageTableView.backgroundColor = .clear
+        packageTableView.backgroundColor = .white
         
         // Delegate
         packageTableView.setDelegateAndDataSource(self, dataSource: self)
@@ -184,10 +184,10 @@ class SPNewPackageViewController: BaseViewController {
         mainContainerView.addSubview(packageTableView)
         
         if #available(iOS 11.0, *) {
-            mainContainerView.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+            mainContainerView.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, topConstant: 5.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 5.0, widthConstant: 0.0, heightConstant: 0.0)
         } else {
             // Fallback on earlier versions
-            mainContainerView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+            mainContainerView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 5.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: 5.0, widthConstant: 0.0, heightConstant: 0.0)
         }
         packageTableView.anchor(mainContainerView.topAnchor, left: mainContainerView.leftAnchor, right: mainContainerView.rightAnchor, bottom: mainContainerView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
         
@@ -288,8 +288,8 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             
             if indexPath.section == 0 {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
-                header.backgroundColor = .green
-                header.setHeaderTitleWithString(string: "Thông tin khách hàng")
+                header.backgroundColor = .clear
+                header.setHeaderTitleWithString(string: "info_sender".localized(withComment: "with!!!"))
                 return header;
             } else if (indexPath.section == 1) {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
@@ -582,6 +582,12 @@ class SPPersonalHeaderCell: UICollectionReusableView {
         return label
     }()
     
+    var lineView: UIView = {
+        var view = UIView(frame: .zero)
+        view.backgroundColor = .gray
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -594,15 +600,18 @@ class SPPersonalHeaderCell: UICollectionReusableView {
     
     func setupView()  {
         addSubview(nameLabel)
+        addSubview(lineView)
         
         nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 0.0, heightConstant: 0.0)
+        
+        lineView.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 1, leftConstant: 2, rightConstant: -2.0, bottomConstant: -1.0, widthConstant: 0.0, heightConstant: 0.0)
     }
     
     public func setHeaderTitleWithString(string: String) {
         // Name Label
         var attributes = [NSAttributedStringKey: Any]()
         attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 15.0)
-        attributes[NSAttributedStringKey.foregroundColor] = UIColor.blue
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.green
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString

@@ -9,6 +9,12 @@
 import UIKit
 import Foundation
 
+extension String {
+    func localized(withComment:String) -> String {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: withComment)
+    }
+}
+
 //protocol Person {
 //    var firstName: String {get set}
 //    var lastName: String {get set}
