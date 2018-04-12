@@ -17,20 +17,32 @@ class HomeViewController: BaseViewController {
     var currentPackages: NSMutableArray!
     var currentSelectTagIndex: NSInteger! = 0
     
-    var addFloatingButton: SPFloatingButton = {
-        let button = SPFloatingButton(type: .custom)
-        button.backgroundColor = .mainColor
+    
+    var createPackageButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Tạo đơn hàng", for: .normal)
+        button.backgroundColor = UIColor.rgb(r: 28, g: 157, b: 97)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 35.0)
-        button.setTitle("+", for: .normal)
-        button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
-        button.addTarget(self, action: #selector(addNewPackageOnTouchInside), for: UIControlEvents.touchUpInside)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+        button.addTarget(self, action: #selector(addPackage), for: .touchUpInside)
         return button
     }()
     
+    
+//    var addFloatingButton: SPFloatingButton = {
+//        let button = SPFloatingButton(type: .custom)
+//        button.backgroundColor = .mainColor
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 35.0)
+//        button.setTitle("+", for: .normal)
+//        button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
+//        button.addTarget(self, action: #selector(addNewPackageOnTouchInside), for: UIControlEvents.touchUpInside)
+//        return button
+//    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        28 157 97
         self.initUI()
         SPLoadingView.shareInstance.startLoadingAnimation(self.view)
         self.perform(#selector(completedRunLoading), with: nil, afterDelay: 2.0)
@@ -45,17 +57,25 @@ class HomeViewController: BaseViewController {
     }
     
     func initUI() {
-        self.navigationItem.title = StringAppTitle.home_title
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addPackage))
-
-        if topTabBarView == nil {
-            topTabBarView = SPTopTabBarView(frame: CGRect(x: 0, y: 64, width: self.view.bounds.width, height: 35))
+        self.navigationItem.title = StringAppTitle.LIST_PACKAGE_TITLE
+        
+        view.addSubview(createPackageButton)
+        if #available(iOS 11.0, *) {
+            createPackageButton.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+        } else {
+            // Fallback on earlier versions
+            createPackageButton.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
         }
-        topTabBarView.removeFromSuperview()
-        topTabBarView.setUpTabBarWithType(type: .home)
-        topTabBarView.delegate = self
-        view.addSubview(topTabBarView)
-        topTabBarView.selectedItemIndex(index: 1)
+        
+        
+//        if topTabBarView == nil {
+//            topTabBarView = SPTopTabBarView(frame: CGRect(x: 0, y: 64, width: self.view.bounds.width, height: 35))
+//        }
+//        topTabBarView.removeFromSuperview()
+//        topTabBarView.setUpTabBarWithType(type: .home)
+//        topTabBarView.delegate = self
+//        view.addSubview(topTabBarView)
+//        topTabBarView.selectedItemIndex(index: 1)
 
         if packageTableView == nil {
             packageTableView = SPTableView(type: .home, frame:
@@ -71,16 +91,16 @@ class HomeViewController: BaseViewController {
         packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
         packageTableView.reloadDataTable()
 
-        view.addSubview(addFloatingButton)
-        addFloatingButton.layer.cornerRadius = 60/2
-        addFloatingButton.clipsToBounds = true
-        addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
-        
-        view.addSubview(checkButton)
-        checkButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
-        
-        view.addSubview(dropDownButton)
-        dropDownButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: -100.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
+//        view.addSubview(addFloatingButton)
+//        addFloatingButton.layer.cornerRadius = 60/2
+//        addFloatingButton.clipsToBounds = true
+//        addFloatingButton.anchor(nil, left: nil, right: view.rightAnchor, bottom: view.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: -10, bottomConstant: -10, widthConstant: 60, heightConstant: 60)
+//        
+//        view.addSubview(checkButton)
+//        checkButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
+//
+//        view.addSubview(dropDownButton)
+//        dropDownButton.anchor(view.centerYAnchor, left: view.centerXAnchor, right: nil, bottom: nil, topConstant: -100.0, leftConstant: -100, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 200, heightConstant: 35.0)
     }
     
     var checkButton: SPCheckBoxButton = {

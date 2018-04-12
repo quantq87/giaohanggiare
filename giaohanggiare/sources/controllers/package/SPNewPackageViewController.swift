@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum SPStateCellType {
+    case info
+    case expand
+    case collapse
+}
+
 protocol SPCustomCollectionCellDelegate {
     func onTextFieldDidBeginEdit(_ textField: UITextField, at: IndexPath)
     func onTextFieldDidEndEdit(_ textField: UITextField, at: IndexPath)
@@ -34,6 +40,10 @@ class SPNewPackageViewController: BaseViewController {
     var keyboardOnShow:Bool = false
     
     let cellId = "CollectionId"
+    
+    let infoPackageCellId = "InfoPackageCellId"
+    let detailPackageCellId = "DetailPackageCellId"
+    
     let personalCellId = "PersonalCollectionId"
     let personalReceiverCellId = "personalReceiverCellId"
     let packageInfoCellId = "packageInfoCellId"
@@ -41,6 +51,36 @@ class SPNewPackageViewController: BaseViewController {
     let personalHeaderId = "PersonalHeaderId"
     let packageInfoHeaderId = "packageInfoHeaderId"
     let personalFooterId = "PersonalFooterId"
+    
+    
+    var stateInfoCell: SPStateCellType = .expand
+    var stateDetailCell: SPStateCellType = .info
+    
+    
+    var backButtonBarItem: UIBarButtonItem = {
+        let button = UIButton(type: .custom)
+        //set image for button
+        button.setImage(UIImage(named: "back-btnicon"), for: UIControlState.normal)
+        //add function for button
+        button.addTarget(self, action: #selector(canceldAddPackage), for: UIControlEvents.touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 40, height: 35)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        let barButton = UIBarButtonItem(customView: button)
+        return barButton
+    }()
+    
+//    var bottomStackView: UIStackView = {
+//        let stackView = UIStackView(frame: .zero)
+//        stackView.axis = .vertical
+//        stackView.distribution = .fillEqually
+//        stackView.spacing = 5.0
+//        return stackView
+//    }()
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +89,7 @@ class SPNewPackageViewController: BaseViewController {
         initView()
         setupData()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .save, target: self, action: #selector(completedAddPackage))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(canceldAddPackage))
+        self.navigationItem.leftBarButtonItem = backButtonBarItem
         
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SPEditSenderViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -139,25 +178,33 @@ class SPNewPackageViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     func initView() {
-        self.navigationItem.title = "info_package_title_bar".localized(withComment: "with!!!")
+        self.navigationItem.title = StringAppTitle.CREATE_PACKAGE_TITLE
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .undo, target: self, action: #selector(backBarButtonOnTouch))
         
         view.backgroundColor = .gray
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        flowLayout.minimumLineSpacing = 5.0
+        flowLayout.minimumInteritemSpacing = 5.0
         
         packageTableView = SPCollectionView(type:.create, frame:.zero, layout: flowLayout)
         
         // Cells
         packageTableView.register(SPCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        
+        packageTableView.register(SPInfoPackageViewCell.self, forCellWithReuseIdentifier: infoPackageCellId)
+        packageTableView.register(SPDetailPackageViewCell.self, forCellWithReuseIdentifier: detailPackageCellId)
+        
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalCellId)
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
         packageTableView.register(SPPackageInfoViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
@@ -172,7 +219,7 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.register(SPPackageHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: packageInfoHeaderId)
         packageTableView.register(SPPersonalHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: personalFooterId)
         
-        packageTableView.backgroundColor = .white
+        packageTableView.backgroundColor = .clear
         
         // Delegate
         packageTableView.setDelegateAndDataSource(self, dataSource: self)
@@ -192,6 +239,9 @@ class SPNewPackageViewController: BaseViewController {
         packageTableView.anchor(mainContainerView.topAnchor, left: mainContainerView.leftAnchor, right: mainContainerView.rightAnchor, bottom: mainContainerView.bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
         
         packageTableView.contentSize = CGSize(width: view.frame.width, height: 600)
+        
+        
+        // Add Bottom stackView
     }
     
     func setupData() {
@@ -246,8 +296,16 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     }
     
     func cellForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+//        if indexPath.section == 0 {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath) as! SPPersonalInfoCell
+//            cell.backgroundColor = .white
+//            cell.delegateInfo = self
+//            cell.setDataForCell(currentNewPackage.senderCustomer)
+//            cell.indexSection = indexPath.section
+//            return cell
+//        }
         if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalCellId, for: indexPath) as! SPPersonalInfoCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: infoPackageCellId, for: indexPath) as! SPInfoPackageViewCell
             cell.backgroundColor = .white
             cell.delegateInfo = self
             cell.setDataForCell(currentNewPackage.senderCustomer)
@@ -255,10 +313,10 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: personalReceiverCellId, for: indexPath) as! SPPersonalInfoCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: detailPackageCellId, for: indexPath) as! SPDetailPackageViewCell
             cell.backgroundColor = .white
             cell.delegateInfo = self
-            cell.setDataForCell(currentNewPackage.receiverCustomer)
+            cell.setDataForCell(currentNewPackage.senderCustomer)
             cell.indexSection = indexPath.section
             return cell
         }
@@ -280,25 +338,49 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     }
     
     func sizeForItemAt(_ collectionView: UICollectionView, indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 5*2, height: 160.0)
+        
+        var heightForCell: CGFloat = 160;
+        switch indexPath.section {
+        case 0:
+            if stateInfoCell == .info {
+                heightForCell = 0.0
+            } else {
+                heightForCell = 270
+            }
+            break
+            
+        case 1:
+            if stateDetailCell == .info {
+                heightForCell = 0.0
+            } else {
+                heightForCell = 270
+            }
+            break
+        default:
+            heightForCell = 0.0;
+            break
+        }
+        
+        return CGSize(width: collectionView.frame.width, height: heightForCell)
     }
+    
     
     func viewForSupplementaryElementOfKind(_ collectionView: UICollectionView, kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
             
             if indexPath.section == 0 {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
-                header.backgroundColor = .clear
-                header.setHeaderTitleWithString(string: "info_sender".localized(withComment: "with!!!"))
+                header.backgroundColor = .white
+                header.setHeaderTitleWithString(string: "info_get_and_send_package_header".localized(withComment: "with!!!"))
                 return header;
             } else if (indexPath.section == 1) {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
-                header.backgroundColor = .green
+                header.backgroundColor = .white
                 header.setHeaderTitleWithString(string: "Thông tin người nhận")
                 return header;
             } else {
                 let header:SPPackageHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: packageInfoHeaderId, for: indexPath) as! SPPackageHeaderCell)
-                header.backgroundColor = .yellow
+                header.backgroundColor = .white
                 header.setHeaderTitleWithString(string: "Thông tin đơn hàng")
                 return header;
             }
@@ -466,21 +548,21 @@ class SPPackageInfoViewCell: SPCollectionViewCell, UITextFieldDelegate {
 
     override func setupView() {
         
-        addSubview(packageSizeTextField)
-        addSubview(packageSizeLabel)
-        addSubview(packageWeightLabel)
-        addSubview(packageWeightTextField)
-        addSubview(packageNoteTextField)
+        self.contentView.addSubview(packageSizeTextField)
+        self.contentView.addSubview(packageSizeLabel)
+        self.contentView.addSubview(packageWeightLabel)
+        self.contentView.addSubview(packageWeightTextField)
+        self.contentView.addSubview(packageNoteTextField)
         
-        addSubview(packageCODButton)
-        addSubview(packageCODLabel)
-        addSubview(packageCODTextField)
+        self.contentView.addSubview(packageCODButton)
+        self.contentView.addSubview(packageCODLabel)
+        self.contentView.addSubview(packageCODTextField)
         
-        addSubview(packageSenderPayButton)
-        addSubview(packageSenderPayLabel)
+        self.contentView.addSubview(packageSenderPayButton)
+        self.contentView.addSubview(packageSenderPayLabel)
         
-        addSubview(packageReceiverPayButton)
-        addSubview(packageReceiverPayLabel)
+        self.contentView.addSubview(packageReceiverPayButton)
+        self.contentView.addSubview(packageReceiverPayLabel)
         
         // Add Constraints
         packageSizeTextField.anchor(topAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: contentView.frame.width/2 - 25 - 4.0, heightConstant: 30.0)
@@ -604,14 +686,14 @@ class SPPersonalHeaderCell: UICollectionReusableView {
         
         nameLabel.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 2, leftConstant: 2, rightConstant: -2.0, bottomConstant: -2.0, widthConstant: 0.0, heightConstant: 0.0)
         
-        lineView.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 1, leftConstant: 2, rightConstant: -2.0, bottomConstant: -1.0, widthConstant: 0.0, heightConstant: 0.0)
+        lineView.anchor(nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 1, leftConstant: 2, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 1.0)
     }
     
     public func setHeaderTitleWithString(string: String) {
         // Name Label
         var attributes = [NSAttributedStringKey: Any]()
         attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 15.0)
-        attributes[NSAttributedStringKey.foregroundColor] = UIColor.green
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.rgb(r: 28, g: 157, b: 97)
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString
@@ -690,7 +772,7 @@ class SPPackageHeaderCell: UICollectionReusableView {
         // Name Label
         var attributes = [NSAttributedStringKey: Any]()
         attributes[NSAttributedStringKey.font] = UIFont.boldSystemFont(ofSize: 15.0)
-        attributes[NSAttributedStringKey.foregroundColor] = UIColor.blue
+        attributes[NSAttributedStringKey.foregroundColor] = UIColor.rgb(r: 28, g: 157, b: 97)
         let attString1 = NSAttributedString(string: string, attributes: attributes)
         let finalAttString: NSMutableAttributedString = NSMutableAttributedString(attributedString: attString1)
         nameLabel.attributedText = finalAttString
@@ -773,6 +855,7 @@ class SPDropDownButton: UIButton, UITextFieldDelegate {
         let tf = UITextField(frame: .zero)
         tf.backgroundColor = .clear
         tf.text = ""
+        tf.font = UIFont.systemFont(ofSize: 13.0)
         return tf
     }()
     
@@ -838,9 +921,9 @@ class SPDropDownButton: UIButton, UITextFieldDelegate {
         
         mainContainerView.addSubview(itemsCollectionView)
         
-        valueTextField.anchor(self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 3.0, rightConstant: -35.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+        valueTextField.anchor(self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 3.0, rightConstant: -35.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
         
-        dropdownImageView.anchor(self.topAnchor, left: nil, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 35.0, heightConstant: 35.0)
+        dropdownImageView.anchor(self.topAnchor, left: nil, right: self.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 25.0, heightConstant: 25.0)
         
         
         self.layer.borderColor = UIColor.black.cgColor

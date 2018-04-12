@@ -13,9 +13,25 @@ enum SPCustomerType {
     case receiver
 }
 
+enum SPTransportType {
+    case fly
+    case flyAndCar
+    case car
+    case moto
+}
+
+enum SPPlaceType {
+    case internalType
+    case externalType
+}
+
 class SPPackageItem: NSObject {
     var senderCustomer: SPCustomerInfoItem!
     var receiverCustomer: SPCustomerInfoItem!
+    
+    // Replace to SPUser
+    var senderUser:SPUserObj = SPUserObj()
+    var receiverUser:SPUserObj = SPUserObj()
     
     var idPackage: String!
     var titleString: String!
@@ -25,6 +41,9 @@ class SPPackageItem: NSObject {
     var money: CGFloat = 0.0
     
     var time: Date!
+    
+    var placeTypte: SPPlaceType = .internalType
+    var transportType: SPTransportType = .moto
     
     override init() {
         
@@ -52,6 +71,13 @@ class SPPackageItem: NSObject {
         
         self.senderCustomer = SPCustomerInfoItem(personInfo: SPSenderDefauldPersonInfo())
         self.senderCustomer.customerType = .sender
+    }
+    
+    init(loginUser: SPUserObj?){
+        guard let user = loginUser else {
+            return
+        }
+        self.senderUser = user
     }
 }
 

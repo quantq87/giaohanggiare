@@ -23,6 +23,11 @@
 		A266D8A11F8E62EB00AC6968 /* SPPackageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */; };
 		A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */; };
 		A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */; };
+		A27ECDD1207EF119006F0987 /* SPUserObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27ECDD0207EF119006F0987 /* SPUserObj.swift */; };
+		A27ECDD6207EF858006F0987 /* SPMainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27ECDD5207EF858006F0987 /* SPMainTabBarViewController.swift */; };
+		A27ECDD9207EF946006F0987 /* SPApplicationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27ECDD8207EF946006F0987 /* SPApplicationControl.swift */; };
+		A27ECDDD207F1A5E006F0987 /* SPInfoPackageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27ECDDC207F1A5E006F0987 /* SPInfoPackageViewCell.swift */; };
+		A27ECDDF207F4ADB006F0987 /* SPDetailPackageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27ECDDE207F4ADB006F0987 /* SPDetailPackageViewCell.swift */; };
 		A2863414200452A400F9AE83 /* SPDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863413200452A400F9AE83 /* SPDatabase.swift */; };
 		A2863416200456C000F9AE83 /* SPKeyDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2863415200456C000F9AE83 /* SPKeyDatabase.swift */; };
 		A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286341820047C0000F9AE83 /* SPLoadingView.swift */; };
@@ -80,6 +85,11 @@
 		A266D8A01F8E62EB00AC6968 /* SPPackageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPackageItem.swift; sourceTree = "<group>"; };
 		A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPSenderInfoViewCell.swift; sourceTree = "<group>"; };
 		A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPReceiverInfoViewCell.swift; sourceTree = "<group>"; };
+		A27ECDD0207EF119006F0987 /* SPUserObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPUserObj.swift; sourceTree = "<group>"; };
+		A27ECDD5207EF858006F0987 /* SPMainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMainTabBarViewController.swift; sourceTree = "<group>"; };
+		A27ECDD8207EF946006F0987 /* SPApplicationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPApplicationControl.swift; sourceTree = "<group>"; };
+		A27ECDDC207F1A5E006F0987 /* SPInfoPackageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPInfoPackageViewCell.swift; sourceTree = "<group>"; };
+		A27ECDDE207F4ADB006F0987 /* SPDetailPackageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPDetailPackageViewCell.swift; sourceTree = "<group>"; };
 		A2863413200452A400F9AE83 /* SPDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPDatabase.swift; sourceTree = "<group>"; };
 		A2863415200456C000F9AE83 /* SPKeyDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPKeyDatabase.swift; sourceTree = "<group>"; };
 		A286341820047C0000F9AE83 /* SPLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPLoadingView.swift; sourceTree = "<group>"; };
@@ -230,13 +240,31 @@
 			children = (
 				A27D38212057700D00099EE9 /* SPSenderInfoViewCell.swift */,
 				A27D38232057707500099EE9 /* SPReceiverInfoViewCell.swift */,
+				A27ECDDC207F1A5E006F0987 /* SPInfoPackageViewCell.swift */,
+				A27ECDDE207F4ADB006F0987 /* SPDetailPackageViewCell.swift */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		A27ECDD2207EF561006F0987 /* define */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = define;
+			sourceTree = "<group>";
+		};
+		A27ECDD7207EF92D006F0987 /* application */ = {
+			isa = PBXGroup;
+			children = (
+				A27ECDD8207EF946006F0987 /* SPApplicationControl.swift */,
+			);
+			path = application;
 			sourceTree = "<group>";
 		};
 		A28634112004522900F9AE83 /* shares */ = {
 			isa = PBXGroup;
 			children = (
+				A27ECDD7207EF92D006F0987 /* application */,
 				A29F360520567F0C00BDFD9F /* user */,
 				A29F3602205669FD00BDFD9F /* package */,
 				A25DDD642007915D00486954 /* list */,
@@ -390,6 +418,7 @@
 		A2E32F6D1F77E27600E7546F /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				A27ECDD2207EF561006F0987 /* define */,
 				A21646C92060EC8F000FC2D4 /* viewmodels */,
 				A28634112004522900F9AE83 /* shares */,
 				A292EA681FD8FAB100679213 /* extensions */,
@@ -413,6 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				A2E32F721F77E2F200E7546F /* HomeViewController.swift */,
+				A27ECDD5207EF858006F0987 /* SPMainTabBarViewController.swift */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -452,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				A2E4C51A205FB698006FE22C /* SPUserInfoItem.swift */,
+				A27ECDD0207EF119006F0987 /* SPUserObj.swift */,
 			);
 			path = user;
 			sourceTree = "<group>";
@@ -695,6 +726,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2C1B09F2015F2E400F0689F /* SPEditSenderViewController.swift in Sources */,
+				A27ECDD1207EF119006F0987 /* SPUserObj.swift in Sources */,
 				A266D89D1F8E4F6800AC6968 /* SPTopTabBarView.swift in Sources */,
 				A2D494D21FD846F9008D62B9 /* SPCollectionView.swift in Sources */,
 				A29F36292056919E00BDFD9F /* SPUserManager.swift in Sources */,
@@ -704,12 +736,15 @@
 				A2E32F4D1F77E1D100E7546F /* AppDelegate.swift in Sources */,
 				A2126A031FDFE65F00E6D150 /* SPLoginViewController.swift in Sources */,
 				A29F36272056918B00BDFD9F /* SPPackageManager.swift in Sources */,
+				A27ECDDF207F4ADB006F0987 /* SPDetailPackageViewCell.swift in Sources */,
 				A286341C200480FA00F9AE83 /* SPAPIServer.swift in Sources */,
 				A2E32F701F77E2CC00E7546F /* BaseViewController.swift in Sources */,
+				A27ECDD9207EF946006F0987 /* SPApplicationControl.swift in Sources */,
 				A25DDD662007917E00486954 /* SPListManager.swift in Sources */,
 				A2193F7D1F7FB428001DE6A3 /* SPStringApp.swift in Sources */,
 				A2E32F731F77E2F200E7546F /* HomeViewController.swift in Sources */,
 				A292EA6C1FD8FAD000679213 /* UIView+Anchors.swift in Sources */,
+				A27ECDDD207F1A5E006F0987 /* SPInfoPackageViewCell.swift in Sources */,
 				A21646C82060C9AB000FC2D4 /* Examples.swift in Sources */,
 				A2D494D01FD840F7008D62B9 /* SPNewPackageViewController.swift in Sources */,
 				A27D38222057700D00099EE9 /* SPSenderInfoViewCell.swift in Sources */,
@@ -717,6 +752,7 @@
 				A2126A011FDFD9E300E6D150 /* UIColor+Mains.swift in Sources */,
 				A2402D8C2005F3100049A8B8 /* SPFloatingButton.swift in Sources */,
 				A21646CC2060ECB0000FC2D4 /* SPPackageViewModel.swift in Sources */,
+				A27ECDD6207EF858006F0987 /* SPMainTabBarViewController.swift in Sources */,
 				A286341920047C0000F9AE83 /* SPLoadingView.swift in Sources */,
 				A292EA6D1FD8FAD000679213 /* UIView+Constraint.swift in Sources */,
 				A27D38242057707500099EE9 /* SPReceiverInfoViewCell.swift in Sources */,

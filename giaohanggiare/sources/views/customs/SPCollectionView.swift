@@ -85,6 +85,10 @@ class SPCollectionView: UICollectionView, UICollectionViewDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return (customDataSource?.referenceSizeForFooterInSection(collectionView, layout: collectionViewLayout, section: section))!
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(0, 0, 10, 0)
+    }
 }
 
 class SPCollectionViewCell: UICollectionViewCell {

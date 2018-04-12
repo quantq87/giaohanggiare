@@ -275,7 +275,8 @@ class SPLoginViewController: BaseViewController {
             print("LOGIN: \(message)")
             if success {
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+//                    self.performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+                    SPApplicationControl.shareInstance.showLoginVCToMainTabBar(animation: true)
                 }
             }
             SPLoadingView.shareInstance.stopLoadingAnimation()
@@ -313,7 +314,8 @@ class SPLoginViewController: BaseViewController {
     }
     
     @objc func signInButtonOnTouch() {
-        performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+//        performSegue(withIdentifier: "showSPHomeIdentifier", sender: nil)
+        SPApplicationControl.shareInstance.showLoginVCToMainTabBar(animation: true)
     }
     
     @objc func registerButtonOnTouch() {

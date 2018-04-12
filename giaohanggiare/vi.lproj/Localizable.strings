@@ -5,10 +5,23 @@
   Created by tran.quoc.quan on 3/12/18.
   Copyright © 2018 Quan Tran. All rights reserved.
 */
+
+"list_package_title" = "Danh sách đơn hàng";
+
 "info_sender" = "Thông tin người gửi";
-"info_package_title_bar" = "Nhập thông tin đơn hàng";
-"info_get_and_send_package" = "Thông tin lấy và giao hàng";
+"info_package_title_bar"="Nhập thông tin đơn hàng";
+"info_get_and_send_package_header" = "THÔNG TIN LẤY VÀ GIAO HÀNG";
+"info_send_package_header" = "Thông tin giao hàng";
+"info_get_package_header" = "Thông tin lấy hàng";
 
 "name_customer" = "Tên khách hàng";
 "name_customer_title" = "Tên khách hàng";
 "name_customer_subtitle" = "Tên khách hàng:";
+
+"input_phone_placeholder" = "Nhập số điện thoại khách hàng";
+"input_name_kh_placeholder" = "Tên khách hàng";
+"input_location_kh_placeholder" = "Bấm để chọn quận/huyện/phường/đường";
+"input_addess_detail_placeholder" = "Địa chỉ chi tiết(nhà/ngõ/ngách)";
+
+"send_estimate_label" = "Dự kiến giao hàng";
+"get_estimate_label" = "Dự kiến lấy hàng";

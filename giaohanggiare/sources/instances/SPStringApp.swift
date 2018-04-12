@@ -9,7 +9,8 @@
 import UIKit
 
 struct StringAppTitle {
-    static let home_title = "Home"
+    static let LIST_PACKAGE_TITLE = "list_package_title".localized(withComment: "with!!!")
+    static let CREATE_PACKAGE_TITLE = "list_package_title".localized(withComment: "with!!!")
 //    static let testStrLength = countElements(testStr)
 //    
 //    static let arrayOfTests: [String] = ["foo", "bar", testStr]
@@ -18,7 +19,7 @@ struct StringAppTitle {
 class SPStringApp: NSObject {
     
     func getHomeTitle() -> String {
-        return StringAppTitle.home_title
+        return StringAppTitle.LIST_PACKAGE_TITLE
     }
     
 }
