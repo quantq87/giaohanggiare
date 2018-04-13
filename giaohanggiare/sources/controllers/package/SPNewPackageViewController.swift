@@ -44,6 +44,8 @@ class SPNewPackageViewController: BaseViewController {
     let infoPackageCellId = "InfoPackageCellId"
     let detailPackageCellId = "DetailPackageCellId"
     
+    let termsAndCreatePackageCellId = "TermsAndCreatePackageCellId"
+    
     let personalCellId = "PersonalCollectionId"
     let personalReceiverCellId = "personalReceiverCellId"
     let packageInfoCellId = "packageInfoCellId"
@@ -204,10 +206,12 @@ class SPNewPackageViewController: BaseViewController {
         
         packageTableView.register(SPInfoPackageViewCell.self, forCellWithReuseIdentifier: infoPackageCellId)
         packageTableView.register(SPDetailPackageViewCell.self, forCellWithReuseIdentifier: detailPackageCellId)
+        packageTableView.register(SPTermsAndCreateViewCell.self, forCellWithReuseIdentifier: termsAndCreatePackageCellId)
+        
         
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalCellId)
         packageTableView.register(SPPersonalInfoCell.self, forCellWithReuseIdentifier: personalReceiverCellId)
-        packageTableView.register(SPPackageInfoViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
+        packageTableView.register(SPDetailPackageViewCell.self, forCellWithReuseIdentifier: packageInfoCellId)
         
         // Show scrolls
         packageTableView.showsVerticalScrollIndicator = true
@@ -282,7 +286,7 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     
     
     func numberOfSections() -> Int {
-        return 3
+        return 4
     }
     
     func numberOfItemsInSection(_ collectionView: UICollectionView, section: Int) -> Int {
@@ -318,11 +322,22 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             cell.delegateInfo = self
             cell.setDataForCell(currentNewPackage.senderCustomer)
             cell.indexSection = indexPath.section
+            cell.isHidden = true
             return cell
         }
-        else if (indexPath.section == 2) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: packageInfoCellId, for: indexPath) as! SPPackageInfoViewCell
+        else if (indexPath.section == 2){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: detailPackageCellId, for: indexPath) as! SPDetailPackageViewCell
+            cell.backgroundColor = .white
+            cell.delegateInfo = self
+            cell.setDataForCell(currentNewPackage.senderCustomer)
+            cell.indexSection = indexPath.section
+            cell.isHidden = true
+            return cell
+        }
+        else if (indexPath.section == 3){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: termsAndCreatePackageCellId, for: indexPath) as! SPTermsAndCreateViewCell
             cell.cellDelegate = self
+            cell.isHidden = false
             cell.backgroundColor = .white
             return cell
         }
@@ -356,6 +371,21 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
                 heightForCell = 270
             }
             break
+        case 2:
+//            if stateDetailCell == .info {
+//                heightForCell = 0.0
+//            } else {
+                heightForCell = 0.0
+//            }
+            break
+            
+        case 3:
+//            if stateDetailCell == .info {
+//                heightForCell = 0.0
+//            } else {
+                heightForCell = 75.0
+//            }
+            break
         default:
             heightForCell = 0.0;
             break
@@ -367,7 +397,6 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     
     func viewForSupplementaryElementOfKind(_ collectionView: UICollectionView, kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            
             if indexPath.section == 0 {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
                 header.backgroundColor = .white
@@ -376,12 +405,14 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
             } else if (indexPath.section == 1) {
                 let header:SPPersonalHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: personalHeaderId, for: indexPath) as! SPPersonalHeaderCell)
                 header.backgroundColor = .white
-                header.setHeaderTitleWithString(string: "Thông tin người nhận")
+                header.setHeaderTitleWithString(string: "info_detail_package_header".localized(withComment: "with!!!"))
                 return header;
-            } else {
+            }
+            else {
                 let header:SPPackageHeaderCell = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: packageInfoHeaderId, for: indexPath) as! SPPackageHeaderCell)
                 header.backgroundColor = .white
                 header.setHeaderTitleWithString(string: "Thông tin đơn hàng")
+                header.isHidden = true
                 return header;
             }
         } else {
@@ -392,7 +423,19 @@ extension SPNewPackageViewController: SPCollectionViewDataSource, SPCollectionVi
     }
     
     func referenceSizeForHeaderInSection(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 5*2, height: 35.0)
+        var heightForCell: CGFloat = 35.0;
+        switch section {
+        case 2:
+            heightForCell = 0.0
+            break
+        case 3:
+            heightForCell = 0.0
+            break
+        default:
+//            heightForCell = 0.0;
+            break
+        }
+        return CGSize(width: collectionView.frame.width - 5*2, height: heightForCell)
     }
     func referenceSizeForFooterInSection(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  section: Int) -> CGSize{
         return CGSize(width: collectionView.frame.width - 5*2, height: 0.0)
@@ -452,184 +495,270 @@ extension SPNewPackageViewController: SPPackageInfoDelegate {
 //    }
 //}
 
-class SPPackageInfoViewCell: SPCollectionViewCell, UITextFieldDelegate {
+//class SPDetailPackageViewCell: SPCollectionViewCell, UITextFieldDelegate {
+//    
+//    var cellDelegate: SPPackageInfoCellDelegate!
+//    
+//    var packageSizeTextField:UITextField = {
+//        let tf = UITextField(frame: .zero)
+//        tf.placeholder = "Kich thuoc"
+//        tf.setBottomBorder()
+//        tf.returnKeyType = UIReturnKeyType.done
+//        return tf
+//    }()
+//    
+//    var packageSizeLabel: UILabel = {
+//        var label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.text = "cm"
+//        return label
+//    }()
+//    
+//    var packageWeightTextField:UITextField = {
+//        let tf = UITextField(frame: .zero)
+//        tf.placeholder = "Khoi luong"
+//        tf.setBottomBorder()
+//        tf.returnKeyType = UIReturnKeyType.done
+//        return tf
+//    }()
+//    
+//    var packageWeightLabel: UILabel = {
+//        var label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.text = "kg"
+//        return label
+//    }()
+//    
+//    var packageNoteTextField:UITextField = {
+//        let tf = UITextField(frame: .zero)
+//        tf.placeholder = "Ghi chu"
+//        tf.setBottomBorder()
+//        tf.returnKeyType = UIReturnKeyType.done
+//        return tf
+//    }()
+//    
+//    var packageCODButton: UIButton = {
+//        var button = UIButton(frame: .zero)
+//        button.backgroundColor = .green
+//        return button
+//    }()
+//    
+//    var packageCODLabel: UILabel = {
+//        var label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.text = "Thu ho"
+//        return label
+//    }()
+//    
+//    var packageCODTextField:UITextField = {
+//        let tf = UITextField(frame: .zero)
+//        tf.placeholder = "Thu ho"
+//        tf.setBottomBorder()
+//        tf.returnKeyType = UIReturnKeyType.done
+//        return tf
+//    }()
+//    
+//    var packageSenderPayButton: UIButton = {
+//        var button = UIButton(frame: .zero)
+//        button.backgroundColor = .green
+//        return button
+//    }()
+//    
+//    var packageSenderPayLabel: UILabel = {
+//        var label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.text = "Nguoi gui tra"
+//        return label
+//    }()
+//    
+//    var packageReceiverPayButton: UIButton = {
+//        var button = UIButton(frame: .zero)
+//        button.backgroundColor = .green
+//        return button
+//    }()
+//    
+//    var packageReceiverPayLabel: UILabel = {
+//        var label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.text = "Nguoi nhan tra"
+//        return label
+//    }()
+//
+//    override func setupView() {
+//        
+//        self.contentView.addSubview(packageSizeTextField)
+//        self.contentView.addSubview(packageSizeLabel)
+//        self.contentView.addSubview(packageWeightLabel)
+//        self.contentView.addSubview(packageWeightTextField)
+//        self.contentView.addSubview(packageNoteTextField)
+//        
+//        self.contentView.addSubview(packageCODButton)
+//        self.contentView.addSubview(packageCODLabel)
+//        self.contentView.addSubview(packageCODTextField)
+//        
+//        self.contentView.addSubview(packageSenderPayButton)
+//        self.contentView.addSubview(packageSenderPayLabel)
+//        
+//        self.contentView.addSubview(packageReceiverPayButton)
+//        self.contentView.addSubview(packageReceiverPayLabel)
+//        
+//        // Add Constraints
+//        packageSizeTextField.anchor(topAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: contentView.frame.width/2 - 25 - 4.0, heightConstant: 30.0)
+//        
+//        packageSizeLabel.anchor(topAnchor, left: packageSizeTextField.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 25.0, heightConstant: 30.0)
+//        
+//        
+//        packageWeightLabel.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 25.0, heightConstant: 30.0)
+//        
+//        packageWeightTextField.anchor(topAnchor, left: nil, right: packageWeightLabel.leftAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: contentView.frame.width/2 - 25 - 4.0, heightConstant: 30.0)
+//        
+//        packageNoteTextField.anchor(packageSizeTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
+//        
+//        
+//        packageCODButton.anchor(packageNoteTextField.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
+//        
+//        packageCODLabel.anchor(packageNoteTextField.bottomAnchor, left: packageCODButton.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 80.0, heightConstant: 30.0)
+//        
+//        packageCODTextField.anchor(packageNoteTextField.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 150.0, heightConstant: 30.0)
+//        
+//        
+//        packageSenderPayButton.anchor(packageCODButton.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
+//        
+//        packageSenderPayLabel.anchor(packageCODButton.bottomAnchor, left: packageSenderPayButton.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 30.0)
+//        
+//        packageReceiverPayLabel.anchor(packageCODButton.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 30.0)
+//        
+//        packageReceiverPayButton.anchor(packageCODButton.bottomAnchor, left: nil, right: packageReceiverPayLabel.leftAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
+//        
+//        packageSizeTextField.delegate = self
+//        
+//        packageWeightTextField.delegate = self
+//        
+//        packageCODTextField.delegate = self
+//    }
+//    
+//    func editInfoButtonOnTouch(sender: UIButton)  {
+//        print("editInfoButtonOnTouch onTouchInSide")
+//    }
+//    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        if textField == packageNoteTextField {
+//            print("This is a Note TextField!")
+//            return
+//        }
+//        guard let delegate = self.cellDelegate else {
+//            return
+//        }
+//        delegate.onTextFieldDidBeginEdit(textField, at: IndexPath(row: 1, section: 2))
+//    }
+//    
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        guard let delegate = self.cellDelegate else {
+//            return
+//        }
+//        delegate.onTextFieldDidEndEdit(textField, at: IndexPath(row: 1, section: 2))
+//    }
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+//    {
+//        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+//            nextField.becomeFirstResponder()
+//        } else {
+//            textField.resignFirstResponder()
+//            return true;
+//        }
+//        return false
+//    }
+//}
+
+class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
     
     var cellDelegate: SPPackageInfoCellDelegate!
     
-    var packageSizeTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Kich thuoc"
-        tf.setBottomBorder()
-        tf.returnKeyType = UIReturnKeyType.done
-        return tf
+    var mainCellStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
     }()
     
-    var packageSizeLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = "cm"
-        return label
+    
+    var termsView: UIView = {
+        let view = UIView(frame: .zero)
+        
+        return view
     }()
     
-    var packageWeightTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Khoi luong"
-        tf.setBottomBorder()
-        tf.returnKeyType = UIReturnKeyType.done
-        return tf
-    }()
     
-    var packageWeightLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = "kg"
-        return label
-    }()
-    
-    var packageNoteTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Ghi chu"
-        tf.setBottomBorder()
-        tf.returnKeyType = UIReturnKeyType.done
-        return tf
-    }()
-    
-    var packageCODButton: UIButton = {
-        var button = UIButton(frame: .zero)
+    var checkTermsButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: ""), for: .normal)
         button.backgroundColor = .green
         return button
     }()
     
-    var packageCODLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = "Thu ho"
+    var termStringLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.backgroundColor = .green
+        label.text = "terms_read_and_agree_to_create_package".localized(withComment: "")
+        label.font = UIFont.systemFont(ofSize: 11.0)
+        label.textColor = .black
         return label
     }()
     
-    var packageCODTextField:UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Thu ho"
-        tf.setBottomBorder()
-        tf.returnKeyType = UIReturnKeyType.done
-        return tf
-    }()
-    
-    var packageSenderPayButton: UIButton = {
-        var button = UIButton(frame: .zero)
-        button.backgroundColor = .green
+    var readTermsButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("terms_button_title".localized(withComment: ""), for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 11.0)
+        button.backgroundColor = UIColor.clear
         return button
     }()
     
-    var packageSenderPayLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = "Nguoi gui tra"
-        return label
+    
+    var createButtonView: UIView = {
+        let view = UIView(frame: .zero)
+        
+        return view
     }()
     
-    var packageReceiverPayButton: UIButton = {
-        var button = UIButton(frame: .zero)
-        button.backgroundColor = .green
+    var createPackageButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("button_create_package_title".localized(withComment: ""), for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        button.backgroundColor = UIColor.rgb(r: 28, g: 127, b: 97)
         return button
     }()
     
-    var packageReceiverPayLabel: UILabel = {
-        var label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.text = "Nguoi nhan tra"
-        return label
-    }()
-
+    
     override func setupView() {
+        super.setupView()
         
-        self.contentView.addSubview(packageSizeTextField)
-        self.contentView.addSubview(packageSizeLabel)
-        self.contentView.addSubview(packageWeightLabel)
-        self.contentView.addSubview(packageWeightTextField)
-        self.contentView.addSubview(packageNoteTextField)
+        addSubview(mainCellStackView)
         
-        self.contentView.addSubview(packageCODButton)
-        self.contentView.addSubview(packageCODLabel)
-        self.contentView.addSubview(packageCODTextField)
+        mainCellStackView.addArrangedSubview(termsView)
+        mainCellStackView.addArrangedSubview(createButtonView)
+        mainCellStackView.anchor(topAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, topConstant: 0.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
         
-        self.contentView.addSubview(packageSenderPayButton)
-        self.contentView.addSubview(packageSenderPayLabel)
+        // Terms
+        termsView.addSubview(checkTermsButton)
+        termsView.addSubview(termStringLabel)
+        termsView.addSubview(readTermsButton)
         
-        self.contentView.addSubview(packageReceiverPayButton)
-        self.contentView.addSubview(packageReceiverPayLabel)
+        checkTermsButton.anchor(termsView.centerYAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: -10.0, leftConstant: 5.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+        termStringLabel.anchor(termsView.topAnchor, left: checkTermsButton.rightAnchor, right: nil, bottom: termsView.bottomAnchor, topConstant: 0.0, leftConstant: 3.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 130.0, heightConstant: 0.0)
         
-        // Add Constraints
-        packageSizeTextField.anchor(topAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: contentView.frame.width/2 - 25 - 4.0, heightConstant: 30.0)
+        readTermsButton.anchor(termsView.topAnchor, left: termStringLabel.rightAnchor, right: nil, bottom: termsView.bottomAnchor, topConstant: 0.0, leftConstant: -3.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 130.0, heightConstant: 0.0)
         
-        packageSizeLabel.anchor(topAnchor, left: packageSizeTextField.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 25.0, heightConstant: 30.0)
-        
-        
-        packageWeightLabel.anchor(topAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 25.0, heightConstant: 30.0)
-        
-        packageWeightTextField.anchor(topAnchor, left: nil, right: packageWeightLabel.leftAnchor, bottom: nil, topConstant: 2, leftConstant: 0.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: contentView.frame.width/2 - 25 - 4.0, heightConstant: 30.0)
-        
-        packageNoteTextField.anchor(packageSizeTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 30.0)
-        
-        
-        packageCODButton.anchor(packageNoteTextField.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
-        
-        packageCODLabel.anchor(packageNoteTextField.bottomAnchor, left: packageCODButton.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 80.0, heightConstant: 30.0)
-        
-        packageCODTextField.anchor(packageNoteTextField.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 150.0, heightConstant: 30.0)
-        
-        
-        packageSenderPayButton.anchor(packageCODButton.bottomAnchor, left: leftAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
-        
-        packageSenderPayLabel.anchor(packageCODButton.bottomAnchor, left: packageSenderPayButton.rightAnchor, right: nil, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 30.0)
-        
-        packageReceiverPayLabel.anchor(packageCODButton.bottomAnchor, left: nil, right: rightAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 30.0)
-        
-        packageReceiverPayButton.anchor(packageCODButton.bottomAnchor, left: nil, right: packageReceiverPayLabel.leftAnchor, bottom: nil, topConstant: 2, leftConstant: 2.0, rightConstant: -2.0, bottomConstant: 0.0, widthConstant: 30.0, heightConstant: 30.0)
-        
-        packageSizeTextField.delegate = self
-        
-        packageWeightTextField.delegate = self
-        
-        packageCODTextField.delegate = self
-    }
-    
-    func editInfoButtonOnTouch(sender: UIButton)  {
-        print("editInfoButtonOnTouch onTouchInSide")
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == packageNoteTextField {
-            print("This is a Note TextField!")
-            return
-        }
-        guard let delegate = self.cellDelegate else {
-            return
-        }
-        delegate.onTextFieldDidBeginEdit(textField, at: IndexPath(row: 1, section: 2))
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let delegate = self.cellDelegate else {
-            return
-        }
-        delegate.onTextFieldDidEndEdit(textField, at: IndexPath(row: 1, section: 2))
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool
-    {
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
-            nextField.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-            return true;
-        }
-        return false
+        createButtonView.addSubview(createPackageButton)
+        createPackageButton.anchor(createButtonView.topAnchor, left: createButtonView.leftAnchor, right: createButtonView.rightAnchor, bottom: createButtonView.bottomAnchor, topConstant: 0.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: -5.0, widthConstant: 0.0, heightConstant: 0.0)
     }
 }
 

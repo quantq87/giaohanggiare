@@ -13,6 +13,8 @@
 "info_get_and_send_package_header" = "THÔNG TIN LẤY VÀ GIAO HÀNG";
 "info_send_package_header" = "Thông tin giao hàng";
 "info_get_package_header" = "Thông tin lấy hàng";
+"info_detail_package_header" = "THÔNG TIN THU HỘ VÀ HÀNG HOÁ";
+
 
 "name_customer" = "Tên khách hàng";
 "name_customer_title" = "Tên khách hàng";
@@ -25,3 +27,11 @@
 
 "send_estimate_label" = "Dự kiến giao hàng";
 "get_estimate_label" = "Dự kiến lấy hàng";
+
+
+// Button
+"button_create_package_title" = "Tạo đơn hàng";
+
+// Terms
+"terms_read_and_agree_to_create_package" = "Tôi đã đọc và đồng ý với";
+"terms_button_title" = "Điều khoản và quy định";
