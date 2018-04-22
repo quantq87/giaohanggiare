@@ -486,6 +486,12 @@ extension SPNewPackageViewController: SPPackageInfoDelegate {
     }
 }
 
+extension SPNewPackageViewController: SPTermsAndCreateDelegate {
+    func didCreatePackageButtonOnTouchInside(sender: UIButton) {
+        
+    }
+}
+
 //extension SPNewPackageViewController: SPReceiverInfoViewCellDelegate {
 //    func selectedAtIndexTextField(point: CGPoint, atSection: NSInteger) {
 //        if atSection >= 0 {
@@ -676,9 +682,15 @@ extension SPNewPackageViewController: SPPackageInfoDelegate {
 //    }
 //}
 
+
+protocol SPTermsAndCreateDelegate {
+    func didCreatePackageButtonOnTouchInside(sender: UIButton)
+}
+
+
 class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
     
-    var cellDelegate: SPPackageInfoCellDelegate!
+    var cellDelegate: SPTermsAndCreateDelegate!
     
     var mainCellStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
@@ -734,6 +746,7 @@ class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
         button.backgroundColor = UIColor.rgb(r: 28, g: 127, b: 97)
+        button.addTarget(self, action: #selector(createPackageButtonOnTouchInside), for: .touchUpInside)
         return button
     }()
     
@@ -759,6 +772,13 @@ class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
         
         createButtonView.addSubview(createPackageButton)
         createPackageButton.anchor(createButtonView.topAnchor, left: createButtonView.leftAnchor, right: createButtonView.rightAnchor, bottom: createButtonView.bottomAnchor, topConstant: 0.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: -5.0, widthConstant: 0.0, heightConstant: 0.0)
+    }
+    
+    @objc func createPackageButtonOnTouchInside(sender: UIButton)  {
+        print("editInfoButtonOnTouch onTouchInSide")
+        if let delegate = self.cellDelegate {
+            delegate.didCreatePackageButtonOnTouchInside(sender: sender)
+        }
     }
 }
 

@@ -81,3 +81,73 @@ class SPPackageItem: NSObject {
     }
 }
 
+
+class ExampleAddress: NSObject {
+    var district: String = ""
+    var ward: String = ""
+    var street: String = ""
+    var addressString: String = ""
+    
+    override init() {
+        super.init()
+    }
+}
+
+class ExampleUser: NSObject {
+    
+    var phoneNumberString: String = ""
+    var nameUser: String = ""
+    var addressInfo: ExampleAddress = ExampleAddress()
+    
+    override init() {
+        super.init()
+    }
+}
+
+class ExamplePackageInfo: NSObject {
+    
+    var namePackage: String = ""
+    var weight: CGFloat = 0.0
+    var amount: Int = 0
+    
+    
+    override init() {
+        super.init()
+    }
+}
+
+class ExamplePackageItem: NSObject {
+    // ***Thong tin giao hang
+    // SDT giao hang
+    // Ten khach hang
+    // Quan/Huyen/Phuong/Duong
+    // Dia chi nha
+    
+    // *** Thong tin lay hang
+    // SDT lay hang
+    // Ten khach hang de lay hang
+    // Quan/Huyen/Phuong/Duong
+    // Dia chi nha
+    
+    // *** Estimate
+    // Thoi gian lay hang
+    // Thoi gian giao
+    
+    
+    // *** Detail Package
+    // Ten san pham
+    // KL(kg)
+    // SL
+    
+    // Phi ship
+    // Noi tra
+    // Tien Thu Ho
+    // Tong tien
+    // Ghi chu
+    
+    
+    override init() {
+        super.init()
+    }
+    
+}

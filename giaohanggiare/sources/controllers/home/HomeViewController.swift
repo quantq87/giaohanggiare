@@ -12,7 +12,6 @@ class HomeViewController: BaseViewController {
     let cellId = "cellHomeID"
 
     var topTabBarView: SPTopTabBarView!
-    var packageTableView:SPTableView!
     
     var currentPackages: NSMutableArray!
     var currentSelectTagIndex: NSInteger! = 0
@@ -28,6 +27,23 @@ class HomeViewController: BaseViewController {
         return button
     }()
     
+    var createPackageStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
+    
+    var packageListTableView:SPTableView  = {
+        let table = SPTableView(frame: .zero)
+        table.backgroundColor = .clear
+        table.currentItemType = .home
+        table.separatorStyle = .none
+        return table
+    }()
+    
+    
     
 //    var addFloatingButton: SPFloatingButton = {
 //        let button = SPFloatingButton(type: .custom)
@@ -42,7 +58,6 @@ class HomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        28 157 97
         self.initUI()
         SPLoadingView.shareInstance.startLoadingAnimation(self.view)
         self.perform(#selector(completedRunLoading), with: nil, afterDelay: 2.0)
@@ -59,12 +74,13 @@ class HomeViewController: BaseViewController {
     func initUI() {
         self.navigationItem.title = StringAppTitle.LIST_PACKAGE_TITLE
         
-        view.addSubview(createPackageButton)
+        view.addSubview(createPackageStackView)
+        createPackageStackView.addArrangedSubview(createPackageButton)
         if #available(iOS 11.0, *) {
-            createPackageButton.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+            createPackageStackView.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, bottom: nil, topConstant: 66.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
         } else {
             // Fallback on earlier versions
-            createPackageButton.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
+            createPackageStackView.anchor(view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: nil, topConstant: 66.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 35.0)
         }
         
         
@@ -77,19 +93,21 @@ class HomeViewController: BaseViewController {
 //        view.addSubview(topTabBarView)
 //        topTabBarView.selectedItemIndex(index: 1)
 
-        if packageTableView == nil {
-            packageTableView = SPTableView(type: .home, frame:
-                CGRect(x: 0, y: 64 + 35, width: self.view.bounds.width, height: self.view.bounds.height - (64 + 35)))
-        }
-        packageTableView.backgroundColor = .clear
-        packageTableView.currentItemType = .home
-        packageTableView.customDataSource = self
-        packageTableView.customDataDelegate = self
-        view.addSubview(packageTableView)
-
+//        if packageTableView == nil {
+//            packageTableView = SPTableView(type: .home, frame:
+//                CGRect(x: 0, y: 64 + 35, width: self.view.bounds.width, height: self.view.bounds.height - (64 + 35)))
+//        }
+//        packageTableView.backgroundColor = .clear
+//        packageTableView.currentItemType = .home
+//        packageTableView.customDataSource = self
+//        packageTableView.customDataDelegate = self
+//        packageTableView.separatorStyle = .none
+//        view.addSubview(packageTableView)
+        view.addSubview(packageListTableView)
+        
         currentPackages = SPPackageViewModel.shareInstance.getPackageList()
-        packageTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
-        packageTableView.reloadDataTable()
+        packageListTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
+        packageListTableView.reloadDataTable()
 
 //        view.addSubview(addFloatingButton)
 //        addFloatingButton.layer.cornerRadius = 60/2
@@ -167,7 +185,7 @@ extension HomeViewController: SPTopTabBarDelegate {
         
         currentSelectTagIndex = index
         currentPackages = getCurrentPackageArray(index: index)
-        packageTableView.reloadDataTable()
+        packageListTableView.reloadDataTable()
     }
     
     func getCurrentPackageArray(index: NSInteger) -> NSMutableArray {
