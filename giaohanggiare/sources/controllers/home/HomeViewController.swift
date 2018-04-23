@@ -35,7 +35,7 @@ class HomeViewController: BaseViewController {
         return stackView
     }()
     
-    var packageListTableView:SPTableView  = {
+    lazy var packageListTableView:SPTableView  = {
         let table = SPTableView(frame: .zero)
         table.backgroundColor = .clear
         table.currentItemType = .home
@@ -43,7 +43,13 @@ class HomeViewController: BaseViewController {
         return table
     }()
     
-    
+    var tablePackageStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5.0
+        return stackView
+    }()
     
 //    var addFloatingButton: SPFloatingButton = {
 //        let button = SPFloatingButton(type: .custom)
@@ -103,7 +109,18 @@ class HomeViewController: BaseViewController {
 //        packageTableView.customDataDelegate = self
 //        packageTableView.separatorStyle = .none
 //        view.addSubview(packageTableView)
-        view.addSubview(packageListTableView)
+        view.addSubview(tablePackageStackView)
+        
+        if #available(iOS 11.0, *) {
+            tablePackageStackView.anchor(createPackageStackView.bottomAnchor, left: createPackageStackView.leftAnchor, right: createPackageStackView.rightAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, topConstant: 2.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        } else {
+            // Fallback on earlier versions
+            tablePackageStackView.anchor(createPackageStackView.bottomAnchor, left: createPackageStackView.leftAnchor, right: createPackageStackView.rightAnchor, bottom: view.bottomAnchor, topConstant: 2.0, leftConstant: 0.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 0.0)
+        }
+        
+        tablePackageStackView.addArrangedSubview(packageListTableView)
+        packageListTableView.customDataSource = self
+        packageListTableView.customDataDelegate = self
         
         currentPackages = SPPackageViewModel.shareInstance.getPackageList()
         packageListTableView.register(SPHomePackageCell.self, forCellReuseIdentifier: cellId)
@@ -152,6 +169,9 @@ class HomeViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.isHidden = false
+        
+        currentPackages = SPPackageViewModel.shareInstance.getPackageList()
+        self.packageListTableView.reloadDataTable()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

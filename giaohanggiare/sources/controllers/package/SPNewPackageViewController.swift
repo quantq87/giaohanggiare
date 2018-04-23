@@ -122,12 +122,12 @@ class SPNewPackageViewController: BaseViewController {
     }
     
     @objc func completedAddPackage(sender: UIBarButtonItem) {
-        let package = SPPackageItem()
-        
-        let rerult = SPPackageViewModel.shareInstance.addPackage(package)
-        if !rerult.success {
-            
-        }
+//        let package = SPPackageItem()
+//
+//        let rerult = SPPackageViewModel.shareInstance.addPackage(package)
+//        if !rerult.success {
+//
+//        }
     }
     
     @objc func canceldAddPackage(sender: UIBarButtonItem) {
@@ -488,7 +488,11 @@ extension SPNewPackageViewController: SPPackageInfoDelegate {
 
 extension SPNewPackageViewController: SPTermsAndCreateDelegate {
     func didCreatePackageButtonOnTouchInside(sender: UIButton) {
-        
+        SPPackageViewModel.shareInstance.addPackage(nil) { (success, errorMsg) in
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
 }
 
@@ -688,7 +692,7 @@ protocol SPTermsAndCreateDelegate {
 }
 
 
-class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
+class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate, SPCreateFunctionDelegate {
     
     var cellDelegate: SPTermsAndCreateDelegate!
     
@@ -740,19 +744,23 @@ class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
         return view
     }()
     
-    var createPackageButton: UIButton = {
+    let functions = SPCreateFunctions()
+    
+    lazy var createPackageButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("button_create_package_title".localized(withComment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
         button.backgroundColor = UIColor.rgb(r: 28, g: 127, b: 97)
-        button.addTarget(self, action: #selector(createPackageButtonOnTouchInside), for: .touchUpInside)
+        button.addTarget(functions, action: #selector(SPCreateFunctions.createPackageButtonOnTouchInside), for: .touchUpInside)
         return button
     }()
     
     
     override func setupView() {
         super.setupView()
+        
+        functions.cellDelegate = self as SPCreateFunctionDelegate
         
         addSubview(mainCellStackView)
         
@@ -774,10 +782,31 @@ class SPTermsAndCreateViewCell: SPCollectionViewCell, UITextFieldDelegate {
         createPackageButton.anchor(createButtonView.topAnchor, left: createButtonView.leftAnchor, right: createButtonView.rightAnchor, bottom: createButtonView.bottomAnchor, topConstant: 0.0, leftConstant: 5.0, rightConstant: -5.0, bottomConstant: -5.0, widthConstant: 0.0, heightConstant: 0.0)
     }
     
-    @objc func createPackageButtonOnTouchInside(sender: UIButton)  {
+    @objc public func createPackageButtonOnTouchInside(sender: UIButton)  {
         print("editInfoButtonOnTouch onTouchInSide")
         if let delegate = self.cellDelegate {
             delegate.didCreatePackageButtonOnTouchInside(sender: sender)
+        }
+    }
+    
+    func didCreatePackageFunctionDelegate(sender: UIButton) {
+        if let delegate = self.cellDelegate {
+            delegate.didCreatePackageButtonOnTouchInside(sender: sender)
+        }
+    }
+    
+}
+
+protocol SPCreateFunctionDelegate {
+    func didCreatePackageFunctionDelegate(sender: UIButton)
+}
+
+class SPCreateFunctions {
+    var cellDelegate: SPCreateFunctionDelegate!
+    @objc func createPackageButtonOnTouchInside(sender: UIButton) {
+        print("editInfoButtonOnTouch onTouchInSide")
+        if let delegate = self.cellDelegate {
+            delegate.didCreatePackageFunctionDelegate(sender: sender)
         }
     }
 }

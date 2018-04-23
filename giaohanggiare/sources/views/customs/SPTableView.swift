@@ -39,10 +39,19 @@ class SPTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.reloadData()
     }
     
+    override init(frame: CGRect, style: UITableViewStyle) {
+        super.init(frame: frame, style: style)
+        setUpView()
+    }
+    
     convenience init(type: ItemTableViewType, frame: CGRect) {
-        self.init(frame: frame)
+        self.init(frame: frame, style: .plain)
         self.currentItemType = type
         setUpView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setUpView() {

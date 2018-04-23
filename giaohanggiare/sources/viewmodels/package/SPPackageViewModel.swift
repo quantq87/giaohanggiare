@@ -38,13 +38,15 @@ class SPPackageViewModel: SPBaseViewModel {
         return (true, "")
     }
     
-    public func addPackage(_ package: SPPackageItem) -> (success: Bool, error: String) {
-        let result = validateSenderCustomer(package.senderCustomer)
-        if !result.success {
-            return result
-        }
+    public func addPackage(_ package: SPPackageItem!, completedHandle:@escaping (_ success: Bool, _ errorString: String) -> ()) {
+//        let result = validateSenderCustomer(package.senderCustomer)
+//        if !result.success {
+//            return result
+//        }
+        currentPackageList.add(ExamplePackageItem.getExamplePackage())
         
-        return (true, "") // Add completed
+        
+        completedHandle (true, "") // Add completed
     }
     
     public func updatePackage(_ package: SPPackageItem) -> Bool {
