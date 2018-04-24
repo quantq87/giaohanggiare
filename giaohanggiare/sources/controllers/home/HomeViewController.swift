@@ -192,12 +192,12 @@ extension HomeViewController: SPTableViewDataSource, SPTableViewDataDelegate {
         if currentPackages.count > 0 {
             return currentPackages.count
         }
-        return 0
+        return 1
     }
     
     func cellForRowAt(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! SPHomePackageCell
-        if let item:SPPackageItem = currentPackages.object(at: indexPath.row) as? SPPackageItem {
+        if currentPackages.count > 0, let item:SPPackageItem = currentPackages.object(at: indexPath.row) as? SPPackageItem {
             cell.setupDataForCell(item: item)
         }
         cell.selectionStyle = .none
@@ -224,35 +224,6 @@ class SPHomePackageCell: SPCustomTableCell {
         return label
     }()
     
-    var statusButton: UIButton = {
-        let button = UIButton(type: .custom, customType: .waiting)
-        button.setTitle("Cho duyet", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-        return button
-    }()
-    
-    var iconNameCustomer: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "icon_customer")
-        imageView.backgroundColor = .clear
-        return imageView
-    }()
-    
-    var nameCustomerLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.text = "Chi Dung"
-        label.font = UIFont.systemFont(ofSize: 13.0)
-        return label
-    }()
-    
-    var iconAddress: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "icon_address")
-        imageView.backgroundColor = .clear
-        return imageView
-    }()
-    
     var addressLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.backgroundColor = .clear
@@ -262,36 +233,85 @@ class SPHomePackageCell: SPCustomTableCell {
         return label
     }()
     
-    var iconDate: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "icon_date")
-        imageView.backgroundColor = .clear
-        return imageView
-    }()
-    
-    var dateLabel: UILabel = {
+    var paymentLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.backgroundColor = .clear
-        label.text = "20/12/2017"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 13.0)
         label.numberOfLines = 2
         return label
     }()
     
-    var iconPay: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "icon_pay")
-        imageView.backgroundColor = .clear
-        return imageView
-    }()
-    var totalPayLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.backgroundColor = .clear
-        label.text = "300.000 VND"
-        label.font = UIFont.systemFont(ofSize: 13.0)
-        label.numberOfLines = 2
-        return label
-    }()
+    
+    
+//    var statusButton: UIButton = {
+//        let button = UIButton(type: .custom, customType: .waiting)
+//        button.setTitle("Cho duyet", for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+//        return button
+//    }()
+//
+//    var iconNameCustomer: UIImageView = {
+//        let imageView = UIImageView(frame: .zero)
+//        imageView.image = UIImage(named: "icon_customer")
+//        imageView.backgroundColor = .clear
+//        return imageView
+//    }()
+//
+//    var nameCustomerLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.text = "Chi Dung"
+//        label.font = UIFont.systemFont(ofSize: 13.0)
+//        return label
+//    }()
+//
+//    var iconAddress: UIImageView = {
+//        let imageView = UIImageView(frame: .zero)
+//        imageView.image = UIImage(named: "icon_address")
+//        imageView.backgroundColor = .clear
+//        return imageView
+//    }()
+//
+//    var addressLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.text = "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM"
+//        label.font = UIFont.systemFont(ofSize: 13.0)
+//        label.numberOfLines = 2
+//        return label
+//    }()
+//
+//    var iconDate: UIImageView = {
+//        let imageView = UIImageView(frame: .zero)
+//        imageView.image = UIImage(named: "icon_date")
+//        imageView.backgroundColor = .clear
+//        return imageView
+//    }()
+//
+//    var dateLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.text = "20/12/2017"
+//        label.font = UIFont.systemFont(ofSize: 13.0)
+//        label.numberOfLines = 2
+//        return label
+//    }()
+//
+//    var iconPay: UIImageView = {
+//        let imageView = UIImageView(frame: .zero)
+//        imageView.image = UIImage(named: "icon_pay")
+//        imageView.backgroundColor = .clear
+//        return imageView
+//    }()
+//    var totalPayLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.backgroundColor = .clear
+//        label.text = "300.000 VND"
+//        label.font = UIFont.systemFont(ofSize: 13.0)
+//        label.numberOfLines = 2
+//        return label
+//    }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -306,46 +326,103 @@ class SPHomePackageCell: SPCustomTableCell {
     func setupViewCell() {
         
         contentView.addSubview(namePackageLabel)
-        contentView.addSubview(statusButton)
-        
-        contentView.addSubview(iconNameCustomer)
-        contentView.addSubview(nameCustomerLabel)
-        
-        contentView.addSubview(iconAddress)
+//        contentView.addSubview(statusButton)
+//
+//        contentView.addSubview(iconNameCustomer)
+//        contentView.addSubview(nameCustomerLabel)
+//
+//        contentView.addSubview(iconAddress)
         contentView.addSubview(addressLabel)
+//
+//        contentView.addSubview(iconDate)
+//        contentView.addSubview(dateLabel)
+//
+//        contentView.addSubview(iconPay)
+//        contentView.addSubview(totalPayLabel)
         
-        contentView.addSubview(iconDate)
-        contentView.addSubview(dateLabel)
+        contentView.addSubview(paymentLabel)
+        namePackageLabel.anchor(contentView.topAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        addressLabel.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 1.5, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        paymentLabel.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 1.5, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
         
-        contentView.addSubview(iconPay)
-        contentView.addSubview(totalPayLabel)
+        var nameAttributeString = self.getAttributeStringFrom(refix: "Ten: ", valueString: "Quoc Quan / ")
+        nameAttributeString = self.addUnderLineStringToAttributeString(fromAttributeString: nameAttributeString, valueString: "0982789809")
+        namePackageLabel.attributedText = nameAttributeString
         
-        namePackageLabel.anchor(contentView.topAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 5.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 150, heightConstant: 25.0)
+        let addressAttributeString = self.getAttributeStringFrom(refix: "Dia chi: ", valueString: "123/23/123 Le Duan, Phuong Ben Nghe, Quan 1, TP HCM")
+        addressLabel.attributedText = addressAttributeString
         
-        statusButton.anchor(contentView.topAnchor, left: nil, right: contentView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 0.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 100, heightConstant: 25.0)
+        let feeShipAttributeString = self.getAttributeStringFrom(refix: "Phi ship: ", valueString: "20.000 VND")
+        let collectionShipAttributeString = self.getAttributeStringFrom(refix: " / Thu ho: ", valueString: "200.000 VND")
+        feeShipAttributeString.append(collectionShipAttributeString)
+        paymentLabel.attributedText = feeShipAttributeString
         
-        // Next row
-        iconNameCustomer.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+//
+//        statusButton.anchor(contentView.topAnchor, left: nil, right: contentView.rightAnchor, bottom: nil, topConstant: 5.0, leftConstant: 0.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 100, heightConstant: 25.0)
+//
+//        // Next row
+//        iconNameCustomer.anchor(namePackageLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+//
+//        nameCustomerLabel.anchor(namePackageLabel.bottomAnchor, left: iconNameCustomer.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+//
+//        // Next row
+//        iconAddress.anchor(nameCustomerLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+//        addressLabel.anchor(nameCustomerLabel.bottomAnchor, left: iconAddress.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 40.0)
+//
+//        // Next row
+//        iconDate.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+//        dateLabel.anchor(addressLabel.bottomAnchor, left: iconDate.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+//
+//        // ** Next Columm
+//        iconPay.anchor(addressLabel.bottomAnchor, left: dateLabel.rightAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
+//        totalPayLabel.anchor(addressLabel.bottomAnchor, left: iconPay.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+    }
+    
+    private func addUnderLineStringToAttributeString(fromAttributeString: NSMutableAttributedString, valueString: String) -> NSMutableAttributedString {
+        var attributeString: NSMutableAttributedString = NSMutableAttributedString()
         
-        nameCustomerLabel.anchor(namePackageLabel.bottomAnchor, left: iconNameCustomer.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 2.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 25.0)
+        let labelString = valueString
+        let textColor: UIColor = .black
+        let underLineColor: UIColor = .black
+        let underLineStyle = NSUnderlineStyle.styleSingle.rawValue
+        let font = UIFont.boldSystemFont(ofSize: 13.0)
         
-        // Next row
-        iconAddress.anchor(nameCustomerLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
-        addressLabel.anchor(nameCustomerLabel.bottomAnchor, left: iconAddress.rightAnchor, right: contentView.rightAnchor, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: -10.0, bottomConstant: 0.0, widthConstant: 0.0, heightConstant: 40.0)
+        let labelAtributes:[NSAttributedStringKey : Any]  = [
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.underlineStyle: underLineStyle,
+            NSAttributedStringKey.underlineColor: underLineColor,
+            NSAttributedStringKey.font : font
+        ]
         
-        // Next row
-        iconDate.anchor(addressLabel.bottomAnchor, left: contentView.leftAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
-        dateLabel.anchor(addressLabel.bottomAnchor, left: iconDate.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        attributeString = NSMutableAttributedString(string: labelString, attributes: labelAtributes)
         
-        // ** Next Columm
-        iconPay.anchor(addressLabel.bottomAnchor, left: dateLabel.rightAnchor, right: nil, bottom: nil, topConstant: 3.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 20.0, heightConstant: 20.0)
-        totalPayLabel.anchor(addressLabel.bottomAnchor, left: iconPay.rightAnchor, right: nil, bottom: nil, topConstant: 0.0, leftConstant: 10.0, rightConstant: 0.0, bottomConstant: 0.0, widthConstant: 120.0, heightConstant: 25.0)
+        fromAttributeString.append(attributeString)
+        return fromAttributeString
+        
+    }
+    
+    private func getAttributeStringFrom(refix: String, valueString: String) -> NSMutableAttributedString {
+        var attributeString: NSMutableAttributedString = NSMutableAttributedString()
+        
+        let labelString = refix + " " + valueString
+        let textColor: UIColor = .black
+        let font = UIFont.systemFont(ofSize: 13.0)
+        
+        let labelAtributes:[NSAttributedStringKey : Any]  = [
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.font : font
+        ]
+        
+        attributeString = NSMutableAttributedString(string: labelString, attributes: labelAtributes)
+        
+        return attributeString
+        
     }
     
     public func setupDataForCell(item: SPPackageItem) {
         DispatchQueue.main.async {
-        self.namePackageLabel.text = item.titleString
-        self.nameCustomerLabel.text = item.detailString
+//        self.namePackageLabel.text = item.titleString
+//        self.nameCustomerLabel.text = item.detailString
         }
     }
     
